@@ -1281,7 +1281,7 @@
 
     function registerApiKunjungan(regno) {
         $.ajax({
-            url: 'http://localhost:8000/api/master/kunjungan',
+            url: 'http://registrasi_api:8080/api/master/kunjungan',
             type: 'POST',
             dataType: 'JSON',
             data: {

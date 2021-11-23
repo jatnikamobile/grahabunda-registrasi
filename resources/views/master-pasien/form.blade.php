@@ -590,7 +590,7 @@
 
 	function registerApiPasien() {
 		$.ajax({
-			url: '/api-db/register-pasien',
+			url: 'http://registrasi_api:8080/api/master/pasien',
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
@@ -624,6 +624,9 @@
 				// Foto: Foto,
 				// N_Foto: N_Foto,
 				// E_Foto: E_Foto,
+			},
+			success: function (data) {
+				//
 			}
 		});
 	}
