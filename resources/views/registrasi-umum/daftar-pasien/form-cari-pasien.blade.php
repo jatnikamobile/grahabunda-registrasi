@@ -68,6 +68,7 @@
     
     function get_data(node){
         var data = $(node).data();
+        console.log(data);
         $('#Medrec').val(data.medrec);
         $('.bd-example-modal-lg').modal('hide');
         $('#btnCari').click();

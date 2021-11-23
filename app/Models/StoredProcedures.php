@@ -212,6 +212,7 @@ class StoredProcedures
             'regno' => $data->Regno,
             'medrec' => $data->Medrec,
             'firstname' => $data->Firstname,
+            'nikktp' => $data->NoIden,
             'regdate' => $data->Regdate,
             'regtime' =>  $date,
             'kunjungan' => $data->Kunjungan,

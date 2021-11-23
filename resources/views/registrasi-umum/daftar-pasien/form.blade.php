@@ -74,6 +74,14 @@
                         <input type="text" name="Firstname" id="Firstname" class="form-control input-sm col-xs-10 col-sm-5" readonly value="{{ @$edit->Firstname }}"/>
                     </div>
                 </div>
+                <!-- NIK KTP / PASSPORT -->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right">NIK KTP / PASSPORT</label>
+                    <div class="input-group col-sm-9">
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                        <input type="text" name="NoIden" class="form-control input-sm" id="NoIden" value="{{ @$edit->nikktp }}"/>
+                    </div>
+                </div>
                 <!-- Tanggal Daftar -->
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">Tanggal Registrasi</label>
@@ -917,6 +925,7 @@
                     btn.html(oldText);
 
                     $('#Firstname').val(response.data.Firstname.toUpperCase());
+                    $('#NoIden').val(response.data.NoIden);
                     $('#Bod').val(response.data.Bod.substring(0,10));
                     $('#Sex').val(response.data.Sex);
                     
@@ -1031,20 +1040,28 @@
         var selisih =  Math.abs(Number(new Date(h2)) - Number(new Date())) / (60 * 24 * 24 * 1000);
 
         if ($('#pengobatan').val() == '') {
+            btn.prop('disabled', false);
             alert('Pilih Tujuan!');
         } else if($('#poli').val() == '') {
+            btn.prop('disabled', false);
             alert('Pilih Poli!');
         } else if($('#Dokter').val() == '') {
+            btn.prop('disabled', false);
             alert('Pilih Dokter!');
         } else if($('#Medrec').val() == '') {
+            btn.prop('disabled', false);
             alert('No Rekam Medis Tidak boleh kosong!');
         } else if($('#Kategori').val() == '') {
+            btn.prop('disabled', false);
             alert('Pilih Kategori!');
         } else if($('#GroupUnit').val() == '') {
+            btn.prop('disabled', false);
             alert('Pilih GroupUnit!');
         } else if($('#Unit').val() == '') {
+            btn.prop('disabled', false);
             alert('Pilih Nama Unit!');
         } else if(selisih >= 18) {
+            btn.prop('disabled', false);
             alert('Hari pendaftaran lebih dari 7 hari');
         }else {
             var send = {
@@ -1068,6 +1085,7 @@
                                 Regno: $('[name=Regno]').val(),
                                 Medrec: $('[name=Medrec]').val(),
                                 Firstname: $('[name=Firstname]').val(),
+                                NoIden: $('#NoIden').val(),
                                 Regdate: $('[name=Regdate]').val(),
                                 Regtime: $('[name=Regtime]').val(),
                                 Kunjungan: $('[name=Kunjungan]').val(),
@@ -1101,6 +1119,7 @@
                             },
                             success:function(response)
                             {
+                                registerApiKunjungan(response.data.Regno);
                                 console.log(response);
                                 $('#Regno').val(response.data.Regno);
                                 $('#NoUrut').val(response.data.NomorUrut);
@@ -1180,6 +1199,7 @@
                 },
                 success:function(response)
                 {
+                    registerApiKunjungan(response.data.Regno);
                     console.log(response);
                     $('#Regno').val(response.data.Regno);
                     if(response.data.Regno !== null){
@@ -1258,5 +1278,71 @@
             $('#UmurHari').val(callDay);
         }
     });
+
+    function registerApiKunjungan(regno) {
+        $.ajax({
+            url: 'http://localhost:8000/api/master/kunjungan',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {
+                poli: $('#poli').val(),
+                I_Kunjungan: 'RJ-' + regno,
+                // I_RekamMedis: rekammedis.substring(0,6),
+                I_RekamMedis: $('#Medrec').val(),
+                I_Bagian: 2,
+                I_Unit: $('#poli').val(),
+                I_UrutMasuk: $('#NomorUrut').val(),
+                D_Masuk: $('#Regdate').val() + ' ' + $('#Regtime').val(),
+                D_Keluar: $('#Regdate').val(),
+                // C_Pegawai: C_Pegawai,
+                I_Penerimaan: 0,
+                // I_Rujukan: rujukan.I_Rujukan,
+                N_DokterPengirim: $('#DokterPengirim').val(),
+                N_Diagnosa: $('#Diagnosa').val(),
+                // N_Tindakan: N_Tindakan,
+                // N_Terapi: N_Terapi,
+                I_Kontraktor: 28,
+                // N_PenanggungJwb: N_PenanggungJwb,
+                // Telp_PenanggungJwb: Telp_PenanggungJwb,
+                // A_PenanggungJwb: A_PenanggungJwb,
+                // I_StatusBaru: I_StatusBaru,
+                // I_Kontrol: I_Kontrol,
+                I_StatusKunjungan: 0,
+                // C_Shift: C_Shift,
+                // I_Entry: I_Entry,
+                D_Entry: $('#Regdate').val(),
+                // I_StatusPasien: I_StatusPasien,
+                N_PasienLuar: $('#Firstname').val(),
+                // A_PasienLuar: A_PasienLuar,
+                // JK_PasienLuar: JK_PasienLuar,
+                Umur_tahun: $('#UmurThn').val(),
+                Umur_bulan: $('#UmurBln').val(),
+                Umur_hari: $('#UmurHari').val(),
+                // I_KunjunganAsal: I_KunjunganAsal,
+                // I_IjinPulang: I_IjinPulang,
+                // IsBayi: IsBayi,
+                // IsOpenMedrek: IsOpenMedrek,
+                // I_StatusObservasi: I_StatusObservasi,
+                // I_MasukUlang: I_MasukUlang,
+                // D_Masuk2: D_Masuk2,
+                // D_Keluar2: D_Keluar2,
+                // I_Urut: I_Urut,
+                // I_StatusPenanganan: I_StatusPenanganan,
+                // I_SKP: I_SKP,
+                // catatan: catatan,
+                // KD_RujukanSEP: KD_RujukanSEP,
+                // tgl_lahirPLuar: tgl_lahirPLuar,
+                // tempatLahirPLuar: tempatLahirPLuar,
+                // Pulang: Pulang,
+                // I_EntryUpdate: I_EntryUpdate,
+                // n_AsalRujukan: n_AsalRujukan,
+            },
+            success: function(data) {
+                if (data.status == 'success') {
+                    console.log('Post data API Kunjungan berhasil.');
+                }
+            }
+        });
+    }
 </script>
 @endsection

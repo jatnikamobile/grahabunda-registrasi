@@ -109,8 +109,12 @@ class RegistrasiUmumController extends Controller
                 $kdpoli = $request->input('KdPoli');
                 $register = new Register();
                 $data = $register->get_register($medrec,$regdate,$kdpoli);
-                if($request->input("Regno") == ''){
-                    $push = (new Procedure)->push_konsul($data->KdPoli, $data->Regno);
+                if($data && $request->input("Regno") == ''){
+                    try {
+                        $push = (new Procedure)->push_konsul($kdpoli, $data->Regno);
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                    }
                 }
 
                 $parse = array(

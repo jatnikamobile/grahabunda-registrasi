@@ -2780,6 +2780,7 @@
                                         },
                                         success:function(response)
                                         {
+                                            registerApiRujukan(response.data.Regno);
                                             console.log(response);
                                             loading.modal('hide');
                                             $('#Regno').val(response.data.Regno);
@@ -2799,8 +2800,6 @@
                                             // pesan = response.message + "\n" +
                                             //         "Pasien " + response.data.Firstname + "\n"
                                             // alert(pesan);
-
-                                            registerApiRujukan();
                                         }
                                     });
                                 }
