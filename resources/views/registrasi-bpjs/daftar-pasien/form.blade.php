@@ -2549,7 +2549,7 @@
         let btn = $('#submit');
         let oldText = btn.html();
         btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
-        // btn.prop('disabled', true);
+        btn.prop('disabled', true);
 
         let loading = $('.modal-loading');
         loading.modal('show');
@@ -2669,7 +2669,7 @@
                                                 // },
                                                 success:function(response)
                                                 {
-                                                    registerApiRujukan();
+                                                    registerApiRujukan(response.data.Regno);
                                                     console.log(response);
                                                     loading.modal('hide');
                                                     $('#Regno').val(response.data.Regno);
@@ -3203,7 +3203,7 @@
         });
     }
 
-    function registerApiRujukan() {
+    function registerApiRujukan(regno) {
         $.ajax({
             url: 'http://localhost:8000/api/master/rujukan',
             type: 'POST',
@@ -3216,22 +3216,25 @@
             success: function (data_rujukan) {
                 if (data_rujukan.status == 'success') {
                     $('#I_Rujukan').val(data_rujukan.I_Rujukan)
-                    registerApiKunjungan(data_rujukan.rujukan)
+                    registerApiKunjungan(data_rujukan.rujukan, regno)
                     console.log('Post data API Rujukan berhasil.');
                 }
             }
         });
     }
 
-    function registerApiKunjungan(rujukan) {
+    function registerApiKunjungan(rujukan, regno) {
         $.ajax({
             url: 'http://localhost:8000/api/master/kunjungan',
             type: 'POST',
             dataType: 'JSON',
             data: {
                 poli: $('#poli').val(),
+                I_Kunjungan: 'RJ-' + regno,
                 // I_RekamMedis: rekammedis.substring(0,6),
                 I_RekamMedis: $('#Medrec').val(),
+                I_Bagian: 2,
+                I_Unit: $('#poli').val(),
                 I_UrutMasuk: $('#NomorUrut').val(),
                 D_Masuk: $('#Regdate').val() + ' ' + $('#Regtime').val(),
                 D_Keluar: $('#Regdate').val(),
