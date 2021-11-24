@@ -3229,7 +3229,7 @@
             dataType: 'JSON',
             data: {
                 poli: $('#poli').val(),
-                I_Kunjungan: 'RJ-' + regno,
+                // I_Kunjungan: 'RJ-' + regno,
                 // I_RekamMedis: rekammedis.substring(0,6),
                 I_RekamMedis: $('#Medrec').val(),
                 I_Bagian: 2,
