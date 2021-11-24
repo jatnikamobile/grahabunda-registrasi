@@ -199,7 +199,9 @@
 						</select>
 					</div>
 				</div>
-				<div class="form-group">
+				<input type="hidden" name="GroupUnit" value="379">
+				<input type="hidden" name="Unit" value="382">
+				{{-- <div class="form-group">
 					<!-- Input Group Unit -->
 					<label class="col-sm-3 control-label no-padding-right">Group Unit</label>
 					<div class="input-group col-sm-9">
@@ -223,7 +225,7 @@
 							<option value="{{ isset($edit->SubUnit) ? $edit->SubUnit : ''}}">{{ isset($edit->SubUnit) ? @$edit->SubUnit : '-= Unit =-'}}</option>
 						</select>
 					</div>
-				</div>
+				</div> --}}
 				<div class="form-group">
 					<!-- Input Nama Keluarga Dinas -->
 					<label class="col-sm-3 control-label no-padding-right">Nama Kel Dinas</label>
@@ -590,7 +592,7 @@
 
 	function registerApiPasien() {
 		$.ajax({
-			url: 'http://registrasi_api:8080/api/master/pasien',
+			url: "{{ config('app.api_db_url') }}/api/master/pasien",
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
