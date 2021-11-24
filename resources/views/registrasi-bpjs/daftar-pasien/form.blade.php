@@ -3250,7 +3250,7 @@
                 // A_PenanggungJwb: A_PenanggungJwb,
                 // I_StatusBaru: I_StatusBaru,
                 // I_Kontrol: I_Kontrol,
-                I_StatusKunjungan: 0,
+                I_StatusKunjungan: 1,
                 // C_Shift: C_Shift,
                 // I_Entry: I_Entry,
                 D_Entry: $('#Regdate').val(),
