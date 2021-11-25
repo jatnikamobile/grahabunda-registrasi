@@ -3251,7 +3251,7 @@
                 // I_StatusBaru: I_StatusBaru,
                 // I_Kontrol: I_Kontrol,
                 I_StatusKunjungan: 1,
-                // C_Shift: C_Shift,
+                C_Shift: 1,
                 // I_Entry: I_Entry,
                 D_Entry: $('#Regdate').val(),
                 // I_StatusPasien: I_StatusPasien,
