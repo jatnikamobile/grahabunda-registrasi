@@ -1309,7 +1309,7 @@
                 // I_Kontrol: I_Kontrol,
                 I_StatusKunjungan: 1,
                 C_Shift: 1,
-                // I_Entry: I_Entry,
+                I_Entry: 'system',
                 D_Entry: $('#Regdate').val(),
                 // I_StatusPasien: I_StatusPasien,
                 N_PasienLuar: $('#Firstname').val(),
