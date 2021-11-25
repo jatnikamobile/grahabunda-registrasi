@@ -1294,7 +1294,7 @@
                 I_UrutMasuk: $('#NomorUrut').val(),
                 D_Masuk: $('#Regdate').val() + ' ' + $('#Regtime').val(),
                 // D_Keluar: $('#Regdate').val(),
-                C_Pegawai: $('#Dokter').select2('data')[0].text,
+                C_Pegawai: $('#Dokter').val(),
                 I_Penerimaan: 0,
                 // I_Rujukan: rujukan.I_Rujukan,
                 N_DokterPengirim: $('#DokterPengirim').val(),
