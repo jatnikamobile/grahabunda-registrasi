@@ -68,7 +68,7 @@ class MasterPasienController extends Controller
     {
         // Input to mysql simrsau
         $bayi = $request->UmurThn;
-        $url = "http://localhost:8081/api/master/pasien";
+        $url = config('app.api_db_url') . "/api/master/pasien";
         $agama = TBLAgama::where('NmAgama', $request->Agama)->first();
         $pendi = TBLPendidikan::where('NmDidik', $request->Pendidikan)->first();
         $kerja = TBLPekerjaan::where('NmKerja', $request->Pekerjaan)->first();
@@ -110,7 +110,7 @@ class MasterPasienController extends Controller
                 // 'I_SukuBangsa' => $request->Suku,
                 // 'I_Jabatan' => $request->I_Jabatan,
                 // 'Pemegang_Asuransi' => $request->Pemegang_Asuransi,
-                'I_Entry' => date('Y-m-d'),
+                'I_Entry' => 'system',
                 'D_Entry' => date('Y-m-d'),
                 // 'IsCetak' => $request->IsCetak,
                 // 'Foto' => $request->Foto,
@@ -118,9 +118,9 @@ class MasterPasienController extends Controller
                 // 'E_Foto' => $request->E_Foto,
 
                 'NamaPJ' => $request->NamaPJ,
-                'PekerjaanPJ' => $request->PekerjaanPJ,
+                'PekerjaanPJ' => 0,
                 'PhonePJ' => $request->PhonePJ,
-                'HungunganPJ' => $request->HungunganPJ,
+                'HungunganPJ' => 0,
                 'AlamatPJ' => $request->AlamatPJ,
             ];
 
@@ -134,6 +134,13 @@ class MasterPasienController extends Controller
             $context = stream_context_create($option);
             $result = file_get_contents($url, false, $context);
             $parse['result'] = $result;
+
+            $pasien = MasterPS::where('Medrec', $parse['data']->Medrec)->first();
+            if ($pasien) {
+                $data_pasien = json_decode($result, true);
+                $pasien->Medrec = $data_pasien['pasien']['I_RekamMedis'];
+                $pasien->save();
+            }
 
 
             return response()->json($parse);

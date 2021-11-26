@@ -301,7 +301,8 @@ class StoredProcedures
             'kdsex' => $data->KdSex,
             'umurhr' => $data->UmurHari,
             'keyakinan' => $data->KdNilai,
-            'subunit' => $data->korpUnit,
+            // 'subunit' => $data->korpUnit,
+            'subunit' => null,
             'cotomatis' => '',
             'regnumber' => ''];
 
