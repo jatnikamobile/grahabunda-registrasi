@@ -73,7 +73,12 @@ class MasterPasienController extends Controller
         $pendi = TBLPendidikan::where('NmDidik', $request->Pendidikan)->first();
         $kerja = TBLPekerjaan::where('NmKerja', $request->Pekerjaan)->first();
 
-        $up = StoredProcedures::stpnet_AddMasterPasien_REGxhos($request->all());
+        $pasien = MasterPS::where('Medrec', $request->Medrec)->first();
+        if (!$pasien) {
+            $up = StoredProcedures::stpnet_AddMasterPasien_REGxhos($request->all());
+        } else {
+            $up = true;
+        }
         if($up)
         {
             $pasien = new MasterPS();
