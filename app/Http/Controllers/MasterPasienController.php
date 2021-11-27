@@ -122,6 +122,10 @@ class MasterPasienController extends Controller
                 'PhonePJ' => $request->PhonePJ,
                 'HungunganPJ' => 0,
                 'AlamatPJ' => $request->AlamatPJ,
+                'NoPeserta' => $request->NoPeserta,
+                'kelas_bpjs' => $request->kelas_bpjs,
+                'jenis_peserta' => $request->jenis_peserta,
+                'kategori' => $request->Kategori,
             ];
 
             $option = array(

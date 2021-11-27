@@ -27,6 +27,16 @@
 						@endif
 					</div>
 				</div>
+				<div class="form-group">
+					<!-- Input Nomor Peserta / BPJS -->
+					<label class="col-sm-3 control-label no-padding-right">Nomor Peserta/BPJS</label>
+					<div class="input-group col-sm-9">
+						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+						<input type="text" name="NoPeserta" id="NoPeserta" class="form-control input-sm col-xs-6 col-sm-6" value="{{ @$edit->AskesNo }}" onkeydown="getPesertaBpjs(this, event)"/>
+						<input type="hidden" name="kelas_bpjs" id="kelas_bpjs">
+						<input type="hidden" name="jenis_peserta" id="jenis_peserta">
+					</div>
+				</div>
 				<!-- Nama Pasien -->
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right">*Nama Pasien</label>
@@ -289,14 +299,6 @@
 					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
 						<input type="text" class="form-control input-sm" name="NmKorp" id="NmKorp" value="{{ @$edit->NmKorp }}">
-					</div>
-				</div>
-				<div class="form-group">
-					<!-- Input Nomor Peserta / BPJS -->
-					<label class="col-sm-3 control-label no-padding-right">Nomor Peserta/BPJS</label>
-					<div class="input-group col-sm-9">
-						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-						<input type="text" name="NoPeserta" id="NoPeserta" class="form-control input-sm col-xs-6 col-sm-6" value="{{ @$edit->AskesNo }}" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -590,6 +592,38 @@
 		$('.bd-example-modal-lg').modal('hide');
 	});
 
+	function getPesertaBpjs(el, ev) {
+		if (ev.keyCode == 13) {
+			ev.preventDefault()
+			let loading = $('.modal-loading');
+
+			$.ajax({
+				url:"{{ route('peserta-kartu-bpjs') }}",
+				type:"get",
+				dataType:"json",
+				data:{
+					nopeserta: el.value,
+				},
+				beforeSend(){
+					loading.modal('show');
+				},
+				success:function(response)
+				{
+					let data_peserta = response.data.peserta
+					console.log(data_peserta);
+					$('#NoIden').val(data_peserta.nik)
+					$('#kelas_bpjs').val(data_peserta.hakKelas.kode);
+					$('#jenis_peserta').val(data_peserta.jenisPeserta.keterangan);
+					$('#Firstname').val(data_peserta.nama)
+					$('#Bod').val(data_peserta.tglLahir)
+					$('#Bod').change()
+					$('input[name=KdSex]').filter('[value="'+ data_peserta.sex +'"]').attr('checked', true)
+					loading.modal('hide');
+				}
+			})
+		}
+	}
+
 	function registerApiPasien() {
 		$.ajax({
 			url: "{{ config('app.api_db_url') }}/api/master/pasien",
@@ -701,7 +735,9 @@
 					PekerjaanPJ: $('[name=PekerjaanPJ]').val(),
 					PhonePJ: $('[name=PhonePJ]').val(),
 					HungunganPJ: $('[name=HungunganPJ]').val(),
-					AlamatPJ: $('[name=AlamatPJ]').val()
+					AlamatPJ: $('[name=AlamatPJ]').val(),
+					kelas_bpjs: $('[name=kelas_bpjs]').val(),
+					jenis_peserta: $('[name=jenis_peserta]').val(),
                 },beforeSend(){
 	                loading.modal('show');
 	            },error: function(response){
@@ -719,7 +755,7 @@
                     btn.prop('disabled', false);
                     btn.html(oldText);
 
-					registerApiPasien();
+					// registerApiPasien();
                 }
             });
 		}

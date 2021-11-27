@@ -193,6 +193,67 @@ class RegistrasiBpjsController extends Controller
                     $cetakan = Procedure::stpnet_NomCetakSEP_REGxhos($data->Regno);
                 }
 
+                // $data = [
+                //     'N_Pasien' => $request->Firstname,
+                //     // 'N_Keluarga' => $request->NamaAyah,
+                //     'D_Lahir' => $request->Bod,
+                //     // 'A_Lahir' => $request->Pod,
+                //     // 'A_Rumah' => $request->Alamat,
+                //     // 'I_Telepon' => $request->Phone,
+                //     // 'I_Kelurahan' => $request->I_Kelurahan,
+                //     // 'Kota' => $request->Kota,
+                //     // 'I_Agama' => $request->KdAgama,
+                //     'C_Sex' => $request->KdSex,
+                //     // 'C_WargaNegara' => $request->WargaNegara,
+                //     // 'I_Pendidikan' => $request->KdDidik,
+                //     // 'I_Pekerjaan' => $request->KdMapping,
+                //     // 'C_StatusKawin' => $request->Perkawinan,
+                //     // 'I_GolDarah' => $request->I_GolDarah,
+                //     // 'I_JenisIdentitas' => $request->I_JenisIdentitas,
+                //     // 'I_NoIdentitas' => $request->NoIden,
+                //     // 'Kd_Asuransi' => $request->Kd_Asuransi,
+                //     // 'C_Asuransi' => $request->NoPeserta,
+                //     // 'C_KodePos' => $request->C_KodePos,
+                //     // 'I_SukuBangsa' => $request->Suku,
+                //     // 'I_Jabatan' => $request->I_Jabatan,
+                //     // 'Pemegang_Asuransi' => $request->Pemegang_Asuransi,
+                //     'I_Entry' => 'system',
+                //     'D_Entry' => date('Y-m-d'),
+                //     // 'IsCetak' => $request->IsCetak,
+                //     // 'Foto' => $request->Foto,
+                //     // 'N_Foto' => $request->N_Foto,
+                //     // 'E_Foto' => $request->E_Foto,
+    
+                //     // 'NamaPJ' => $request->NamaPJ,
+                //     // 'PekerjaanPJ' => 0,
+                //     // 'PhonePJ' => $request->PhonePJ,
+                //     // 'HungunganPJ' => 0,
+                //     // 'AlamatPJ' => $request->AlamatPJ,
+                //     'NoPeserta' => $request->NoPeserta,
+                //     'kelas_bpjs' => $request->kelas_bpjs,
+                //     'jenis_peserta' => $request->jenis_peserta,
+                //     'kategori' => $request->Kategori,
+                // ];
+    
+                // $option = array(
+                //     'http' => array(
+                //     'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                //     'method' => "POST",
+                //     'content' => http_build_query($data)
+                //     )
+                // );
+                // $url = config('app.api_db_url') . "/api/master/pasien";
+                // $context = stream_context_create($option);
+                // $result = file_get_contents($url, false, $context);
+                // $parse['result'] = $result;
+    
+                // $pasien = MasterPS::where('Medrec', $request->Medrec)->first();
+                // if ($pasien) {
+                //     $data_pasien = json_decode($result, true);
+                //     $pasien->Medrec = $data_pasien['pasien']['I_RekamMedis'];
+                //     $pasien->save();
+                // }
+
                 $parse = array(
                     'status' => true,
                     'data' => $data,
