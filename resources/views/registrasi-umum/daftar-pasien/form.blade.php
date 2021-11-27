@@ -1289,7 +1289,7 @@
                 // I_Kunjungan: 'RJ-' + regno,
                 // I_RekamMedis: rekammedis.substring(0,6),
                 I_RekamMedis: $('#Medrec').val(),
-                I_Bagian: 2,
+                // I_Bagian: 2,
                 I_Unit: $('#poli').val(),
                 I_UrutMasuk: $('#NomorUrut').val(),
                 D_Masuk: $('#Regdate').val() + ' ' + $('#Regtime').val(),
