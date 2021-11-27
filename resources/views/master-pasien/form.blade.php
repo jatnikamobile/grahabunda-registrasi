@@ -138,7 +138,7 @@
 						<!-- Input Nomor Identitas / KTP -->
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">No Identitas</span>
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-						<input type="text" name="NoIden" id="NoIden" class="form-control input-sm col-xs-6 col-sm-6" value="{{ @$edit->NoIden }}">
+						<input type="text" name="NoIden" id="NoIden" class="form-control input-sm col-xs-6 col-sm-6" value="{{ @$edit->NoIden }}" onkeydown="getPesertaBpjsNIK(this, event)">
 					</div>
 				</div>
 				<div class="form-group">
@@ -612,6 +612,38 @@
 					let data_peserta = response.data.peserta
 					console.log(data_peserta);
 					$('#NoIden').val(data_peserta.nik)
+					$('#kelas_bpjs').val(data_peserta.hakKelas.kode);
+					$('#jenis_peserta').val(data_peserta.jenisPeserta.keterangan);
+					$('#Firstname').val(data_peserta.nama)
+					$('#Bod').val(data_peserta.tglLahir)
+					$('#Bod').change()
+					$('input[name=KdSex]').filter('[value="'+ data_peserta.sex +'"]').attr('checked', true)
+					loading.modal('hide');
+				}
+			})
+		}
+	}
+
+	function getPesertaBpjsNIK(el, ev) {
+		if (ev.keyCode == 13) {
+			ev.preventDefault()
+			let loading = $('.modal-loading');
+
+			$.ajax({
+				url:"{{ route('peserta-nik') }}",
+				type:"get",
+				dataType:"json",
+				data:{
+					nik: el.value,
+				},
+				beforeSend(){
+					loading.modal('show');
+				},
+				success:function(response)
+				{
+					let data_peserta = response.data.peserta
+					console.log(data_peserta);
+					$('#NoPeserta').val(data_peserta.noKartu)
 					$('#kelas_bpjs').val(data_peserta.hakKelas.kode);
 					$('#jenis_peserta').val(data_peserta.jenisPeserta.keterangan);
 					$('#Firstname').val(data_peserta.nama)
