@@ -1301,7 +1301,7 @@
                 N_Diagnosa: $('#Diagnosa').val(),
                 // N_Tindakan: N_Tindakan,
                 // N_Terapi: N_Terapi,
-                I_Kontraktor: 1,
+                I_Kontraktor: $('#Kategori').val(),
                 // N_PenanggungJwb: N_PenanggungJwb,
                 // Telp_PenanggungJwb: Telp_PenanggungJwb,
                 // A_PenanggungJwb: A_PenanggungJwb,

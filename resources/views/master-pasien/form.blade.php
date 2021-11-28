@@ -138,7 +138,7 @@
 						<!-- Input Nomor Identitas / KTP -->
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">No Identitas</span>
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-						<input type="text" name="NoIden" id="NoIden" class="form-control input-sm col-xs-6 col-sm-6" value="{{ @$edit->NoIden }}" onkeydown="getPesertaBpjsNIK(this, event)">
+						<input type="text" name="NoIden" id="NoIden" class="form-control input-sm col-xs-6 col-sm-6" value="{{ @$edit->NoIden }}" onkeydown="getPesertaBpjsNIK(this, event)" required>
 					</div>
 				</div>
 				<div class="form-group">

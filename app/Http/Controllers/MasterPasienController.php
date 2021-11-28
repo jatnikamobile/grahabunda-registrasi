@@ -68,7 +68,6 @@ class MasterPasienController extends Controller
     {
         // Input to mysql simrsau
         $bayi = $request->UmurThn;
-        $url = config('app.api_db_url') . "/api/master/pasien";
         $agama = TBLAgama::where('NmAgama', $request->Agama)->first();
         $pendi = TBLPendidikan::where('NmDidik', $request->Pendidikan)->first();
         $kerja = TBLPekerjaan::where('NmKerja', $request->Pekerjaan)->first();
@@ -167,6 +166,7 @@ class MasterPasienController extends Controller
                 'content' => http_build_query($data)
                 )
             );
+            $url = config('app.api_db_url') . "/api/master/pasien";
             $context = stream_context_create($option);
             $result = file_get_contents($url, false, $context);
             $parse['result'] = $result;
