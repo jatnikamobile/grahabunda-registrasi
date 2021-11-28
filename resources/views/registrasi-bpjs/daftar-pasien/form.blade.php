@@ -2959,7 +2959,8 @@
                     askesno: $('#kat_NoPeserta').val(),
                     groupunit: $('#GroupUnit').val(),
                     nmunit: $('#Unit').val(),
-                    Kategori: $('#kat_Kategori').val()
+                    Kategori: $('#kat_Kategori').val(),
+                    NoIden: $('#NoIden').val()
                 }
             });
             alert('Berhasil diupdate');

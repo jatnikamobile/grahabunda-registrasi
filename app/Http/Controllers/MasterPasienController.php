@@ -77,6 +77,49 @@ class MasterPasienController extends Controller
         if (!$pasien) {
             $up = StoredProcedures::stpnet_AddMasterPasien_REGxhos($request->all());
         } else {
+            $pasien->Medrec = $request->Medrec ?: $pasien->Medrec;
+            $pasien->Firstname = $request->Firstname ?: $pasien->Firstname;
+            $pasien->Pod = $request->Pod ?: $pasien->Pod;
+            $pasien->Bod = $request->Bod ?: $pasien->Bod;
+            $pasien->UmurThn = $request->UmurThn ?: $pasien->UmurThn;
+            $pasien->UmurBln = $request->UmurBln ?: $pasien->UmurBln;
+            $pasien->UmurHr = $request->UmurHari ?: $pasien->UmurHr;
+            $pasien->GolDarah = $request->GolDarah ?: $pasien->GolDarah;
+            $pasien->RHDarah = $request->RHDarah ?: $pasien->RHDarah;
+            $pasien->WargaNegara = $request->WargaNegara ?: $pasien->WargaNegara;
+            $pasien->NoIden = $request->NoIden ?: $pasien->NoIden;
+            $pasien->Perkawinan = $request->Perkawinan ?: $pasien->Perkawinan;
+            $pasien->Agama = $request->Agama ?: $pasien->Agama;
+            $pasien->Pendidikan = $request->Pendidikan ?: $pasien->Pendidikan;
+            $pasien->NamaAyah = $request->WargaNegara ?: $pasien->NamaAyah;
+            $pasien->NamaIbu = $request->NoIden ?: $pasien->NamaIbu;
+            $pasien->AskesNo = $request->NoPeserta ?: $pasien->AskesNo;
+            $pasien->Address = $request->Agama ?: $pasien->Address;
+            $pasien->City = $request->Pendidikan ?: $pasien->City;
+            $pasien->Propinsi = $request->NmProvinsi ?: $pasien->Propinsi;
+            $pasien->Kecamatan = $request->NmKecamatan ?: $pasien->Kecamatan;
+            $pasien->Kelurahan = $request->NmKelurahan ?: $pasien->Kelurahan;
+            $pasien->KdPos = $request->KdPos ?: $pasien->KdPos;
+            $pasien->Phone = $request->Phone ?: $pasien->Phone;
+            $pasien->Kategori = $request->Kategori ?: $pasien->Kategori;
+            $pasien->NmUnit = $request->Unit ?: $pasien->NmUnit;
+            $pasien->NrpNip = $request->Nrp ?: $pasien->NrpNip;
+            $pasien->NmKesatuan = $request->NmKesatuan ?: $pasien->NmKesatuan;
+            $pasien->NmGol = $request->NmGol ?: $pasien->NmGol;
+            $pasien->NmPangkat = $request->NmPangkat ?: $pasien->NmPangkat;
+            $pasien->Pekerjaan = $request->Pekerjaan ?: $pasien->Pekerjaan;
+            $pasien->NmKorp = $request->NmKorp ?: $pasien->NmKorp;
+            $pasien->NamaPJ = $request->NamaPJ ?: $pasien->NamaPJ;
+            $pasien->HubunganPJ = $request->HungunganPJ ?: $pasien->HubunganPJ;
+            $pasien->PekerjaanPJ = $request->PekerjaanPJ ?: $pasien->PekerjaanPJ;
+            $pasien->PhonePJ = $request->PhonePJ ?: $pasien->PhonePJ;
+            $pasien->AlamatPJ = $request->AlamatPJ ?: $pasien->AlamatPJ;
+            $pasien->KdKelurahan = $request->Kelurahan ?: $pasien->KdKelurahan;
+            $pasien->NmSuku = $request->Suku ?: $pasien->NmSuku;
+            $pasien->KdSex = $request->KdSex ?: $pasien->KdSex;
+            $pasien->Keyakinan = $request->KdNilai ?: $pasien->Keyakinan;
+            $pasien->save();
+
             $up = true;
         }
         if($up)
@@ -98,29 +141,13 @@ class MasterPasienController extends Controller
                 'A_Lahir' => $request->Pod,
                 'A_Rumah' => $request->Alamat,
                 'I_Telepon' => $request->Phone,
-                // 'I_Kelurahan' => $request->I_Kelurahan,
-                // 'Kota' => $request->Kota,
                 'I_Agama' => $request->KdAgama,
                 'C_Sex' => $request->KdSex,
                 'C_WargaNegara' => $request->WargaNegara,
-                // 'I_Pendidikan' => $request->KdDidik,
-                // 'I_Pekerjaan' => $request->KdMapping,
                 'C_StatusKawin' => $request->Perkawinan,
-                // 'I_GolDarah' => $request->I_GolDarah,
-                // 'I_JenisIdentitas' => $request->I_JenisIdentitas,
                 'I_NoIdentitas' => $request->NoIden,
-                // 'Kd_Asuransi' => $request->Kd_Asuransi,
-                // 'C_Asuransi' => $request->NoPeserta,
-                // 'C_KodePos' => $request->C_KodePos,
-                // 'I_SukuBangsa' => $request->Suku,
-                // 'I_Jabatan' => $request->I_Jabatan,
-                // 'Pemegang_Asuransi' => $request->Pemegang_Asuransi,
                 'I_Entry' => 'system',
                 'D_Entry' => date('Y-m-d'),
-                // 'IsCetak' => $request->IsCetak,
-                // 'Foto' => $request->Foto,
-                // 'N_Foto' => $request->N_Foto,
-                // 'E_Foto' => $request->E_Foto,
 
                 'NamaPJ' => $request->NamaPJ,
                 'PekerjaanPJ' => 0,
@@ -150,7 +177,6 @@ class MasterPasienController extends Controller
                 $pasien->Medrec = $data_pasien['pasien']['I_RekamMedis'];
                 $pasien->save();
             }
-
 
             return response()->json($parse);
         }else{

@@ -364,6 +364,32 @@ class RegistrasiBpjsController extends Controller
     public function update_kategori(Request $request)
     {
         $up = Procedure::stpnet_UpdateKategori_REGxhos($request->all());
+
+        $data = [
+            'I_RekamMedis' => $request->Medrec,
+            'NoPeserta' => $request->askesno,
+            'kategori' => $request->Kategori,
+            'I_NoIdentitas' => $request->NoIden
+        ];
+
+        $option = array(
+            'http' => array(
+            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method' => "POST",
+            'content' => http_build_query($data)
+            )
+        );
+        $url = config('app.api_db_url') . "/api/master/pasien";
+        $context = stream_context_create($option);
+        $result = file_get_contents($url, false, $context);
+        $parse['result'] = $result;
+
+        $pasien = MasterPS::where('Medrec', $request->Medrec)->first();
+        if ($pasien) {
+            $data_pasien = json_decode($result, true);
+            $pasien->Medrec = $data_pasien['pasien']['I_RekamMedis'];
+            $pasien->save();
+        }
     }
 
     // MUTASI PASIEN BPJS
