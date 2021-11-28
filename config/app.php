@@ -52,8 +52,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
-    'api_db_url' => env('API_DB_URL', 'http://localhost:8000'),
+    'url' => env('APP_URL', 'http://192.168.0.3:8080'),
+    'api_db_url' => env('API_DB_URL', 'http://192.168.0.3:8081'),
 
     /*
     |--------------------------------------------------------------------------
