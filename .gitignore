@@ -20,3 +20,7 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+
+vendor/
+
+data
