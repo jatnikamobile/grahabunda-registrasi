@@ -50,6 +50,15 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
         ],
+        'sqlsrv_kepri' => [
+            'driver' => 'sqlsrv',
+            'host' => env('MAIN_KEPRI_HOST', 'localhost'),
+            'database' => env('MAIN_KEPRI_DATABASE', 'forge'),
+            'username' => env('MAIN_KEPRI_USERNAME', 'forge'),
+            'password' => env('MAIN_KEPRI_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),

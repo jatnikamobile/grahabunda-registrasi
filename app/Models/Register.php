@@ -21,7 +21,7 @@ class Register extends Model
 		$this->timestamps = false;
 		// 
 		$this->fillable = [
-			'Regno', 'Medrec', 'Firstname', 'Sex', 'Kunjungan'];
+			'Regno', 'Medrec', 'Firstname', 'Sex', 'Kunjungan', 'rujukan_dari'];
 		// 
 		$this->hidden = [];
 	}
@@ -74,7 +74,7 @@ class Register extends Model
 									   Register.KdCbayar, TBLJaminan.NMJaminan, Register.AtasNama, MasterPS.Address, Register.KdBangsal,
 									   Register.KdPerusahaan, Register.NoPeserta, Register.Regdate, Register.KdDoc, Register.Keterangan,
 									   Register.StatPeserta, Register.NmRefPeserta, Register.KdRefPeserta, Register.NoSep, Register.NotifSEP,
-									   FtDokter.NmDoc, Register.Kategori, TblKategoriPsn.NmKategori, Register.TglRujuk, Register.ValidUser,
+									   FtDokter.NmDoc, Register.Kategori, TblKategoriPsn.NmKategori, Register.TglRujuk, Register.ValidUser, Register.rujukan_dari,
 									   TBLKelas.NMKelas, Register.KdKelas, Register.Kunjungan, fKeyakinan.phcek, fKeyakinan.phnote, fKeyakinan.ptcek, fKeyakinan.ptnote, fKeyakinan.pmcek, fKeyakinan.pmnote, fKeyakinan.ppcek, fKeyakinan.ppnote, fKeyakinan.lain"))
 					->join("TblKategoriPsn", "Register.Kategori", "=", "TblKategoriPsn.KdKategori")
 					->leftJoin("fKeyakinan", "Register.Medrec", "=", "fKeyakinan.medrec")

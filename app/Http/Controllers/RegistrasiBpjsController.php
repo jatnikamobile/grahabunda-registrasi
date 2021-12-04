@@ -19,6 +19,7 @@ use App\Models\fPSEP01;
 use App\Models\SuratControl;
 use App\Models\StoredProcedures;
 use App\Models\Bridging_bpjs;
+use App\Models\Kepri\Master\TmKelompokRujukan;
 use App\Models\SuratKonsul;
 use App\Models\Radiologi;
 use App\Models\Laboratorium;
@@ -72,6 +73,7 @@ class RegistrasiBpjsController extends Controller
         $parse['diagnosa'] = [];
         $parse['prov'] = [];
         $parse['dokter'] = [];
+        $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
         // $regno = $request->input("Regno");
         if ($regno !== null){
             $register = new Register();
@@ -183,6 +185,14 @@ class RegistrasiBpjsController extends Controller
                 if (empty($data)) {
                     $up = $register->backup_registrasi_pasien($request);
                     $data = $register->get_register($medrec,$regdate,$kdpoli);
+                }
+
+                if ($data) {
+                    $register = Register::where('Regno', $data->Regno)->first();
+                    if ($register) {
+                        $register->rujukan_dari = $request->rujukan_dari;
+                        $register->save();
+                    }
                 }
 
                 if($request->input("Regno") == ''){
