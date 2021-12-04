@@ -12,6 +12,7 @@ use App\Models\Register;
 use App\Models\Fppri;
 use App\Models\TempatTidur;
 use App\Models\FtDokter;
+use App\Models\Kepri\Master\TmKelompokRujukan;
 use App\Models\POLItpp;
 use App\Models\StoredProcedures;
 
@@ -58,6 +59,7 @@ class RegistrasiUmumController extends Controller
         $parse['poli'] = [];
         $parse['dokter'] = [];
         $parse['asal_pasien'] = [];
+        $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
         // $regno = $request->input('Regno');
         if ($Regno !== null){
             $pasien = new Register();
@@ -116,6 +118,14 @@ class RegistrasiUmumController extends Controller
                 //         //throw $th;
                 //     }
                 // }
+
+                if ($data) {
+                    $register = Register::where('Regno', $data->Regno)->first();
+                    if ($register) {
+                        $register->rujukan_dari = $request->rujukan_dari;
+                        $register->save();
+                    }
+                }
 
                 $parse = array(
                     'status' => true,
