@@ -1134,6 +1134,11 @@
                             },
                             success:function(response)
                             {
+                                pesan = response.message + "\n" +
+                                        "Pasien " + response.data.Firstname + "\n" +
+                                        "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
+                                        "Antrian aplikasi lama " + response.result;
+                                alert(pesan);
                                 registerApiKunjungan(response.data.Regno);
                                 console.log(response);
                                 $('#Regno').val(response.data.Regno);
@@ -1147,11 +1152,6 @@
                                 }else{
                                     $("#printSlip").css("display","none");
                                 }
-                                pesan = response.message + "\n" +
-                                        "Pasien " + response.data.Firstname + "\n" +
-                                        "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
-                                        "Antrian aplikasi lama " + response.result;
-                                alert(pesan);
                                 loading.modal('hide');
                                 btn.prop('disabled', false);
                                 btn.html(oldText);
@@ -1215,6 +1215,11 @@
                 },
                 success:function(response)
                 {
+                    pesan = response.message + "\n" +
+                        "Pasien " + response.data.Firstname + "\n" +
+                        "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
+                        "Antrian aplikasi lama " + response.result;
+                    loading.modal('hide');
                     registerApiKunjungan(response.data.Regno);
                     console.log(response);
                     $('#Regno').val(response.data.Regno);
@@ -1227,11 +1232,6 @@
                         push_print(response.data.Regno);
                     }
                     $('#NoUrut').val(response.data.NomorUrut);
-                    pesan = response.message + "\n" +
-                        "Pasien " + response.data.Firstname + "\n" +
-                        "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
-                        "Antrian aplikasi lama " + response.result;
-                    loading.modal('hide');
                     alert(pesan);
                     btn.prop('disabled', false);
                     btn.html(oldText);

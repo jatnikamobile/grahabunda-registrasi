@@ -414,6 +414,22 @@ class Register extends Model
 
 	public static function listTracerHarian($tanggal, $poli = NULL, $last_regno = NULL, $last_time = NULL)
 	{
+		// $raw_sql = "
+		// 	SELECT
+		// 		r.Regno, r.Medrec, r.NomorUrut, r.Firstname, r.KdPoli, p.NmPoli, t.DiPrint, r.Perjanjian,
+		// 		CONVERT(VARCHAR, r.Regtime, 8) AS Regtime
+		// 	FROM Register AS r
+		// 	LEFT JOIN POLItpp AS p ON r.KdPoli=p.KdPoli
+		// 	LEFT JOIN fTracer AS t ON r.Regno=t.Regno
+		// 	JOIN TblKategoriPsn AS k ON r.Kategori=k.KdKategori
+		// 	WHERE
+		// 		r.Deleted IS NULL
+		// 		-- AND r.Perjanjian = ''
+		// 		AND COALESCE(r.Perjanjian, '') = ''
+		// 		AND r.Kunjungan='Lama'
+		// 		AND r.StatusReg NOT IN (3, 4)
+		// 		AND CAST(r.Regdate AS DATE) = :tanggal
+		// ";
 		$raw_sql = "
 			SELECT
 				r.Regno, r.Medrec, r.NomorUrut, r.Firstname, r.KdPoli, p.NmPoli, t.DiPrint, r.Perjanjian,
@@ -426,7 +442,6 @@ class Register extends Model
 				r.Deleted IS NULL
 				-- AND r.Perjanjian = ''
 				AND COALESCE(r.Perjanjian, '') = ''
-				AND r.Kunjungan='Lama'
 				AND r.StatusReg NOT IN (3, 4)
 				AND CAST(r.Regdate AS DATE) = :tanggal
 		";
@@ -704,7 +719,7 @@ class Register extends Model
 
 	public function print_slip($regno)
 	{
-		$data = $this->select(DB::connection('main')->raw("Register.Regno, Register.Medrec, Register.Firstname, Register.Regdate, Register.Regtime, Register.Kunjungan, POLItpp.NMPoli, FtDokter.NmDoc, TBLTpengobatan.NMTuju, TBLcarabayar.NMCbayar, Register.NomorUrut, Register.ValidUpdate, Register.Prn"))
+		$data = $this->select(DB::connection('main')->raw("Register.Regno, Register.Medrec, Register.Firstname, Register.Regdate, Register.Regtime, Register.Kunjungan, POLItpp.NMPoli, FtDokter.NmDoc, TBLTpengobatan.NMTuju, TBLcarabayar.NMCbayar, Register.NomorUrut, Register.ValidUpdate, Register.Prn, TblKategoriPsn.NmKategori"))
 			->join("TblKategoriPsn", "Register.Kategori", "=", "TblKategoriPsn.KdKategori")
 			->leftJoin("TBLcarabayar", "Register.KdCbayar", "=" , "TBLcarabayar.KDCbayar")
 			->leftJoin("TBLTpengobatan", "Register.KdTuju", "=", "TBLTpengobatan.KDTuju")

@@ -109,7 +109,7 @@
                                     <td>{{ date('d/m/Y',strtotime($l->Regdate)) }}</td>
                                     <td>{{ $l->Sex }}</td>
                                     <td>{{ $l->Kunjungan }}</td>
-                                    <td>{{ $l->NMCbayar }}</td>
+                                    <td>{{ $l->NmKategori }}</td>
                                     <td>{{ $l->NMTuju }}</td>
                                     <td>{{ $l->NMPoli }}</td>
                                     <td>{{ $l->NmDoc }}</td>

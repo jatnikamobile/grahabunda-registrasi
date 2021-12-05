@@ -67,7 +67,7 @@
             <tr>
                 <td>Cara Bayar</td>
                 <td>:</td>
-                <td>{{ $list->NMCbayar }}</td>
+                <td>{{ $list->NmKategori }}</td>
             </tr>
             <tr>
                 <td>Kunjungan</td>

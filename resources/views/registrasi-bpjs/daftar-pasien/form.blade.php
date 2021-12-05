@@ -2696,16 +2696,16 @@
                                                 // },
                                                 success:function(response)
                                                 {
+                                                    pesan = response.message + "\n" +
+                                                            "Pasien " + response.data.Firstname + "\n" +
+                                                            "Antrian aplikasi baru " + response.data.NomorUrut + "\n" ;
+                                                    alert(pesan);
                                                     registerApiRujukan(response.data.Regno);
                                                     console.log(response);
                                                     loading.modal('hide');
                                                     $('#Regno').val(response.data.Regno);
                                                     $('#NomorUrut').val(response.data.NomorUrut);
                                                     // alert('sedang dalam perbaikan 30mnt/ selain fisio terapi pasien masuk');
-                                                    pesan = response.message + "\n" +
-                                                            "Pasien " + response.data.Firstname + "\n" +
-                                                            "Antrian aplikasi baru " + response.data.NomorUrut + "\n" ;
-                                                    alert(pesan);
                                                     btn.prop('disabled', false);
                                                     $("#submit").hide();
                                                     btn.html(oldText);
@@ -2808,17 +2808,17 @@
                                         },
                                         success:function(response)
                                         {
+                                            pesan = response.message + "\n" +
+                                                    "Pasien " + response.data.Firstname + "\n" +
+                                                    "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
+                                                    "Antrian aplikasi lama " + response.result;
+                                            alert(pesan);
                                             registerApiRujukan(response.data.Regno);
                                             console.log(response);
                                             loading.modal('hide');
                                             $('#Regno').val(response.data.Regno);
                                             $('#NomorUrut').val(response.data.NomorUrut);
                                             
-                                            pesan = response.message + "\n" +
-                                                    "Pasien " + response.data.Firstname + "\n" +
-                                                    "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
-                                                    "Antrian aplikasi lama " + response.result;
-                                            alert(pesan);
                                             $("#submit").hide();
                                             btn.prop('disabled', false);
                                             btn.html(oldText);
