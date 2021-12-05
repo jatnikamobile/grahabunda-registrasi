@@ -2575,7 +2575,7 @@
         let btn = $('#submit');
         let oldText = btn.html();
         btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
-        btn.prop('disabled', true);
+        // btn.prop('disabled', true);
 
         let loading = $('.modal-loading');
         loading.modal('show');
