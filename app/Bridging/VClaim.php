@@ -619,6 +619,30 @@ class VClaim
 		return $response ? json_decode($response) : null;
 	}
 
+	public static function insert_rencana_control($data)
+	{
+		$url = config('vclaim.url').'RencanaKontrol/insert';
+
+		$response = self::send_curl($url, 'POST', $data);
+		return $response ? json_decode($response) : null;
+	}
+
+	public static function update_rencana_control($data)
+	{
+		$url = config('vclaim.url').'RencanaKontrol/Update';
+
+		$response = self::send_curl($url, 'PUT', $data);
+		return $response ? json_decode($response) : null;
+	}
+
+	public static function get_rencana_control($no_surat_kontrol)
+	{
+		$url = config('vclaim.url').'RencanaKontrol/noSuratKontrol/' . $no_surat_kontrol;
+
+		$response = self::send_curl($url, 'GET');
+		return $response ? json_decode($response, true) : null;
+	}
+
 	private static function create_curl_header() {
 
 		$cons_id = config('vclaim.cons_id');

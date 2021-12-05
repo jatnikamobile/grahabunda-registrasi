@@ -23,9 +23,10 @@ use App\Models\Kepri\Master\TmKelompokRujukan;
 use App\Models\SuratKonsul;
 use App\Models\Radiologi;
 use App\Models\Laboratorium;
-
+use App\Models\TblKategoriPsn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RegistrasiBpjsController extends Controller
 {
@@ -107,7 +108,36 @@ class RegistrasiBpjsController extends Controller
         $nosurat = $request->nosurat;
         $surat = new SuratControl();
         $data = $surat->find_nosurat($nosurat);
-        return $data;
+        
+        $bpjs_data = VClaim::get_rencana_control($nosurat);
+
+        Log::info("data BPJS Surat Kontrol: " . json_encode($bpjs_data));
+
+        if ($bpjs_data['metaData']['code'] == '200') {
+            $no_peserta = isset($bpjs_data['response']['sep']['noKartu']) ? $bpjs_data['response']['sep']['noKartu'] : null;
+    
+            $register = $no_peserta ? Register::where('NoPeserta', $no_peserta)->orderBy('Regno', 'desc')->first() : null;
+            $master_ps = $register ? MasterPS::where('Medrec', $register->Medrec)->first() : null;
+            $kategori = $register ? TblKategoriPsn::where('KdKategori', $register->Kategori)->first() : null;
+            $dokter = $register ? FtDokter::where('KdDoc', $register->KdDoc)->first() : null;
+            $poli = $register ? FtDokter::where('KdPoli', $register->KdPoli)->first() : null;
+    
+            $data = [
+                'data' => $data,
+                'bpjs_data' => $bpjs_data,
+                'register' => $register,
+                'master_ps' => $master_ps,
+                'kategori' => $kategori,
+                'dokter' => $dokter,
+                'poli' => $poli,
+            ];
+
+            Log::info("data BPJS Surat Kontrol: " . json_encode($data));
+    
+            return response()->json(['status' => 'success', 'data' => $data]);
+        } else {
+            return response()->json(['status' => 'failed', 'message' => $bpjs_data['metaData']['message']]);
+        }
     }
 
     public function find_konsul(Request $request)

@@ -2338,61 +2338,72 @@
                 nosurat: $('#NoSuratKontrol').val(),
             },
             success:function(response){
-                console.log(response);
-                $('#Medrec').val(response.Medrec);
-                $('#Firstname').val(response.Firstname.toUpperCase());
-                $('#Notelp').val(response.Phone);
-                $('#Bod').val(response.Bod.substring(0,10));
-                $('#TglDaftar').val(response.TglDaftar.substring(0,10));
-                $('#NoIden').val(response.NoIden);
-                $('#Sex').val(response.Sex);
-                $('#UmurHari').val(response.UmurHr);
-                $('#UmurBln').val(response.UmurBln);
-                $('#UmurThn').val(response.UmurThn);
-                $('#NoRujuk').val(response.NoRujukan);
-                $('#RegRujuk').val(response.TanggalRujukan.substring(0,10));
+                if (response.status == 'success') {
+                    var data = response.data;
+                    var bpjs_data = response.bpjs_data.response;
+                    var register_data = response.register;
+                    var master_ps_data = response.master_ps;
+                    var kategori_data = response.kategori;
+                    var dokter_data = response.dokter;
+                    var poli_data = response.poli;
 
-                var $kategori = $("<option selected></option>").val(response.Kategori).text(response.NmKategori);
-                $('#Kategori').append($kategori).trigger('change');
+                    $('#Medrec').val(master_ps_data.Medrec);
+                    $('#Firstname').val(master_ps_data.Firstname.toUpperCase());
+                    $('#Notelp').val(master_ps_data.Phone);
+                    $('#Bod').val(master_ps_data.Bod.substring(0,10));
+                    $('#TglDaftar').val(master_ps_data.TglDaftar.substring(0,10));
+                    $('#NoIden').val(master_ps_data.NoIden);
+                    $('#Sex').val(master_ps_data.Sex);
+                    $('#UmurHari').val(master_ps_data.UmurHr);
+                    $('#UmurBln').val(master_ps_data.UmurBln);
+                    $('#UmurThn').val(master_ps_data.UmurThn);
+                    $('#NoRujuk').val(bpjs_data.NoRujukan.provPerujuk.noRujukan);
+                    $('#RegRujuk').val(bpjs_data.NoRujukan.provPerujuk.tglRujukan.substring(0,10));
 
-                var $dokter = $("<option selected></option>").val(response.KdDoc).text(response.NmDoc);
-                $('#Dokter').append($dokter).trigger('change');
+                    var $kategori = $("<option selected></option>").val(kategori_data.KdKategori).text(kategori_data.NmKategori);
+                    $('#Kategori').append($kategori).trigger('change');
 
-                var $poli = $("<option selected></option>").val(response.KdPoli).text(response.NMPoli);
-                $('#poli').append($poli).trigger('change');
-                // setKodePoli(response.KdPoli, response.KdPoliBpjs);
+                    var $dokter = $("<option selected></option>").val(dokter_data.KdDoc).text(dokter_data.NmDoc);
+                    $('#Dokter').append($dokter).trigger('change');
 
-                if (response.KdSex != null) {
-                    $("input[name=KdSex][value=" + response.KdSex.toUpperCase() + "]").attr('checked', 'checked');
+                    var $poli = $("<option selected></option>").val(poli_data.KdPoli).text(poli_data.NMPoli);
+                    $('#poli').append($poli).trigger('change');
+                    // setKodePoli(response.KdPoli, response.KdPoliBpjs);
+
+                    if (master_ps_data.KdSex != null) {
+                        $("input[name=KdSex][value=" + master_ps_data.KdSex.toUpperCase() + "]").attr('checked', 'checked');
+                    }
+
+                    $('#Kunjungan').val('Lama');
+
+                    // Masukan buat update kategori
+                    $('#kat_NoRM').val(master_ps_data.Medrec);
+                    $('#kat_Firstname').val(master_ps_data.Firstname);
+                    $('#kat_NoPeserta').val(master_ps_data.AskesNo);
+                    var $ka_kategori = $("<option selected></option>").val(kategori_data.Kategori).text(kategori_data.NmKategori);
+                    $('#kat_Kategori').append($ka_kategori).trigger('change');
+
+                    // var $groupUnit = $("<option selected></option>").val(register_data.GroupUnit).text(register_data.GroupUnit);
+                    // $('#GroupUnit').append($groupUnit).trigger('change');
+
+                    // var $unit = $("<option selected></option>").val(response.NmUnit).text(response.NmUnit);
+                    // $('#Unit').append($unit).trigger('change');
+
+                    // Tambah Keyakinan
+                    $('#ke_NoRM').val(master_ps_data.Medrec);
+                    $('#ke_Firstname').val(master_ps_data.Firstname);
+                    // $('input[name=pantang][value=' + response.phcek + ']').attr('checked', 'checked');
+                    // $('#pantangNote').val(response.phnote);
+                    // $('input[name=tindakan][value=' + response.ptcek + ']').attr('checked', 'checked');
+                    // $('#tindakanNote').val(response.ptnote);
+                    // $('input[name=makan][value=' + response.pmcek + ']').attr('checked', 'checked');
+                    // $('#makanNote').val(response.pmnote);
+                    // $('input[name=pantangPerawatan][value=' + response.ppcek + ']').attr('checked', 'checked');
+                    // $('#pantangPerawatanNote').val(response.ppnote);
+                    // $('#lain').val(response.lain);
+                } else {
+                    alert(response.message);
                 }
-
-                $('#Kunjungan').val('Lama');
-
-                // Masukan buat update kategori
-                $('#kat_NoRM').val(response.Medrec);
-                $('#kat_Firstname').val(response.Firstname);
-                $('#kat_NoPeserta').val(response.AskesNo);
-                var $ka_kategori = $("<option selected></option>").val(response.Kategori).text(response.NmKategori);
-                $('#kat_Kategori').append($ka_kategori).trigger('change');
-
-                var $groupUnit = $("<option selected></option>").val(response.GroupUnit).text(response.GroupUnit);
-                $('#GroupUnit').append($groupUnit).trigger('change');
-
-                var $unit = $("<option selected></option>").val(response.NmUnit).text(response.NmUnit);
-                $('#Unit').append($unit).trigger('change');
-
-                // Tambah Keyakinan
-                $('#ke_NoRM').val(response.Medrec);
-                $('#ke_Firstname').val(response.Firstname);
-                $('input[name=pantang][value=' + response.phcek + ']').attr('checked', 'checked');
-                $('#pantangNote').val(response.phnote);
-                $('input[name=tindakan][value=' + response.ptcek + ']').attr('checked', 'checked');
-                $('#tindakanNote').val(response.ptnote);
-                $('input[name=makan][value=' + response.pmcek + ']').attr('checked', 'checked');
-                $('#makanNote').val(response.pmnote);
-                $('input[name=pantangPerawatan][value=' + response.ppcek + ']').attr('checked', 'checked');
-                $('#pantangPerawatanNote').val(response.ppnote);
-                $('#lain').val(response.lain);
                 loading.modal('hide');
             }
         })
