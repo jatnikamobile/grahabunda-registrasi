@@ -1043,7 +1043,7 @@
         let loading = $('.modal-loading');
         let btn = $('#submit');
         let oldText = btn.html();
-        btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
+        // btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
         // btn.prop('disabled', true);
         // if ($('#Medrec').val() == '') {
         //     $('#Medrec').focus();
