@@ -1795,6 +1795,7 @@
 
     $('#search_no_peserta').submit(function(ev) {
         ev.preventDefault();
+        $('#rekammedis-validation').addClass('hide');
         let loading = $('.modal-loading');
         loading.modal('show');
         var getdata = $('input[name=StatusRujuk]:checked').val();
@@ -1814,17 +1815,19 @@
                     {
                         console.log(response);
                         if(response.data){
-                            if (response.data.peserta.mr.noMR == null) {
+                            let medrec = response.data.peserta.mr.noMR == undefined ? (response.pasien.Medrec == undefined ? null : response.pasien.Medrec) : response.data.peserta.mr.noMR
+
+                            if (medrec == null) {
                                 alert("No Rekam Medik tidak ada!");
                             } else {
-                                $('#Medrec').val(response.data.peserta.mr.noMR);
+                                $('#Medrec').val(medrec);
                                 $('#Kunjungan').val('Lama');
                                 $('#Notelp').val(response.data.peserta.mr.noTelepon);
-                                $('#kat_NoRM').val(response.data.peserta.mr.noMR);
+                                $('#kat_NoRM').val(medrec);
                                 $('#kat_Firstname').val(response.data.peserta.nama);
-                                get_kategori_pasien_master(response.data.peserta.mr.noMR);
+                                get_kategori_pasien_master(medrec);
                             }
-                            // alert(response.data.peserta.mr.noMR);
+                            // alert(medrec);
 
                             $('#Firstname').val(response.data.peserta.nama);
                             $('#NoIden').val(response.data.peserta.nik);
@@ -2076,6 +2079,7 @@
 
     $('#search_nik').submit(function(ev) {
         ev.preventDefault();
+        $('#rekammedis-validation').addClass('hide');
         let loading = $('.modal-loading');
         loading.modal('show');
         if ($('#NoIden').val().length == 16) {
@@ -2093,17 +2097,18 @@
                 {
                     console.log(response);
                     if(response.data){
+                        let medrec = response.data.peserta.mr.noMR == undefined ? (response.pasien.Medrec == undefined ? null : response.pasien.Medrec) : response.data.peserta.mr.noMR
 
-                        if (response.data.peserta.mr.noMR == null) {
+                        if (medrec == null) {
                             alert("No Rekam Medik tidak ada!");
                         }else{
-                            $('#Medrec').val(response.data.peserta.mr.noMR);
+                            $('#Medrec').val(medrec);
                             // $('#btnCari').click();
                             $('#Kunjungan').val('Lama');
                             $('#Notelp').val(response.data.peserta.mr.noTelepon);
-                            $('#kat_NoRM').val(response.data.peserta.mr.noMR);
+                            $('#kat_NoRM').val(medrec);
                             $('#kat_Firstname').val(response.data.peserta.nama);
-                            get_kategori_pasien_master(response.data.peserta.mr.noMR);
+                            get_kategori_pasien_master(medrec);
                         }
 
                         $('#Firstname').val(response.data.peserta.nama);

@@ -252,9 +252,11 @@ class MasterController extends Controller{
 	{
 		$bpjs = new Bridging_bpjs();
 		$data = $bpjs->get_peserta_kartu_bpjs($request->nopeserta);
+		$pasien = $data ? MasterPS::where('NoIden', $data->peserta->nik)->first() : null;
 		return response()->json([
 			'status' => true,
-			'data' => $data
+			'data' => $data,
+			'pasien' => $pasien
 		]);
 	}
 
@@ -262,9 +264,11 @@ class MasterController extends Controller{
 	{
 		$bpjs = new Bridging_bpjs();
 		$data = $bpjs->get_peserta_nik($request->nik);
+		$pasien = $data ? MasterPS::where('NoIden', $data->peserta->nik)->first() : null;
 		return response()->json([
 			'status' => true,
-			'data' => $data
+			'data' => $data,
+			'pasien' => $pasien
 		]);
 	}
 
