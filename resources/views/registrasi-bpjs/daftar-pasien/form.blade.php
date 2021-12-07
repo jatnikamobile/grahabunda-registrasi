@@ -93,10 +93,13 @@
                     <label class="col-sm-3 control-label no-padding-right"> No Rekam Medis</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:transparent;">:</span>
-                        <input type="text" data-inputmask="'mask': '99-99-99'" name="Medrec" id="Medrec" value="{{ @$edit->Medrec }}"/>
+                        <input type="text" data-inputmask="'mask': '99-99-99'" name="Medrec" id="Medrec" value="{{ @$edit->Medrec }}" onkeyup="$('#rekammedis-validation').addClass('hide')"/>
                         <button type="submit" class="btn btn-info btn-sm" id="btnCari" style="margin-left: 10px;">
                             <i class="ace-icon fa fa-search"></i>Cari
                         </button>
+                        <div class="invalid-feedback text-danger hide" id="rekammedis-validation">
+                            No Rekam Medis Kosong!
+                        </div>
                     </div>
                 </div>
                 </form>
@@ -147,6 +150,9 @@
                                 <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : '-= Kunjungan =-'}}>{{ $kr->N_KelompokRujukan }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback text-danger hide" id="rujukan-dari-validation">
+                            Pilih asal rujukan pasien!
+                        </div>
                     </div>
                 </div>
                 <!-- No Rujukan -->
@@ -228,13 +234,16 @@
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
                         <div class="radio">
                             <label>
-                                <input name="KdSex" type="radio" class="ace" value="L"  {{ isset($edit->KdSex) && strtolower(strtoupper($edit->KdSex)) == 'l' ? 'checked' : '' }}/>
+                                <input name="KdSex" type="radio" class="ace" value="L"  {{ isset($edit->KdSex) && strtolower(strtoupper($edit->KdSex)) == 'l' ? 'checked' : '' }} onchange="$('#kdsex-validation').addClass('hide')"/>
                                 <span class="lbl">&nbsp; Laki - Laki</span>
                             </label>
                             <label>
-                                <input name="KdSex" type="radio" class="ace" value="P"  {{ isset($edit->KdSex) && strtolower(strtoupper($edit->KdSex)) == 'p' ? 'checked' : '' }}/>
+                                <input name="KdSex" type="radio" class="ace" value="P"  {{ isset($edit->KdSex) && strtolower(strtoupper($edit->KdSex)) == 'p' ? 'checked' : '' }} onchange="$('#kdsex-validation').addClass('hide')"/>
                                 <span class="lbl">&nbsp; Perempuan</span>
                             </label>
+                        </div>
+                        <div class="invalid-feedback text-danger hide" id="kdsex-validation">
+                            Pilih jenis kelamin Pasien!
                         </div>
                     </div>
                 </div>
@@ -246,6 +255,9 @@
                         <select type="text" name="KategoriPasien" id="Kategori" style="width:50%;" class="form-control select2 input-sm col-xs-6 col-sm-6">
                             <option value="{{ isset($edit->Kategori) ? $edit->Kategori : '28' }}">{{ isset($edit->NmKategori) ? @$edit->NmKategori : 'BPJS KESEHATAN' }}</option>
                         </select>
+                        <div class="invalid-feedback text-danger hide" id="kategori-validation">
+                            Silahkan pilih kategori atau segera update kategori!
+                        </div>
                         <button type="button" id="btn-cari" class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg-update-kategori" style="width: 170px; height: 34px; right: 0;">Update Kategori</button>
                     </div>
                 </div>
@@ -311,9 +323,12 @@
                     <label class="col-sm-3 control-label no-padding-right">Nama Poli / SMF</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                        <select name="KdPoli" id="poli" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                        <select name="KdPoli" id="poli" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6" required>
                             <option value="{{ isset($edit->KdPoli) ? $edit->KdPoli : '' }}">{{ isset($edit->NMPoli) ? @$edit->NMPoli : '-= Poli =-' }}</option>
                         </select>
+                        <div class="invalid-feedback text-danger hide" id="poli-validation">
+                            Nama Poli harus diisi!
+                        </div>
                         <input type="hidden" name="KdPoliBpjs">
                     </div>
                 </div>
@@ -325,6 +340,9 @@
                         <select name="DocRS" id="Dokter" style="width:100%;" class="form-control input-sm select2">
                             <option value="{{ isset($edit->KdDoc) ? $edit->KdDoc : '' }}">{{ isset($edit->NmDoc) ? @$edit->NmDoc : '-= Dokter =-' }}</option>
                         </select>
+                        <div class="invalid-feedback text-danger hide" id="dokter-validation">
+                            Nama Dokter harus diisi!
+                        </div>
                         <div class="checkbox" style="display: table-cell;padding-left: 10px;">
                             <label>
                                 <input type="checkbox" name="dpjp-only">
@@ -1368,7 +1386,8 @@
     $('#poli').on('select2:select', function(ev) {
         let data = ev.params.data;
         kdPoli = data.KDPoli;
-        $('[name=KdPoliBpjs]').val(data.KdBPJS);;
+        $('[name=KdPoliBpjs]').val(data.KdBPJS);
+        $('#poli-validation').addClass('hide');
     });
 
     $('#Dokter').select2({
@@ -1416,12 +1435,20 @@
         },
     });
 
+    $('#Dokter').on('select2:select', function(ev) {
+        $('#dokter-validation').addClass('hide');
+    });
+
     let KdDPJP = null;
     $('#DokterPengirim').on('select2:select', function(ev){
         KdDPJP = ev.params.data.KdDPJP;
     });
 
     $('#rujukan_dari').select2();
+
+    $('#rujukan_dari').on('select2:select', function(ev) {
+        $('#rujukan-dari-validation').addClass('hide');
+    });
 
     let polirujukan = null;
     $('#DokterPengirim').select2({
@@ -2584,30 +2611,66 @@
         var h2 = $('#Regdate').val();
         var selisih = (Number(new Date(h2)) - Number(new Date())) / (60 * 60 * 24 * 1000);
         var rekammedis = $('#Medrec').val();
+        let validation = true;
         
         if ($('#pengobatan').val() == '') {
-            alert('Pilih Tujuan!');
-        } else if($('#poli').val() == '') {
-            alert('Pilih Poli!');
-        } else if($('#Dokter').val() == '') {
-            alert('Pilih Dokter!');
-        } else if($('#Medrec').val() == '') {
-            alert('No Rekam Medis Kosong!');
-        } else if($('#Kategori').val() == '') {
-            alert('Silahkan pilih kategori atau segera update kategori');
-        } else if(($('input[name=KdSex]:checked').length) <= 0 ) {
-            alert('Pilih jenis kelamin Pasien');
-        } else if($('#poli').val() == '39' && $('#cara_bayar').val() != '04'){
+            // alert('Pilih Tujuan!');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#poli').val() == '') {
+            $('#poli-validation').removeClass('hide');
+            // alert('Pilih Poli!');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#Dokter').val() == '') {
+            $('#dokter-validation').removeClass('hide');
+            // alert('Pilih Dokter!');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#Medrec').val() == '') {
+            $('#rekammedis-validation').removeClass('hide');
+            // alert('No Rekam Medis Kosong!');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#Kategori').val() == '') {
+            $('#kategori-validation').removeClass('hide');
+            // alert('Silahkan pilih kategori atau segera update kategori');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#rujukan_dari').val() == '') {
+            $('#rujukan-dari-validation').removeClass('hide');
+            // alert('Silahkan pilih kategori atau segera update kategori');
+            loading.modal('hide');
+            validation = false;
+        }
+        if(($('input[name=KdSex]:checked').length) <= 0 ) {
+            $('#kdsex-validation').removeClass('hide');
+            // alert('Pilih jenis kelamin Pasien');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#poli').val() == '39' && $('#cara_bayar').val() != '04'){
             alert('Cara Bayar Harus COVID19 !');
             btn.prop('disabled', false);
             btn.html(oldText);
             loading.modal('hide');
-        } else if($('#poli').val() == '39' && $('#Kategori').val() != '3'){
+            validation = false;
+        }
+        if($('#poli').val() == '39' && $('#Kategori').val() != '3'){
             alert('Khusus Poli COVID19 Kategori Pasien Harus Jaminan Lain !');
             btn.prop('disabled', false);
             btn.html(oldText);
             loading.modal('hide');
-        } else{
+            validation = false;
+        }
+        if (validation == false ) {
+            alert('Bebebrapa data harus diisi!');
+        } else {
             var send = {
                 medrec : rekammedis,
                 regno : $("#Regno").val(),
