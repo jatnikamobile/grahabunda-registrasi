@@ -230,6 +230,9 @@
     <script type="text/javascript" src="<?=asset('public/template/datatables/js/dataTables.bootstrap.min.js')?>"></script>
     
     <script src="<?= asset('public/template/chart.js/Chart.js') ?>"></script>
+    <script src="<?= asset('public/js/inputmask/inputmask.min.js') ?>"></script>
+    <script src="<?= asset('public/js/inputmask/jquery.inputmask.min.js') ?>"></script>
+    <script src="<?= asset('public/js/inputmask/bindings/inputmask.binding.js') ?>"></script>
     <script type="text/javascript">        
         //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
         //so disable dragging when clicking on label

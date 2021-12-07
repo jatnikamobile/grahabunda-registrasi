@@ -59,7 +59,7 @@
                     <form id="formCari" class="form-inline">
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                        <input type="text" name="Medrec" id="Medrec" value="{{ @$edit->Medrec }}"/>
+                        <input type="text" data-inputmask="'mask': '99-99-99'" name="Medrec" id="Medrec" value="{{ @$edit->Medrec }}"/>
                         <button type="submit" class="btn btn-info btn-sm" id="btnCari" style="margin-left: 10px;">
                             <i class="ace-icon fa fa-search"></i>Cari
                         </button>

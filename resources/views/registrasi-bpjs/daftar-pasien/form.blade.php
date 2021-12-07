@@ -93,7 +93,7 @@
                     <label class="col-sm-3 control-label no-padding-right"> No Rekam Medis</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:transparent;">:</span>
-                        <input type="text" name="Medrec" id="Medrec" value="{{ @$edit->Medrec }}"/>
+                        <input type="text" data-inputmask="'mask': '99-99-99'" name="Medrec" id="Medrec" value="{{ @$edit->Medrec }}"/>
                         <button type="submit" class="btn btn-info btn-sm" id="btnCari" style="margin-left: 10px;">
                             <i class="ace-icon fa fa-search"></i>Cari
                         </button>
@@ -244,7 +244,7 @@
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
                         <select type="text" name="KategoriPasien" id="Kategori" style="width:50%;" class="form-control select2 input-sm col-xs-6 col-sm-6">
-                            <option value="{{ isset($edit->Kategori) ? $edit->Kategori : '2' }}">{{ isset($edit->NmKategori) ? @$edit->NmKategori : 'BPJS' }}</option>
+                            <option value="{{ isset($edit->Kategori) ? $edit->Kategori : '28' }}">{{ isset($edit->NmKategori) ? @$edit->NmKategori : 'BPJS KESEHATAN' }}</option>
                         </select>
                         <button type="button" id="btn-cari" class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg-update-kategori" style="width: 170px; height: 34px; right: 0;">Update Kategori</button>
                     </div>
@@ -629,7 +629,7 @@
                                 <label class="col-sm-3 control-label no-padding-right">Rekam Medis</label>
                                 <div class="input-group col-sm-9">
                                     <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                    <input type="text" name="pa_Medrec" id="pa_Medrec" class="form-control input-sm col-xs-10 col-sm-5" />
+                                    <input type="text" data-inputmask="'mask': '99-99-99'" name="pa_Medrec" id="pa_Medrec" class="form-control input-sm col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -2416,6 +2416,7 @@
         let oldText = btn.html();
         btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
         btn.prop('disabled', true);
+        console.log($('#Medrec').val())
         $.ajax({
             url:"{{ route('detail-pasien') }}",
             type:"get",
@@ -2446,7 +2447,7 @@
                     $('#UmurThn').val(response.data.UmurThn);
                     $('#noKartu').val(response.data.AskesNo);
 
-                    var $kategori = $("<option selected></option>").val(response.data.Kategori).text(response.data.NmKategori);
+                    var $kategori = response.data.Kategori ? $("<option selected></option>").val(response.data.Kategori).text(response.data.NmKategori) : $("<option selected></option>").val(28).text('BPJS KESEHATAN');
                     $('#Kategori').append($kategori).trigger('change');
 
                     if (response.data.KdSex != null) {
