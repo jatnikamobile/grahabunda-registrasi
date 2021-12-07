@@ -3278,7 +3278,7 @@
                 // N_PenanggungJwb: N_PenanggungJwb,
                 // Telp_PenanggungJwb: Telp_PenanggungJwb,
                 // A_PenanggungJwb: A_PenanggungJwb,
-                // I_StatusBaru: I_StatusBaru,
+                I_StatusBaru: $('#Kunjungan').val() == 'Baru' ? 1 : 0,
                 // I_Kontrol: I_Kontrol,
                 I_StatusKunjungan: 1,
                 C_Shift: 1,
