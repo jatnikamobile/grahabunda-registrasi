@@ -175,7 +175,8 @@ class MasterPS extends Model
                 'UmurBln' => $data->UmurBln,
                 'UmurHr' => $data->UmurHari,
                 'Phone' => $data->Notelp,
-                'Keyakinan' => $data->Keyakinan
+                'Keyakinan' => $data->Keyakinan,
+                'Kategori' => $data->KategoriPasien
             ]);
         return $data;
     }
