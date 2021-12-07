@@ -30,7 +30,7 @@
     <table class="table-list">
         <tr>
             <td style="width:50%">RSUD Raja Ahmad Tabib<br>REGISTRASI PASIEN</td>
-            <td style="text-align: right;">{{ $data->NMPoli }}<br>Tanggal:<br>{{ date('d/m/Y',strtotime($data->Regdate))}} / {{ substr($data->Regtime,11,5) }}</td>
+            <td style="text-align: right;">{{ $data->NMPoli }}<br>{{ $data->NmDoc }}<br>Tanggal:<br>{{ date('d/m/Y',strtotime($data->Regdate))}} / {{ substr($data->Regtime,11,5) }}</td>
         </tr>
         <tr>
             <td style="text-align: center;">Rekam Medis<br><b style="font-size:24px;">{{ $data->Medrec }}</b></td>
