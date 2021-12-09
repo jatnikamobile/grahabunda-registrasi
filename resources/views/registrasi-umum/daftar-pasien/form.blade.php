@@ -354,7 +354,7 @@
                                 <label class="col-sm-3 control-label no-padding-right">Rekam Medis</label>
                                 <div class="input-group col-sm-9">
                                     <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                    <input type="text" name="pa_Medrec" id="pa_Medrec" class="form-control input-sm col-xs-10 col-sm-5"/>
+                                    <input type="text" data-inputmask="'mask': '99-99-99'" name="pa_Medrec" id="pa_Medrec" class="form-control input-sm col-xs-10 col-sm-5"/>
                                 </div>
                             </div>
                             <div class="form-group">
