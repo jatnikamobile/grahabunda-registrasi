@@ -25,6 +25,33 @@ class MasterPS extends Model
         $this->hidden = [];
     }
 
+    public function generateMedrec()
+    {
+        $last_record = $this->orderBy('Medrec', 'desc')->first();
+
+        $next_id = '00-00-00';
+        if ($last_record) {
+            $Medrec = $last_record->Medrec;
+            $arr_Medrec = explode('-', $Medrec);
+            if ($arr_Medrec[2] < 99) {
+                $third_number = $arr_Medrec[2] + 1;
+                $next_id = $arr_Medrec[0] . '-' . $arr_Medrec[1] . '-' . sprintf('%02d', $third_number);
+            } else {
+                $third_number = '00';
+                if ($arr_Medrec[1] < 99) {
+                    $second_number = $arr_Medrec[1] + 1;
+                    $next_id = $arr_Medrec[0] . '-' . sprintf('%02d', $second_number) . '-' . sprintf('%02d', $third_number);
+                } else {
+                    $second_number = '00';
+                    $first_number = $arr_Medrec[0] + 1;
+                    $next_id = sprintf('%02d', $first_number) . '-' . sprintf('%02d', $second_number) . '-' . sprintf('%02d', $third_number);
+                }
+            }
+        }
+
+        return $next_id;
+    }
+
     public function get_list($medrec = '', $notelp = '', $nama = '', $alamat = '', $nopeserta = '' ,$tgl_lahir = '', $date1 = '', $date2 = '')
     {
         $data = $this->select(DB::connection('main')->raw("MasterPS.Medrec, MasterPS.Firstname, MasterPS.TglDaftar, MasterPS.Address,
