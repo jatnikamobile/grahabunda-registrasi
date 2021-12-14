@@ -3370,7 +3370,7 @@
                 // D_Keluar2: D_Keluar2,
                 // I_Urut: I_Urut,
                 // I_StatusPenanganan: I_StatusPenanganan,
-                // I_SKP: I_SKP,
+                I_SKP: $('#NoSep').val(),
                 // catatan: catatan,
                 // KD_RujukanSEP: KD_RujukanSEP,
                 // tgl_lahirPLuar: tgl_lahirPLuar,
