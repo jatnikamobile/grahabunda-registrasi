@@ -171,7 +171,7 @@ class MasterPasienController extends Controller
             $result = file_get_contents($url, false, $context);
             $parse['result'] = $result;
 
-            $pasien = MasterPS::where('Medrec', $parse['data']->Medrec)->first();
+            $pasien = MasterPS::where('Firstname', 'like', '%'.$request->Firstname.'%')->orderBy('TglDaftar', 'desc')->first();
             if ($pasien) {
                 $data_pasien = json_decode($result, true);
                 $pasien->Medrec = $data_pasien['pasien']['I_RekamMedis'];
