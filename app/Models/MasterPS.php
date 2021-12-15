@@ -20,9 +20,9 @@ class MasterPS extends Model
 
         $this->timestamps = false;
         // 
-        $this->fillable = [];
+        // $this->fillable = ['Medrec'];
         // 
-        $this->hidden = [];
+        // $this->hidden = [];
     }
 
     public function generateMedrec()

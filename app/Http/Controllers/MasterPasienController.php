@@ -72,11 +72,51 @@ class MasterPasienController extends Controller
         $pendi = TBLPendidikan::where('NmDidik', $request->Pendidikan)->first();
         $kerja = TBLPekerjaan::where('NmKerja', $request->Pekerjaan)->first();
 
+        $data = [
+            'I_RekamMedis' => $request->Medrec,
+            'N_Pasien' => $request->Firstname,
+            'N_Keluarga' => $request->NamaAyah,
+            'D_Lahir' => $request->Bod,
+            'A_Lahir' => $request->Pod,
+            'A_Rumah' => $request->Alamat,
+            'I_Telepon' => $request->Phone,
+            'I_Agama' => $request->KdAgama,
+            'C_Sex' => $request->KdSex,
+            'C_WargaNegara' => $request->WargaNegara,
+            'C_StatusKawin' => $request->Perkawinan,
+            'I_NoIdentitas' => $request->NoIden,
+            'I_Entry' => 'system',
+            'D_Entry' => date('Y-m-d'),
+
+            'NamaPJ' => $request->NamaPJ,
+            'PekerjaanPJ' => 0,
+            'PhonePJ' => $request->PhonePJ,
+            'HungunganPJ' => 0,
+            'AlamatPJ' => $request->AlamatPJ,
+            'NoPeserta' => $request->NoPeserta,
+            'kelas_bpjs' => $request->kelas_bpjs,
+            'jenis_peserta' => $request->jenis_peserta,
+            'kategori' => $request->Kategori,
+        ];
+
+        $option = array(
+            'http' => array(
+            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method' => "POST",
+            'content' => http_build_query($data)
+            )
+        );
+        $url = config('app.api_db_url') . "/api/master/pasien";
+        $context = stream_context_create($option);
+        $result = file_get_contents($url, false, $context);
+        $parse['result'] = $result;
+
         $new_pasien = MasterPS::where('Medrec', $request->Medrec)->first();
         if (!$new_pasien) {
             // $up = StoredProcedures::stpnet_AddMasterPasien_REGxhos($request->all());
+            $data_pasien = json_decode($result, true);
             $new_pasien = new MasterPS();
-            $new_pasien->Medrec = $new_pasien->generateMedrec();
+            $new_pasien->Medrec = $data_pasien['pasien']['I_RekamMedis'];
             $new_pasien->Firstname = $request->Firstname;
             $new_pasien->Pod = $request->Pod;
             $new_pasien->Bod = $request->Bod;
@@ -176,51 +216,6 @@ class MasterPasienController extends Controller
                 'data' => $handleServer,
                 'message' => 'Data berhasil disimpan!'
             );
-
-            $data = [
-                'I_RekamMedis' => $parse['data']->Medrec,
-                'N_Pasien' => $request->Firstname,
-                'N_Keluarga' => $request->NamaAyah,
-                'D_Lahir' => $request->Bod,
-                'A_Lahir' => $request->Pod,
-                'A_Rumah' => $request->Alamat,
-                'I_Telepon' => $request->Phone,
-                'I_Agama' => $request->KdAgama,
-                'C_Sex' => $request->KdSex,
-                'C_WargaNegara' => $request->WargaNegara,
-                'C_StatusKawin' => $request->Perkawinan,
-                'I_NoIdentitas' => $request->NoIden,
-                'I_Entry' => 'system',
-                'D_Entry' => date('Y-m-d'),
-
-                'NamaPJ' => $request->NamaPJ,
-                'PekerjaanPJ' => 0,
-                'PhonePJ' => $request->PhonePJ,
-                'HungunganPJ' => 0,
-                'AlamatPJ' => $request->AlamatPJ,
-                'NoPeserta' => $request->NoPeserta,
-                'kelas_bpjs' => $request->kelas_bpjs,
-                'jenis_peserta' => $request->jenis_peserta,
-                'kategori' => $request->Kategori,
-            ];
-
-            $option = array(
-                'http' => array(
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => "POST",
-                'content' => http_build_query($data)
-                )
-            );
-            $url = config('app.api_db_url') . "/api/master/pasien";
-            $context = stream_context_create($option);
-            $result = file_get_contents($url, false, $context);
-            $parse['result'] = $result;
-
-            if ($new_pasien) {
-                $data_pasien = json_decode($result, true);
-                $new_pasien->Medrec = $data_pasien['pasien']['I_RekamMedis'];
-                $new_pasien->save();
-            }
 
             return response()->json($parse);
         }else{
