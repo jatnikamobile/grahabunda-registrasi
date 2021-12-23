@@ -194,6 +194,29 @@ class RegisterController extends Controller
 
         if ($data['regno'] != '' || $data['kategori'] != '' || $data['carabayar'] != '') {
             $up = StoredProcedures::stpnet_UpdateCaraBayar_REGxhos($data);
+            
+            $register = Register::where('regno', $data['regno'])->first();
+            if ($register) {
+                $data_update = [
+                    'action' => 'update_kategori',
+                    'medrec' => $register->Medrec,
+                    'date' => date('Y-m-d', strtotime($register->Regdate)),
+                    'kategori' => $data['kategori'],
+                ];
+    
+                $option = array(
+                    'http' => array(
+                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method' => "POST",
+                    'content' => http_build_query($data_update)
+                    )
+                );
+                $url = config('app.api_db_url') . "/api/master/kunjungan";
+                $context = stream_context_create($option);
+                $result = file_get_contents($url, false, $context);
+                $parse['result'] = $result;
+            }
+            
             $request->session()->flash('status', 'Data Berhasil Diubah!');            
         }
         
