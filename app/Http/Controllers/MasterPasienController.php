@@ -133,6 +133,7 @@ class MasterPasienController extends Controller
             $new_pasien->NamaAyah = $request->NamaAyah;
             $new_pasien->NamaIbu = $request->NamaIbu;
             $new_pasien->AskesNo = $request->NoPeserta;
+            $new_pasien->TglDaftar = date('Y-m-d H:i:s');
             $new_pasien->Address = $request->Alamat;
             $new_pasien->City = $request->NmKabupaten;
             $new_pasien->Propinsi = $request->NmProvinsi;
