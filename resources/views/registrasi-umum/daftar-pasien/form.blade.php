@@ -1043,7 +1043,7 @@
         let loading = $('.modal-loading');
         let btn = $('#submit');
         let oldText = btn.html();
-        // btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
+        btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
         // btn.prop('disabled', true);
         // if ($('#Medrec').val() == '') {
         //     $('#Medrec').focus();
@@ -1139,7 +1139,6 @@
                                         "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
                                         "Antrian aplikasi lama " + response.result;
                                 alert(pesan);
-                                registerApiKunjungan(response.data.Regno);
                                 console.log(response);
                                 $('#Regno').val(response.data.Regno);
                                 $('#NoUrut').val(response.data.NomorUrut);
@@ -1220,7 +1219,6 @@
                         "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
                         "Antrian aplikasi lama " + response.result;
                     loading.modal('hide');
-                    registerApiKunjungan(response.data.Regno);
                     console.log(response);
                     $('#Regno').val(response.data.Regno);
                     if(response.data.Regno !== null){
@@ -1294,72 +1292,5 @@
             $('#UmurHari').val(callDay);
         }
     });
-
-    function registerApiKunjungan(regno) {
-        $.ajax({
-            url: "{{ config('app.api_db_url') }}/api/master/kunjungan",
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                rujukan_dari: $('#rujukan_dari').val(),
-                poli: $('#poli').val(),
-                // I_Kunjungan: 'RJ-' + regno,
-                // I_RekamMedis: rekammedis.substring(0,6),
-                I_RekamMedis: $('#Medrec').val(),
-                // I_Bagian: 2,
-                I_Unit: $('#poli').val(),
-                I_UrutMasuk: $('#NomorUrut').val(),
-                D_Masuk: $('#Regdate').val() + ' ' + $('#Regtime').val(),
-                // D_Keluar: $('#Regdate').val(),
-                C_Pegawai: $('#Dokter').val(),
-                I_Penerimaan: 0,
-                // I_Rujukan: rujukan.I_Rujukan,
-                N_DokterPengirim: $('#DokterPengirim').val(),
-                N_Diagnosa: $('#Diagnosa').val(),
-                // N_Tindakan: N_Tindakan,
-                // N_Terapi: N_Terapi,
-                I_Kontraktor: $('#Kategori').val(),
-                // N_PenanggungJwb: N_PenanggungJwb,
-                // Telp_PenanggungJwb: Telp_PenanggungJwb,
-                // A_PenanggungJwb: A_PenanggungJwb,
-                I_StatusBaru: $('#Kunjungan').val() == 'Baru' ? 1 : 0,
-                // I_Kontrol: I_Kontrol,
-                I_StatusKunjungan: 1,
-                C_Shift: 1,
-                I_Entry: 'system',
-                D_Entry: $('#Regdate').val(),
-                // I_StatusPasien: I_StatusPasien,
-                N_PasienLuar: $('#Firstname').val(),
-                // A_PasienLuar: A_PasienLuar,
-                // JK_PasienLuar: JK_PasienLuar,
-                Umur_tahun: $('#UmurThn').val(),
-                Umur_bulan: $('#UmurBln').val(),
-                Umur_hari: $('#UmurHari').val(),
-                // I_KunjunganAsal: I_KunjunganAsal,
-                // I_IjinPulang: I_IjinPulang,
-                // IsBayi: IsBayi,
-                // IsOpenMedrek: IsOpenMedrek,
-                // I_StatusObservasi: I_StatusObservasi,
-                // I_MasukUlang: I_MasukUlang,
-                // D_Masuk2: D_Masuk2,
-                // D_Keluar2: D_Keluar2,
-                // I_Urut: I_Urut,
-                // I_StatusPenanganan: I_StatusPenanganan,
-                // I_SKP: I_SKP,
-                // catatan: catatan,
-                // KD_RujukanSEP: KD_RujukanSEP,
-                // tgl_lahirPLuar: tgl_lahirPLuar,
-                // tempatLahirPLuar: tempatLahirPLuar,
-                // Pulang: Pulang,
-                // I_EntryUpdate: I_EntryUpdate,
-                // n_AsalRujukan: n_AsalRujukan,
-            },
-            success: function(data) {
-                if (data.status == 'success') {
-                    console.log('Post data API Kunjungan berhasil.');
-                }
-            }
-        });
-    }
 </script>
 @endsection

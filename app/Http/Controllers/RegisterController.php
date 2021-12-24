@@ -237,6 +237,30 @@ class RegisterController extends Controller
                     if ($data['regno'] != '' || $data['poli'] != '' || $data['dokter_pil'] != '') {
                         $StoredProcedures = new StoredProcedures();
                         $up = $StoredProcedures->stpnet_UpdateDokterPasien_REGxhos($data);
+            
+                        $register = Register::where('regno', $data['regno'])->first();
+                        if ($register) {
+                            $data_update = [
+                                'action' => 'update_dokter',
+                                'medrec' => $register->Medrec,
+                                'date' => date('Y-m-d', strtotime($register->Regdate)),
+                                'poli' => $data['poli'],
+                                'dokter_pil' => $data['dokter_pil'],
+                            ];
+                
+                            $option = array(
+                                'http' => array(
+                                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                                'method' => "POST",
+                                'content' => http_build_query($data_update)
+                                )
+                            );
+                            $url = config('app.api_db_url') . "/api/master/kunjungan";
+                            $context = stream_context_create($option);
+                            $result = file_get_contents($url, false, $context);
+                            $parse['result'] = $result;
+                        }
+
                         $request->session()->flash('status', 'Data Berhasil Diubah!');            
                     }
                 }else{

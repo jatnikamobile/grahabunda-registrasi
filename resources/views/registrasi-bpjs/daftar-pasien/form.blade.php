@@ -2731,8 +2731,8 @@
                                                     KdSex: $('input[name=KdSex]:checked').val(),
                                                     pisat: $('#pisat').val(),
                                                     GroupUnit: $('#GroupUnit').val(),
-                                                    Keterangan: $('#Keterangan').val(),
                                                     NoRujuk: $('#NoRujuk').val(),
+                                                    Keterangan: $('#Keterangan').val(),
                                                     RegRujuk: $('#RegRujuk').val(),
                                                     noPpk: $('#noPpk').val(),
                                                     Ppk: $('#Ppk').val(),
@@ -2756,6 +2756,7 @@
                                                     nokontrol: $('#NoSuratKontrol').val(),
                                                     idregold: $('[name=regold]').val(),
                                                     catatan: $('#catatan').val(),
+                                                    kodeoPpk: $('#kodeoPpk').val()
                                                 },
                                                 // error: function(response){
                                                 //     alert('Gagal menambahkan/server down, Silahkan coba lagi');
@@ -2769,7 +2770,6 @@
                                                             "Pasien " + response.data.Firstname + "\n" +
                                                             "Antrian aplikasi baru " + response.data.NomorUrut + "\n" ;
                                                     alert(pesan);
-                                                    registerApiRujukan(response.data.Regno);
                                                     console.log(response);
                                                     loading.modal('hide');
                                                     $('#Regno').val(response.data.Regno);
@@ -2869,6 +2869,7 @@
                                             nokontrol: $('#NoSuratKontrol').val(),
                                             idregold: $('[name=regold]').val(),
                                             catatan: $('#catatan').val(),
+                                            kodeoPpk: $('#kodeoPpk').val()
                                         },error: function(response){
                                             alert('Gagal menambahkan/server down, Silahkan coba lagi');
                                             loading.modal('hide');
@@ -2882,7 +2883,6 @@
                                                     "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
                                                     "Antrian aplikasi lama " + response.result;
                                             alert(pesan);
-                                            registerApiRujukan(response.data.Regno);
                                             console.log(response);
                                             loading.modal('hide');
                                             $('#Regno').val(response.data.Regno);
@@ -3297,93 +3297,6 @@
 
             var $unit = $("<option selected></option>").val(res.data.NmUnit).text(res.data.NmUnit);
             $('#Unit').append($unit).trigger('change');
-        });
-    }
-
-    function registerApiRujukan(regno) {
-        $.ajax({
-            url: "{{ config('app.api_db_url') }}/api/master/rujukan",
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                I_KelRujukan: 1,
-                N_Rujukan: $('#noPpk').val(),
-                C_PPKRujukan: $('#kodeoPpk').val(),
-            },
-            success: function (data_rujukan) {
-                if (data_rujukan.status == 'success') {
-                    $('#I_Rujukan').val(data_rujukan.I_Rujukan)
-                    registerApiKunjungan(data_rujukan.rujukan, regno)
-                    console.log('Post data API Rujukan berhasil.');
-                }
-            }
-        });
-    }
-
-    function registerApiKunjungan(rujukan, regno) {
-        $.ajax({
-            url: "{{ config('app.api_db_url') }}/api/master/kunjungan",
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                rujukan_dari: $('#rujukan_dari').val(),
-                poli: $('#poli').val(),
-                // I_Kunjungan: 'RJ-' + regno,
-                // I_RekamMedis: rekammedis.substring(0,6),
-                I_RekamMedis: $('#Medrec').val(),
-                // I_Bagian: 2,
-                I_Unit: $('#poli').val(),
-                I_UrutMasuk: $('#NomorUrut').val(),
-                D_Masuk: $('#Regdate').val() + ' ' + $('#Regtime').val(),
-                // D_Keluar: $('#Regdate').val(),
-                C_Pegawai: $('#Dokter').val(),
-                I_Penerimaan: 0,
-                I_Rujukan: rujukan.I_Rujukan,
-                N_DokterPengirim: $('#DokterPengirim').val(),
-                N_Diagnosa: $('#Diagnosa').val(),
-                // N_Tindakan: N_Tindakan,
-                // N_Terapi: N_Terapi,
-                I_Kontraktor: $('#Kategori').val(),
-                // N_PenanggungJwb: N_PenanggungJwb,
-                // Telp_PenanggungJwb: Telp_PenanggungJwb,
-                // A_PenanggungJwb: A_PenanggungJwb,
-                I_StatusBaru: $('#Kunjungan').val() == 'Baru' ? 1 : 0,
-                // I_Kontrol: I_Kontrol,
-                I_StatusKunjungan: 1,
-                C_Shift: 1,
-                I_Entry: 'system',
-                D_Entry: $('#Regdate').val(),
-                // I_StatusPasien: I_StatusPasien,
-                N_PasienLuar: $('#Firstname').val(),
-                // A_PasienLuar: A_PasienLuar,
-                // JK_PasienLuar: JK_PasienLuar,
-                Umur_tahun: $('#UmurThn').val(),
-                Umur_bulan: $('#UmurBln').val(),
-                Umur_hari: $('#UmurHari').val(),
-                // I_KunjunganAsal: I_KunjunganAsal,
-                // I_IjinPulang: I_IjinPulang,
-                // IsBayi: IsBayi,
-                // IsOpenMedrek: IsOpenMedrek,
-                // I_StatusObservasi: I_StatusObservasi,
-                // I_MasukUlang: I_MasukUlang,
-                // D_Masuk2: D_Masuk2,
-                // D_Keluar2: D_Keluar2,
-                // I_Urut: I_Urut,
-                // I_StatusPenanganan: I_StatusPenanganan,
-                I_SKP: $('#NoSep').val(),
-                // catatan: catatan,
-                // KD_RujukanSEP: KD_RujukanSEP,
-                // tgl_lahirPLuar: tgl_lahirPLuar,
-                // tempatLahirPLuar: tempatLahirPLuar,
-                // Pulang: Pulang,
-                // I_EntryUpdate: I_EntryUpdate,
-                // n_AsalRujukan: n_AsalRujukan,
-            },
-            success: function(data) {
-                if (data.status == 'success') {
-                    console.log('Post data API Kunjungan berhasil.');
-                }
-            }
         });
     }
 </script>

@@ -127,6 +127,46 @@ class RegistrasiUmumController extends Controller
                     }
                 }
 
+                try {
+                    $data_kunjungan = [
+                        'rujukan_dari' => $request->rujukan_dari,
+                        'poli' => $request->KdPoli,
+                        'I_RekamMedis' => $request->Medrec,
+                        'I_Unit' => $request->KdPoli,
+                        'I_UrutMasuk' => $data->NomorUrut,
+                        'D_Masuk' => $request->Regdate . ' ' . $request->Regtime,
+                        'C_Pegawai' => $request->kdDoc,
+                        'I_Penerimaan' => 0,
+                        'N_DokterPengirim' => $request->KdDPJP,
+                        'N_Diagnosa' => $request->DiagAw,
+                        'I_Kontraktor' => $request->Kategori,
+                        'I_StatusBaru' => $request->Kunjungan == 'Baru' ? 1 : 0,
+                        'I_StatusKunjungan' => 1,
+                        'C_Shift' => 1,
+                        'I_Entry' => 'system',
+                        'D_Entry' => $request->Regdate,
+                        'N_PasienLuar' => $request->Firstname,
+                        'Umur_tahun' => $request->UmurThn,
+                        'Umur_bulan' => $request->UmurBln,
+                        'Umur_hari' => $request->UmurHari,
+                    ];
+            
+                    $option = array(
+                        'http' => array(
+                        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method' => "POST",
+                        'content' => http_build_query($data_kunjungan),
+                        'timeout' => 1200
+                        )
+                    );
+                    $url = config('app.api_db_url') . "/api/master/kunjungan";
+                    $context = stream_context_create($option);
+                    $result = file_get_contents($url, false, $context);
+                    $parse['result'] = $result;
+                } catch (\Throwable $th) {
+                    $message = $th->getMessage();
+                }
+
                 $parse = array(
                     'status' => true,
                     'data' => $data,
@@ -136,21 +176,9 @@ class RegistrasiUmumController extends Controller
                 return response()->json($parse);
             }
         }else{
-            $url = "http://localhost:81/rsau-esnawan/central-api.php";
-            $data = array('_id_reg' => $idregis, '_key' => 'teujadi');
-            $option = array(
-                'http' => array(
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => "POST",
-                'content' => http_build_query($data)
-                )
-            );
-
-            $context = stream_context_create($option);
-            $result = file_get_contents($url, false, $context);
             $parse = array(
                 'status' => true,
-                'data' => $data,
+                'data' => $request->input(),
                 'message' => 'Gagal!',
                 'result' => '-'
             );
