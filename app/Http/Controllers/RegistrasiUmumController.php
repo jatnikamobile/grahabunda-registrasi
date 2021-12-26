@@ -242,7 +242,7 @@ class RegistrasiUmumController extends Controller
             {
                 if ($get_delete->IdRegOld!= '') {
                     $rs_net_kunjungan_controller = new RsNetKunjunganController();
-                    $delete_kunjungan = $rs_net_kunjungan_controller->delete($get_delete);
+                    $delete_kunjungan = $rs_net_kunjungan_controller->destroy($get_delete);
                 }
                 
                 $request->session()->flash('status', 'Data Berhasil Dihapus!');
