@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Auth;
 use PDF;
 use App\Bridging\VClaim;
-
+use App\Http\Controllers\RsNet\RsNetKunjunganController;
+use App\Http\Controllers\RsNet\RsNetPasienController;
+use App\Http\Controllers\RsNet\RsNetRujukanController;
 use App\Models\TBLICD10;
 use App\Models\Refppk;
 use App\Models\POLItpp;
@@ -240,20 +242,9 @@ class RegistrasiBpjsController extends Controller
                         'N_Rujukan' => $request->noPpk,
                         'C_PPKRujukan' => $request->kodeoPpk,
                     ];
-            
-                    $option = array(
-                        'http' => array(
-                        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                        'method' => "POST",
-                        'content' => http_build_query($data_rujukan),
-                        'timeout' => 1200
-                        )
-                    );
-                    $url = config('app.api_db_url') . "/api/master/rujukan";
-                    $context = stream_context_create($option);
-                    $result = file_get_contents($url, false, $context);
-                    $parse['result'] = $result;
-                    $data_rujukan = json_decode($parse['result'], true);
+
+                    $rs_net_rujukan_controller = new RsNetRujukanController();
+                    $create_rujukan = $rs_net_rujukan_controller->store($data_rujukan);
     
                     $data_kunjungan = [
                         'rujukan_dari' => $request->rujukan_dari,
@@ -264,14 +255,14 @@ class RegistrasiBpjsController extends Controller
                         'D_Masuk' => $request->Regdate . ' ' . $request->Regtime,
                         'C_Pegawai' => $request->DocRS,
                         'I_Penerimaan' => 0,
-                        'I_Rujukan' => isset($data_rujukan['rujukan']['I_Rujukan']) ? $data_rujukan['rujukan']['I_Rujukan'] : null,
+                        'I_Rujukan' => $create_rujukan ? $create_rujukan->I_Rujukan : null,
                         'N_DokterPengirim' => $request->KdDPJP,
                         'N_Diagnosa' => $request->DiagAw,
                         'I_Kontraktor' => $request->KategoriPasien,
                         'I_StatusBaru' => $request->Kunjungan == 'Baru' ? 1 : 0,
                         'I_StatusKunjungan' => 1,
                         'C_Shift' => 1,
-                        'I_Entry' => 'system',
+                        'I_Entry' => Auth::user() ? Auth::user()->NamaUser : 'system',
                         'D_Entry' => $request->Regdate,
                         'N_PasienLuar' => $request->Firstname,
                         'Umur_tahun' => $request->UmurThn,
@@ -279,19 +270,9 @@ class RegistrasiBpjsController extends Controller
                         'Umur_hari' => $request->UmurHari,
                         'I_SKP' => $request->NoSep,
                     ];
-            
-                    $option = array(
-                        'http' => array(
-                        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                        'method' => "POST",
-                        'content' => http_build_query($data_kunjungan),
-                        'timeout' => 1200
-                        )
-                    );
-                    $url = config('app.api_db_url') . "/api/master/kunjungan";
-                    $context = stream_context_create($option);
-                    $result = file_get_contents($url, false, $context);
-                    $parse['result'] = $result;
+
+                    $rs_net_kunjungan_controller = new RsNetKunjunganController();
+                    $create_kunjungan = $rs_net_kunjungan_controller->store($data_kunjungan);
                 } catch (\Throwable $th) {
                     $message = $th->getMessage();
                 }
@@ -381,18 +362,8 @@ class RegistrasiBpjsController extends Controller
         if($delete){
             {
                 if ($get_delete->IdRegOld!= '') {
-                    $url = "http://localhost:81/rsau-esnawan/central-api.php";
-                    $data = array('_id_reg' => $get_delete->IdRegOld, '_key' => 'teujadi');
-                    $option = array(
-                        'http' => array(
-                        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                        'method' => "POST",
-                        'content' => http_build_query($data)
-                        )
-                    );
-
-                    $context = stream_context_create($option);
-                    $result = file_get_contents($url, false, $context);
+                    $rs_net_kunjungan_controller = new RsNetKunjunganController();
+                    $delete_kunjungan = $rs_net_kunjungan_controller->destroy($get_delete);
                 }
                 
                 $request->session()->flash('status', 'Data Berhasil Dihapus!');
@@ -407,30 +378,19 @@ class RegistrasiBpjsController extends Controller
     {
         $up = Procedure::stpnet_UpdateKategori_REGxhos($request->all());
 
-        $data = [
+        $data_pasien = [
             'I_RekamMedis' => $request->Medrec,
             'NoPeserta' => $request->askesno,
             'kategori' => $request->Kategori,
             'I_NoIdentitas' => $request->NoIden
         ];
 
-        $option = array(
-            'http' => array(
-            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method' => "POST",
-            'content' => http_build_query($data),
-            'timeout' => 1200
-            )
-        );
-        $url = config('app.api_db_url') . "/api/master/pasien";
-        $context = stream_context_create($option);
-        $result = file_get_contents($url, false, $context);
-        $parse['result'] = $result;
+        $rs_net_pasien_controller = new RsNetPasienController();
+        $update_pasien = $rs_net_pasien_controller->store($data_pasien);
 
         $pasien = MasterPS::where('Medrec', $request->Medrec)->first();
         if ($pasien) {
-            $data_pasien = json_decode($result, true);
-            $pasien->Medrec = $data_pasien['pasien']['I_RekamMedis'];
+            $pasien->Medrec = $update_pasien->I_RekamMedis;
             $pasien->save();
         }
     }

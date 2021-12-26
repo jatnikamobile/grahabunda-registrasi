@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\RsNet\RsNetKunjunganController;
 use Auth;
 use App\Models\Register;
 use App\Models\POLItpp;
@@ -205,19 +206,9 @@ class RegisterController extends Controller
                     'date' => date('Y-m-d', strtotime($register->Regdate)),
                     'kategori' => $data['kategori'],
                 ];
-    
-                $option = array(
-                    'http' => array(
-                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method' => "POST",
-                    'content' => http_build_query($data_update),
-                    'timeout' => 1200
-                    )
-                );
-                $url = config('app.api_db_url') . "/api/master/kunjungan";
-                $context = stream_context_create($option);
-                $result = file_get_contents($url, false, $context);
-                $parse['result'] = $result;
+
+                $rs_net_kunjungan_controller = new RsNetKunjunganController();
+                $update_reg = $rs_net_kunjungan_controller->store($data_update);
             }
             
             $request->session()->flash('status', 'Data Berhasil Diubah!');            
@@ -250,19 +241,9 @@ class RegisterController extends Controller
                                 'poli' => $data['poli'],
                                 'dokter_pil' => $data['dokter_pil'],
                             ];
-                
-                            $option = array(
-                                'http' => array(
-                                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                                'method' => "POST",
-                                'content' => http_build_query($data_update),
-                                'timeout' => 1200
-                                )
-                            );
-                            $url = config('app.api_db_url') . "/api/master/kunjungan";
-                            $context = stream_context_create($option);
-                            $result = file_get_contents($url, false, $context);
-                            $parse['result'] = $result;
+
+                            $rs_net_kunjungan_controller = new RsNetKunjunganController();
+                            $update_reg = $rs_net_kunjungan_controller->store($data_update);
                         }
 
                         $request->session()->flash('status', 'Data Berhasil Diubah!');            

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\RsNet\RsNetKunjunganController;
 use Illuminate\Http\Request;
 use Auth;
 use PDF;
@@ -143,26 +144,16 @@ class RegistrasiUmumController extends Controller
                         'I_StatusBaru' => $request->Kunjungan == 'Baru' ? 1 : 0,
                         'I_StatusKunjungan' => 1,
                         'C_Shift' => 1,
-                        'I_Entry' => 'system',
+                        'I_Entry' => Auth::user() ? Auth::user()->NamaUser : 'system',
                         'D_Entry' => $request->Regdate,
                         'N_PasienLuar' => $request->Firstname,
                         'Umur_tahun' => $request->UmurThn,
                         'Umur_bulan' => $request->UmurBln,
                         'Umur_hari' => $request->UmurHari,
                     ];
-            
-                    $option = array(
-                        'http' => array(
-                        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                        'method' => "POST",
-                        'content' => http_build_query($data_kunjungan),
-                        'timeout' => 1200
-                        )
-                    );
-                    $url = config('app.api_db_url') . "/api/master/kunjungan";
-                    $context = stream_context_create($option);
-                    $result = file_get_contents($url, false, $context);
-                    $parse['result'] = $result;
+
+                    $rs_net_kunjungan_controller = new RsNetKunjunganController();
+                    $create_kunjungan = $rs_net_kunjungan_controller->store($data_kunjungan);
                 } catch (\Throwable $th) {
                     $message = $th->getMessage();
                 }
@@ -250,18 +241,8 @@ class RegistrasiUmumController extends Controller
         if($delete){
             {
                 if ($get_delete->IdRegOld!= '') {
-                    $url = "http://localhost:81/rsau-esnawan/central-api.php";
-                    $data = array('_id_reg' => $get_delete->IdRegOld, '_key' => 'teujadi');
-                    $option = array(
-                        'http' => array(
-                        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                        'method' => "POST",
-                        'content' => http_build_query($data)
-                        )
-                    );
-
-                    $context = stream_context_create($option);
-                    $result = file_get_contents($url, false, $context);
+                    $rs_net_kunjungan_controller = new RsNetKunjunganController();
+                    $delete_kunjungan = $rs_net_kunjungan_controller->delete($get_delete);
                 }
                 
                 $request->session()->flash('status', 'Data Berhasil Dihapus!');
