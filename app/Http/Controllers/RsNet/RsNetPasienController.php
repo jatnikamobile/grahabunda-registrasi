@@ -43,6 +43,9 @@ class RsNetPasienController extends Controller
         try {
             $master_pasien = new TmPasien();
             $new_medrec = $master_pasien->generateCode();
+            while (TmPasien::where('I_RekamMedis', $new_medrec)->first()) {
+                $new_medrec = $master_pasien->generateCode();
+            }
 
             DB::beginTransaction();
             DB::connection('sqlsrv_kepri')->beginTransaction();
