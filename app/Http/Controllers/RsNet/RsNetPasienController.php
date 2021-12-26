@@ -8,6 +8,7 @@ use App\Models\RsNet\TmPasien;
 use App\Models\RsNet\TmPasienHubKeluarga;
 use App\Models\RsNet\TmPasienKontraktor;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RsNetPasienController extends Controller
 {
@@ -206,6 +207,7 @@ class RsNetPasienController extends Controller
             return $pasien;
 
         } catch (\Throwable $th) {
+            Log::info($th->getMessage());
             DB::rollBack();
             DB::connection('sqlsrv_kepri')->rollBack();
             return null;
