@@ -13,6 +13,7 @@ use App\Models\RsNet\PtProdukUnit;
 use App\Models\RsNet\PtTarif;
 use App\Models\RsNet\TmUnit;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RsNetKunjunganController extends Controller
 {
@@ -372,6 +373,7 @@ class RsNetKunjunganController extends Controller
 
             return $kunjungan;
         } catch (\Throwable $th) {
+            Log::info($th->getMessage());
             DB::rollBack();
             DB::connection('sqlsrv_kepri')->rollBack();
             return null;
