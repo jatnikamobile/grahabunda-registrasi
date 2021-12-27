@@ -356,7 +356,7 @@ class RsNetKunjunganController extends Controller
                 $bill_transaksi_detail->I_Pengaktifan = 0;
                 $bill_transaksi_detail->save();
 
-                $bill_transaksi_dokter = $exists ? BillTransaksiDokter::where('I_Transaksi', $i_transaksi)->first() : new BillTransaksiDokter();
+                $bill_transaksi_dokter = $exists ? BillTransaksiDokter::where('I_Transaksi', $i_transaksi)->where('I_TransaksiDetail', $bill_transaksi_detail->I_TransaksiDetail)->first() : new BillTransaksiDokter();
                 $bill_transaksi_dokter->I_Transaksi = $exists ? $bill_transaksi_dokter->I_Transaksi : $next_id_bt;
                 $bill_transaksi_dokter->I_TransaksiDetail = $exists ? $bill_transaksi_dokter->I_TransaksiDetail : $next_id_btd;
                 $bill_transaksi_dokter->I_TRDetailDokter = 1;
