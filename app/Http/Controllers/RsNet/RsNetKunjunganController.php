@@ -107,7 +107,7 @@ class RsNetKunjunganController extends Controller
             $dokter_pil = isset($data_kunjungan['dokter_pil']) ? $data_kunjungan['dokter_pil'] : null;
 
             if ($action == 'update_kategori') {
-                $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($date)) . '%')->where('I_RekamMedis', $medrec)->first();
+                $kunjungan = AdmKunjungan::where('I_Unit', $I_Unit)->where('I_Kunjungan', 'like', date('dmy', strtotime($date)) . '%')->where('I_RekamMedis', $medrec)->first();
                 if ($kunjungan) {
                     $kunjungan->I_Kontraktor = $kategori;
                     $kunjungan->save();
@@ -241,9 +241,16 @@ class RsNetKunjunganController extends Controller
                     $kunjungan->I_EntryUpdate = $I_EntryUpdate;
                     $kunjungan->n_AsalRujukan = $n_AsalRujukan;
                 } else {
+                    if ($I_Unit == 30) {
+                        $cek_kunjungan_igd = AdmKunjungan::where('I_Unit', 30)->where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->first();
+
+                        $exists = $cek_kunjungan_igd ? true : false;
+                        $kunjungan = $exists ? $kunjungan : new AdmKunjungan();
+                    }
                     $i_kunjungan = $kunjungan->I_Kunjungan;
                     $upd_kunjungan = new AdmKunjungan();
                     $kunjungan->I_Kunjungan = $I_Unit == $kunjungan->I_Unit ?  $kunjungan->I_Kunjungan :$upd_kunjungan->generateCode($I_Unit, $D_Masuk);
+                    $kunjungan->I_RekamMedis = $I_RekamMedis;
                     $kunjungan->I_Bagian = $bagian ?: $kunjungan->I_Bagian;
                     $kunjungan->I_Unit = $I_Unit ?: $kunjungan->I_Unit;
                     $kunjungan->I_UrutMasuk = $I_UrutMasuk ?: $kunjungan->I_UrutMasuk;

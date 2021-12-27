@@ -205,6 +205,7 @@ class RegisterController extends Controller
                     'medrec' => $register->Medrec,
                     'date' => date('Y-m-d', strtotime($register->Regdate)),
                     'kategori' => $data['kategori'],
+                    'I_Unit' => $register->KdPoli
                 ];
 
                 $rs_net_kunjungan_controller = new RsNetKunjunganController();
