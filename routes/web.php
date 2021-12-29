@@ -213,3 +213,5 @@ Route::group(['prefix'=>'test-ws'], function(){
     Route::get('/sender', ['as' => 'sender', 'uses' => 'WelcomeController@sender']);
     Route::get('/catcher', ['as' => 'catcher', 'uses' => 'WelcomeController@catcher']);
 });
+
+Route::resource('bpjs-tester', 'BPJSTesterController');

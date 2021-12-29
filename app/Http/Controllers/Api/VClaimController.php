@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Bridging\VClaim;
+use App\Http\Controllers\Bridging\NewVClaimController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -129,7 +130,10 @@ class VClaimController extends Controller
 		$tanggal_mulai = $request->tanggal_mulai;
 		$tanggal_akhir = $request->tanggal_akhir;
 
-		return response()->json(VClaim::histori_pelayanan_peserta($no_kartu, $tanggal_mulai, $tanggal_akhir));
+		$vklaim_controller = new NewVClaimController();
+		$response = $vklaim_controller->dataHistoriPelayananPeserta($no_kartu, $tanggal_mulai, $tanggal_akhir);
+
+		return response()->json($response);
 	}
 
 	public function klaim_jasa_raharja(Request $request)

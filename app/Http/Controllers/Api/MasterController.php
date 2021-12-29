@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Bridging\VClaim;
+use App\Http\Controllers\Bridging\NewVClaimController;
 use App\Models\Keyakinan;
 use App\Models\POLItpp;
 use App\Models\FtDokter;
@@ -250,40 +251,57 @@ class MasterController extends Controller{
 
 	public function get_peserta_kartu_bpjs(Request $request)
 	{
-		$bpjs = new Bridging_bpjs();
-		$data = $bpjs->get_peserta_kartu_bpjs($request->nopeserta);
-		$pasien = $data ? MasterPS::where('NoIden', $data->peserta->nik)->first() : null;
+		$vclaim_controller = new NewVClaimController();
+		$nopeserta = $request->nopeserta;
+		$tanggal = date('Y-m-d');
+		$request = $vclaim_controller->pesertaKartu($nopeserta, $tanggal);
+		$peserta = $request['peserta'];
+		$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->first() : null;
+
 		return response()->json([
 			'status' => true,
-			'data' => $data,
+			'data' => $request,
 			'pasien' => $pasien
 		]);
 	}
 
 	public function get_peserta_nik(Request $request)
 	{
-		$bpjs = new Bridging_bpjs();
-		$data = $bpjs->get_peserta_nik($request->nik);
-		$pasien = $data ? MasterPS::where('NoIden', $data->peserta->nik)->first() : null;
+		$vclaim_controller = new NewVClaimController();
+		$nik = $request->nik;
+		$tanggal = date('Y-m-d');
+		$request = $vclaim_controller->pesertaNIK($nik, $tanggal);
+		$peserta = $request['peserta'];
+		$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->first() : null;
+
 		return response()->json([
 			'status' => true,
-			'data' => $data,
+			'data' => $request,
 			'pasien' => $pasien
 		]);
 	}
 
 	public function get_peserta_rujukan(Request $request)
 	{
-		$bpjs = new Bridging_bpjs();
-		$data = $bpjs->get_perserta_rujukan_Pcare($request->noRujukan);
-		// dd($data);
-		if($data)
-		$data->poli_local = @$data->rujukan->poliRujukan->kode
-			? POLItpp::where('KdBPJS', $data->rujukan->poliRujukan->kode)->first()->toArray()
-			: null;
+		// $bpjs = new Bridging_bpjs();
+		// $data = $bpjs->get_perserta_rujukan_Pcare($request->noRujukan);
+		// // dd($data);
+		// if($data)
+		// $data->poli_local = @$data->rujukan->poliRujukan->kode
+		// 	? POLItpp::where('KdBPJS', $data->rujukan->poliRujukan->kode)->first()->toArray()
+		// 	: null;
+		// return response()->json([
+		// 	'status' => true,
+		// 	'data' => $data
+		// ]);
+		
+		$vclaim_controller = new NewVClaimController();
+		$noRujukan = $request->noRujukan;
+		$request = $vclaim_controller->getRujukanByNomor($noRujukan);
+
 		return response()->json([
 			'status' => true,
-			'data' => $data
+			'data' => $request,
 		]);
 	}
 
@@ -364,7 +382,6 @@ class MasterController extends Controller{
 
 	public function create_sep(Request $request)
 	{
-		$kelas = new Bridging_bpjs();
 		$validuser = 'SIMRS';
 
 		$noKartu = $request->input("noKartu");
@@ -403,74 +420,57 @@ class MasterController extends Controller{
 		$noTelp = $request->input("noTelp");
 		$user = $validuser;
 
-		$data = array(
-			'request' => [
-				't_sep' => [
-					'noKartu' => $noKartu ?? "",
-					'tglSep' => $tglSep ?? "",
-					'ppkPelayanan' => '0903R005',
-					'jnsPelayanan' => $jnsPelayanan ?? "",
-					'klsRawat' => $klsRawat ?? "3",
-					'noMR' => $noMR ?? "",
-					'rujukan' => [
-						'asalRujukan' => $asalRujukan ?? "",
-						'tglRujukan' => $tglRujukan ?? "",
-						'noRujukan' => $noRujukan ?? "",
-						'ppkRujukan' => $ppkRujukan ?? "",
-					],
-					'catatan' => $catatan ?? "",
-					'diagAwal' => $diagAwal ?? "",
-					'poli' => [
-						'tujuan' => $poli->KdBPJS ?? "",
-						'eksekutif' => $eksekutif ?? "0",
-					],
-					'cob' => [
-						'cob' => $cob ?? "0",
-					],
-					'katarak' => [
-						'katarak' => $katarak ?? "0",
-					],
-					'jaminan' => [
-						'lakaLantas' => $lakaLantas ?? "0",
-						'penjamin' => [
-							'penjamin' => $penjamin ?? "",
-							'tglKejadian' => $tglKejadian ?? "",
-							'keterangan' => $keterangan ?? "",
-							'suplesi' => [
-								'suplesi' => $suplesi ?? "0",
-								'noSepSuplesi' => $noSepSuplesi ?? "",
-								'lokasiLaka' => [
-									'kdPropinsi' => $kdPropinsi ?? "",
-									'kdKabupaten' => $kdKabupaten ?? "",
-									'kdKecamatan' => $kdKecamatan ?? "",
-								]
-							]
-						]
-					],
-					'skdp' => [
-						'noSurat' => $noSurat ?? "",
-						'kodeDPJP' => $dokter->KdDPJP ?? "",
-					],
-					'noTelp' => $noTelp ?? "",
-					'user' => $user ?? "",
-				]
-			]
-		);
+		$data_sep = [
+			'noKartu' => $noKartu,
+			'tglSep' => $tglSep,
+			'ppkPelayanan' => $ppkPelayanan,
+			'jnsPelayanan' => $jnsPelayanan,
+			'klsRawatHak' => $klsRawat,
+			// 'klsRawatNaik' => $klsRawat,
+			// 'pembiayaan' => $klsRawat,
+			// 'penanggungJawab' => $klsRawat,
+			'noMR' => $noMR,
+			'asalRujukan' => $asalRujukan,
+			'tglRujukan' => $tglRujukan,
+			'noRujukan' => $noRujukan,
+			'ppkRujukan' => $ppkRujukan,
+			'catatan' => $catatan,
+			'diagAwal' => $diagAwal,
+			'poli_tujuan' => $tujuan,
+			'poli_eksekutif' => $eksekutif,
+			'cob' => $cob,
+			'katarak' => $katarak,
+			'lakaLantas' => $lakaLantas,
+			'tglKejadian' => $tglKejadian,
+			'keterangan' => $keterangan,
+			'suplesi' => $suplesi,
+			'noSepSuplesi' => $noSepSuplesi,
+			'kdPropinsi' => $kdPropinsi,
+			'kdKabupaten' => $kdKabupaten,
+			'kdKecamatan' => $kdKecamatan,
+			'tujuanKunj' => 0,
+			'flagProcedure' => 1,
+			// 'kdPenunjang' => null,
+			// 'assesmentPel' => null,
+			'noSurat' => $noSurat,
+			'kodeDPJP' => $kodeDPJP,
+			// 'dpjpLayan' => null,
+			'noTelp' => $noTelp,
+			'user' => $user,
+		];
 
-		// dd($data);
-
-		$sep = new Bridging_bpjs();
-		$response = $sep->post_sep($data);
-		// dd($response->);
+		$vclaim_controller = new NewVClaimController();
+		$response = $vclaim_controller->insertSEPV2($data_sep);
+		
 		if ($response->metaData->code == '201') {
 			return response()->json([
-				'metaData' => $response->metaData,
-				'data' => $response->response
+				'metaData' => $response['metaData'],
+				'data' => $response['response']
 			]);
 		} else {
 			return response()->json([
-				'metaData' => $response->metaData,
-				'data' => $response->response
+				'metaData' => $response['metaData'],
+				'data' => $response['response']
 			]);
 		}
 	}
