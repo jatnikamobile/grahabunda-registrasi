@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Bridging;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use LZCompressor\LZString;
 
 class NewVClaimController extends Controller
@@ -68,36 +69,36 @@ class NewVClaimController extends Controller
     private function sendRequest($method, $data, $url, $headers)
     {
         $curl = curl_init();
-        $data = json_encode($data);
+        $json_data = is_array($data) ? json_encode($data) : $data;
 
         switch ($method){
             case "POST":
             case "post":
                 $headers[] = 'Content-Type: Application/x-www-form-urlencoded';
                 curl_setopt($curl, CURLOPT_POST, 1);
-                if ($data)
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                if ($json_data)
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json_data);
                 break;
             case "PUT":
             case "put":
                 $headers[] = 'Content-Type: Application/x-www-form-urlencoded';
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-                if ($data)
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                if ($json_data)
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json_data);
                 break;
             case "GET":
             case "get":
                 $headers[] = 'Content-Type: application/json; charset=UTF-8';
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
-                if ($data)
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                if ($json_data)
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json_data);
                 break;
             case "DELETE":
             case "delete":
                 $headers[] = 'Content-Type: application/json; charset=UTF-8';
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-                if ($data)
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                if ($json_data)
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json_data);
                 break;
             default:
                 $headers[] = 'Content-Type: application/json; charset=UTF-8';
@@ -418,6 +419,9 @@ class NewVClaimController extends Controller
     public function dataHistoriPelayananPeserta($no_kartu, $tanggal_mulai, $tanggal_akhir)
     {
         $url = $this->url . 'monitoring/HistoriPelayanan/NoKartu/' . $no_kartu . '/tglMulai/' . $tanggal_mulai . '/tglAkhir/' . $tanggal_akhir;
+
+		Log::info('BPJS History Pelayanan Peserta API Request:');
+		Log::info($url);
 
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
@@ -1383,10 +1387,15 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return [
+                    'metaData' => [
+                        'code' => 201,
+                        'message' => 'Decrypt failed'
+                    ]
+                ];
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1471,6 +1480,9 @@ class NewVClaimController extends Controller
     public function getRujukanByNomor($nomor_rujukan)
     {
         $url = $this->url . 'Rujukan/' . $nomor_rujukan;
+
+		Log::info('BPJS Get Rujukan API Request:');
+		Log::info($url);
 
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
@@ -2250,7 +2262,7 @@ class NewVClaimController extends Controller
         $catatan = isset($data_sep['catatan']) ? $data_sep['catatan'] : '';
         $diagAwal = isset($data_sep['diagAwal']) ? $data_sep['diagAwal'] : '';
         $poli_tujuan = isset($data_sep['poli_tujuan']) ? $data_sep['poli_tujuan'] : '';
-        $poli_eksekutif = isset($data_sep['poli_eksekutif']) ? $data_sep['poli_eksekutif'] : '';
+        $poli_eksekutif = isset($data_sep['poli_eksekutif']) ? $data_sep['poli_eksekutif'] : 0;
         $cob = isset($data_sep['cob']) ? $data_sep['cob'] : '';
         $katarak = isset($data_sep['katarak']) ? $data_sep['katarak'] : '';
         $lakaLantas = isset($data_sep['lakaLantas']) ? $data_sep['lakaLantas'] : '';
@@ -2276,7 +2288,7 @@ class NewVClaimController extends Controller
                 't_sep' => [
                     'noKartu' => $noKartu,
                     'tglSep' => $tglSep,
-                    'ppkPelayanan' => $ppkPelayanan,
+                    'ppkPelayanan' => $this->kode_ppk,
                     'jnsPelayanan' => $jnsPelayanan,
                     'klsRawat' => [
                         'klsRawatHak' => $klsRawatHak,
@@ -2306,7 +2318,7 @@ class NewVClaimController extends Controller
                     'jaminan' => [
                         'lakaLantas' => $lakaLantas,
                         'penjamin' => [
-                            'tglKejadian' => $tglKejadian,
+                            'tglKejadian' => $lakaLantas != 0 ? $tglKejadian : '',
                             'keterangan' => $keterangan,
                             'suplesi' => [
                                 'suplesi' => $suplesi,
@@ -2319,20 +2331,23 @@ class NewVClaimController extends Controller
                             ]
                         ]
                     ],
-                    'skdp' => [
-                        'noSurat' => $noSurat,
-                        'kodeDPJP' => $kodeDPJP,
-                    ],
                     'tujuanKunj' => $tujuanKunj,
                     'flagProcedure' => $flagProcedure,
                     'kdPenunjang' => $kdPenunjang,
                     'assesmentPel' => $assesmentPel,
-                    'dpjpLayan' => $dpjpLayan,
+                    'skdp' => [
+                        'noSurat' => $noSurat,
+                        'kodeDPJP' => $kodeDPJP,
+                    ],
+                    'dpjpLayan' => $kodeDPJP,
                     'noTelp' => $noTelp,
                     'user' => $user,
                 ]
             ]
         ];
+
+		Log::info('BPJS Create SEP API Request:');
+		Log::info(json_encode($data_request_sep));
 
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];

@@ -6,6 +6,7 @@ use App\Bridging\VClaim;
 use App\Http\Controllers\Bridging\NewVClaimController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class VClaimController extends Controller
 {
@@ -132,6 +133,17 @@ class VClaimController extends Controller
 
 		$vklaim_controller = new NewVClaimController();
 		$response = $vklaim_controller->dataHistoriPelayananPeserta($no_kartu, $tanggal_mulai, $tanggal_akhir);
+
+		Log::info('BPJS History Pelayanan Peserta API Response:');
+		Log::info(json_encode($response));
+
+		if (isset($response['histori'])) {
+			$response['metaData'] = [
+				'code' => 200,
+				'message' => 'success'
+			];
+			$response['response'] = $response;
+		}
 
 		return response()->json($response);
 	}

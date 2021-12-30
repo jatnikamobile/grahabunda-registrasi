@@ -15,6 +15,7 @@ use App\Models\Register;
 use App\Models\Procedure;
 use App\Models\Bridging_bpjs;
 use App\Models\Fppri;
+use Illuminate\Support\Facades\Log;
 
 class MasterController extends Controller{
 
@@ -299,9 +300,26 @@ class MasterController extends Controller{
 		$noRujukan = $request->noRujukan;
 		$request = $vclaim_controller->getRujukanByNomor($noRujukan);
 
+		Log::info('BPJS Get Rujukan API Response:');
+		Log::info(json_encode($request));
+
+		$nik = isset($request['rujukan']['peserta']['nik']) ? $request['rujukan']['peserta']['nik'] : null;
+		$pasien = null;
+		if ($nik) {
+			$pasien = MasterPS::where('NoIden', $nik)->first();
+		}
+
+		$data = $request;
+		$KdBPJS = isset($request['rujukan']['poliRujukan']['kode']) ? $request['rujukan']['poliRujukan']['kode'] : '';
+		$poli = POLItpp::where('KdBPJS', $KdBPJS)->first();
+		$data['poli_local']['KDPoli'] = $poli ? $poli->KDPoli : '';
+		$data['poli_local']['NMPoli'] = $poli ? $poli->NMPoli : '';
+		$data['poli_local']['KdBPJS'] = $KdBPJS;
+
 		return response()->json([
 			'status' => true,
-			'data' => $request,
+			'data' => $data,
+			'pasien' => $pasien
 		]);
 	}
 
@@ -414,8 +432,12 @@ class MasterController extends Controller{
 		$kdKecamatan = $request->input("kdKecamatan");
 		$noSurat = $request->input("noSurat");
 
-		$kodeDPJP = $request->input("kodeDPJP");
-		$dokter = FtDokter::where('KdDoc', $kodeDPJP)->first();
+		$register = Register::where('NoRujuk', $noRujukan)->first();
+
+		$dokter = $request->input("dokter");
+		$dokter = FtDokter::where('KdDoc', $dokter)->first();
+
+		$poli = POLItpp::where('KDPoli', $tujuan)->first();
 
 		$noTelp = $request->input("noTelp");
 		$user = $validuser;
@@ -436,7 +458,7 @@ class MasterController extends Controller{
 			'ppkRujukan' => $ppkRujukan,
 			'catatan' => $catatan,
 			'diagAwal' => $diagAwal,
-			'poli_tujuan' => $tujuan,
+			'poli_tujuan' => $poli ? $poli->KdBPJS : '',
 			'poli_eksekutif' => $eksekutif,
 			'cob' => $cob,
 			'katarak' => $katarak,
@@ -449,18 +471,29 @@ class MasterController extends Controller{
 			'kdKabupaten' => $kdKabupaten,
 			'kdKecamatan' => $kdKecamatan,
 			'tujuanKunj' => 0,
-			'flagProcedure' => 1,
+			'flagProcedure' =>  $register ? 1 : '',
 			// 'kdPenunjang' => null,
 			// 'assesmentPel' => null,
 			'noSurat' => $noSurat,
-			'kodeDPJP' => $kodeDPJP,
-			// 'dpjpLayan' => null,
+			'kodeDPJP' => $dokter ? $dokter->KdDPJP : '',
+			'dpjpLayan' => 'dpjpLayan',
 			'noTelp' => $noTelp,
 			'user' => $user,
 		];
 
 		$vclaim_controller = new NewVClaimController();
 		$response = $vclaim_controller->insertSEPV2($data_sep);
+
+		Log::info('BPJS Create SEP API Response:');
+		Log::info(json_encode($response));
+
+		if (isset($response['sep'])) {
+			$response['metaData'] = [
+				'code' => 200,
+				'message' => 'success'
+			];
+			$response['response'] = $response;
+		}
 		
 		if ($response->metaData->code == '201') {
 			return response()->json([

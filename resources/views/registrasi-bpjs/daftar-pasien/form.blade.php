@@ -2184,27 +2184,24 @@
                     },
                     success:function(response)
                     {
-                        console.log(response);
-                        loading.modal('hide');
-                        if(response.data){
-
-                            if (response.data.rujukan.peserta.mr.noMR == null) {
-                                alert("No Rekam Medik tidak ada!");
-                            }else{
-                                $('#Medrec').val(response.data.rujukan.peserta.mr.noMR);
+                        if (response.data) {
+                            if (response.pasien) {
+                                $('#Medrec').val(response.pasien.Medrec);
                                 // $('#btnCari').click();
                                 $('#Kunjungan').val('Lama');
-                                $('#Notelp').val(response.data.rujukan.peserta.mr.noTelepon);
-                                $('#kat_NoRM').val(response.data.rujukan.peserta.mr.noMR);
+                                $('#Notelp').val(response.pasien.Phone);
+                                $('#kat_NoRM').val(response.pasien.Medrec);
                                 $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
-                                get_kategori_pasien_master(response.data.rujukan.peserta.mr.noMR);
+                                get_kategori_pasien_master(response.pasien.Medrec);
+                            } else {
+                                alert("No Rekam Medik tidak ada!");
                             }
 
                             $('#Firstname').val(response.data.rujukan.peserta.nama);
                             $('#NoIden').val(response.data.rujukan.peserta.nik);
                             $('#pisat').val(response.data.rujukan.peserta.pisa);
                             $('#noKartu').val(response.data.rujukan.peserta.noKartu);
-                            $(`input[name=Faskes][value=${response.data.asalFaskes}]`).prop('checked', true);
+                            $(`input[name=Faskes][value=${response.data.rujukan.asalFaskes}]`).prop('checked', true);
 
                             $('#jatah_kelas').val(response.data.rujukan.peserta.hakKelas.kode);
 
@@ -2252,6 +2249,7 @@
                             loading.modal('hide');
                             alert('Pasien tidak ada!');
                         }
+                        loading.modal('hide');
                     }
                 });
             } else if($('#NoRujuk').val().length < 19) {
@@ -2372,12 +2370,12 @@
             success:function(response){
                 if (response.status == 'success') {
                     var data = response.data;
-                    var bpjs_data = response.bpjs_data.response;
-                    var register_data = response.register;
-                    var master_ps_data = response.master_ps;
-                    var kategori_data = response.kategori;
-                    var dokter_data = response.dokter;
-                    var poli_data = response.poli;
+                    var bpjs_data = response.data.bpjs_data.response;
+                    var register_data = response.data.register;
+                    var master_ps_data = response.data.master_ps;
+                    var kategori_data = response.data.kategori;
+                    var dokter_data = response.data.dokter;
+                    var poli_data = response.data.poli;
 
                     $('#Medrec').val(master_ps_data.Medrec);
                     $('#Firstname').val(master_ps_data.Firstname.toUpperCase());
@@ -2389,8 +2387,8 @@
                     $('#UmurHari').val(master_ps_data.UmurHr);
                     $('#UmurBln').val(master_ps_data.UmurBln);
                     $('#UmurThn').val(master_ps_data.UmurThn);
-                    $('#NoRujuk').val(bpjs_data.NoRujukan.provPerujuk.noRujukan);
-                    $('#RegRujuk').val(bpjs_data.NoRujukan.provPerujuk.tglRujukan.substring(0,10));
+                    $('#NoRujuk').val(bpjs_data.sep.provPerujuk.noRujukan);
+                    $('#RegRujuk').val(bpjs_data.sep.provPerujuk.tglRujukan.substring(0,10));
 
                     var $kategori = $("<option selected></option>").val(kategori_data.KdKategori).text(kategori_data.NmKategori);
                     $('#Kategori').append($kategori).trigger('change');
@@ -2398,9 +2396,14 @@
                     var $dokter = $("<option selected></option>").val(dokter_data.KdDoc).text(dokter_data.NmDoc);
                     $('#Dokter').append($dokter).trigger('change');
 
-                    var $poli = $("<option selected></option>").val(poli_data.KdPoli).text(poli_data.NMPoli);
+                    var $poli = $("<option selected></option>").val(poli_data.KdPoli).text(poli_data.NmPoli);
                     $('#poli').append($poli).trigger('change');
                     // setKodePoli(response.KdPoli, response.KdPoliBpjs);
+
+                    $('#jatah_kelas').val(register_data.NmKelas);
+
+                    var $diagnosa = $("<option selected></option>").val(register_data.KdICDBPJS).text(bpjs_data.sep.diagnosa);
+                    $('#Diagnosa').append($diagnosa).trigger('change');
 
                     if (master_ps_data.KdSex != null) {
                         $("input[name=KdSex][value=" + master_ps_data.KdSex.toUpperCase() + "]").attr('checked', 'checked');
@@ -2412,6 +2415,7 @@
                     $('#kat_NoRM').val(master_ps_data.Medrec);
                     $('#kat_Firstname').val(master_ps_data.Firstname);
                     $('#kat_NoPeserta').val(master_ps_data.AskesNo);
+                    $('#noKartu').val(master_ps_data.AskesNo);
                     var $ka_kategori = $("<option selected></option>").val(kategori_data.Kategori).text(kategori_data.NmKategori);
                     $('#kat_Kategori').append($ka_kategori).trigger('change');
 
@@ -3018,6 +3022,7 @@
                     noSurat: nosurat.substring(0, 6),
                     kodeDPJP: $('#DokterPengirim').val(),
                     noTelp: $('#Notelp').val(),
+                    dokter: $('#Dokter').val()
                 },
                 success:function(response)
                 {

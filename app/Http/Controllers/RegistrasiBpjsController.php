@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use PDF;
 use App\Bridging\VClaim;
+use App\Http\Controllers\Bridging\NewVClaimController;
 use App\Http\Controllers\RsNet\RsNetKunjunganController;
 use App\Http\Controllers\RsNet\RsNetPasienController;
 use App\Http\Controllers\RsNet\RsNetRujukanController;
@@ -111,22 +112,27 @@ class RegistrasiBpjsController extends Controller
         $surat = new SuratControl();
         $data = $surat->find_nosurat($nosurat);
         
-        $bpjs_data = VClaim::get_rencana_control($nosurat);
+        // $bpjs_data = VClaim::get_rencana_control($nosurat);
+        $vclaim_controller = new NewVClaimController();
+        $bpjs_data = $vclaim_controller->cariNomorSuratKontrol($nosurat);
 
         Log::info("data BPJS Surat Kontrol: " . json_encode($bpjs_data));
 
-        if ($bpjs_data['metaData']['code'] == '200') {
-            $no_peserta = isset($bpjs_data['response']['sep']['noKartu']) ? $bpjs_data['response']['sep']['noKartu'] : null;
+        if (isset($bpjs_data['noSuratKontrol'])) {
+            $no_peserta = isset($bpjs_data['sep']['peserta']['noKartu']) ? $bpjs_data['sep']['peserta']['noKartu'] : null;
     
             $register = $no_peserta ? Register::where('NoPeserta', $no_peserta)->orderBy('Regno', 'desc')->first() : null;
             $master_ps = $register ? MasterPS::where('Medrec', $register->Medrec)->first() : null;
             $kategori = $register ? TblKategoriPsn::where('KdKategori', $register->Kategori)->first() : null;
             $dokter = $register ? FtDokter::where('KdDoc', $register->KdDoc)->first() : null;
             $poli = $register ? FtDokter::where('KdPoli', $register->KdPoli)->first() : null;
-    
+
+            $response_data['metaData'] = ['code' => 200];
+            $response_data['response'] = $bpjs_data;
+
             $data = [
                 'data' => $data,
-                'bpjs_data' => $bpjs_data,
+                'bpjs_data' => $response_data,
                 'register' => $register,
                 'master_ps' => $master_ps,
                 'kategori' => $kategori,
