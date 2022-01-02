@@ -471,7 +471,7 @@ class MasterController extends Controller{
 			'kdKabupaten' => $kdKabupaten,
 			'kdKecamatan' => $kdKecamatan,
 			'tujuanKunj' => 0,
-			'flagProcedure' =>  1,
+			'flagProcedure' =>  '',
 			// 'kdPenunjang' => null,
 			// 'assesmentPel' => null,
 			'noSurat' => $noSurat,
