@@ -432,7 +432,7 @@ class MasterController extends Controller{
 		$kdKecamatan = $request->input("kdKecamatan");
 		$noSurat = $request->input("noSurat");
 
-		$register = Register::where('NoRujuk', $noRujukan)->first();
+		$register = Register::where('NoRujuk', $noRujukan)->whereIn('NoSep', [null, ''])->first();
 
 		$dokter = $request->input("dokter");
 		$dokter = FtDokter::where('KdDoc', $dokter)->first();
