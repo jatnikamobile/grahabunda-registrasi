@@ -87,9 +87,9 @@ class RsNetPasienController extends Controller
 
             $exists = true;
             $pasien = TmPasien::where('I_RekamMedis', $I_RekamMedis)->first();
-            if (!$pasien) {
-                $pasien = TmPasien::where('I_NoIdentitas', $I_NoIdentitas)->first();
-            }
+            // if (!$pasien) {
+            //     $pasien = TmPasien::where('I_NoIdentitas', $I_NoIdentitas)->first();
+            // }
             if (!$pasien) {
                 $exists = false;
                 $pasien = new TmPasien();
