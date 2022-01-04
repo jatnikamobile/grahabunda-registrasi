@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Bridging\VClaim;
 use App\Http\Controllers\Bridging\NewVClaimController;
+use App\Models\AwSuratKontrolHead;
 use App\Models\Keyakinan;
 use App\Models\POLItpp;
 use App\Models\FtDokter;
@@ -15,6 +16,7 @@ use App\Models\Register;
 use App\Models\Procedure;
 use App\Models\Bridging_bpjs;
 use App\Models\Fppri;
+use App\Models\RsNet\AdmKunjungan;
 use Illuminate\Support\Facades\Log;
 
 class MasterController extends Controller{
@@ -35,12 +37,14 @@ class MasterController extends Controller{
 
 		$register = new Register();
 		$check = $register->cek_pasien($medrec);
+		$kunjungan = AdmKunjungan::where('I_RekamMedis', $medrec)->first();
 		// dd($check);
 
 		return response()->json([
 			'status' => true,
 			'data' => $list,
-			'register' => $check
+			'register' => $check,
+			'kunjungan' => $kunjungan
 			]);
 	}
 
@@ -71,6 +75,11 @@ class MasterController extends Controller{
 				'data' => [],
 			]);
 		} elseif($poli == '39'){
+			return response()->json([
+				'status' => true,
+				'data' => [],
+			]);
+		} elseif($poli == '30'){
 			return response()->json([
 				'status' => true,
 				'data' => [],
@@ -400,6 +409,7 @@ class MasterController extends Controller{
 
 	public function create_sep(Request $request)
 	{
+		Log::info('===========================================================================');
 		$validuser = 'SIMRS';
 
 		$noKartu = $request->input("noKartu");
@@ -432,7 +442,19 @@ class MasterController extends Controller{
 		$kdKecamatan = $request->input("kdKecamatan");
 		$noSurat = $request->input("noSurat");
 
-		$register = Register::where('NoRujuk', $noRujukan)->whereIn('NoSep', [null, ''])->first();
+		$tujuan_kunjungan = $request->input('tujuan_kunjungan');
+		$flag_procedure = $request->input('flag_procedure');
+		$kode_penunjang = $request->input('kode_penunjang');
+		$assesment = $request->input('assesment');
+
+		$register = Register::where('NoRujuk', $noRujukan)->whereNotNull('NoSep')->first();
+		$surat_kontrol = $register ? AwSuratKontrolHead::where('Regno', $register->Regno)->first() : null;
+
+		$vclaim_controller = new NewVClaimController();
+		$rencana_kontrol = $surat_kontrol ? $vclaim_controller->cariNomorSuratKontrol($surat_kontrol->no_surat_kontrol_bpjs) : [];
+	
+		Log::info('BPJS Surat Kontrol API Response:');
+		Log::info($rencana_kontrol);
 
 		$dokter = $request->input("dokter");
 		$dokter = FtDokter::where('KdDoc', $dokter)->first();
@@ -442,50 +464,91 @@ class MasterController extends Controller{
 		$noTelp = $request->input("noTelp");
 		$user = $validuser;
 
-		$data_sep = [
-			'noKartu' => $noKartu,
-			'tglSep' => $tglSep,
-			'ppkPelayanan' => $ppkPelayanan,
-			'jnsPelayanan' => $jnsPelayanan,
-			'klsRawatHak' => $klsRawat,
-			// 'klsRawatNaik' => $klsRawat,
-			// 'pembiayaan' => $klsRawat,
-			// 'penanggungJawab' => $klsRawat,
-			'noMR' => $noMR,
-			'asalRujukan' => $asalRujukan,
-			'tglRujukan' => $tglRujukan,
-			'noRujukan' => $noRujukan,
-			'ppkRujukan' => $ppkRujukan,
-			'catatan' => $catatan,
-			'diagAwal' => $diagAwal,
-			'poli_tujuan' => $poli ? $poli->KdBPJS : '',
-			'poli_eksekutif' => $eksekutif,
-			'cob' => $cob,
-			'katarak' => $katarak,
-			'lakaLantas' => $lakaLantas,
-			'tglKejadian' => $tglKejadian,
-			'keterangan' => $keterangan,
-			'suplesi' => $suplesi,
-			'noSepSuplesi' => $noSepSuplesi,
-			'kdPropinsi' => $kdPropinsi,
-			'kdKabupaten' => $kdKabupaten,
-			'kdKecamatan' => $kdKecamatan,
-			'tujuanKunj' => 0,
-			'flagProcedure' =>  '',
-			// 'kdPenunjang' => null,
-			// 'assesmentPel' => null,
-			'noSurat' => $noSurat,
-			'kodeDPJP' => $dokter ? $dokter->KdDPJP : '',
-			'dpjpLayan' => 'dpjpLayan',
-			'noTelp' => $noTelp,
-			'user' => $user,
-		];
-
+		if (count($rencana_kontrol) > 0) {
+			$data_sep = [
+				'noKartu' => $rencana_kontrol['sep']['peserta']['noKartu'],
+				'tglSep' => $rencana_kontrol['sep']['tglSep'],
+				'ppkPelayanan' => $ppkPelayanan,
+				'jnsPelayanan' => $jnsPelayanan,
+				'klsRawatHak' => $klsRawat,
+				// 'klsRawatNaik' => $klsRawat,
+				// 'pembiayaan' => $klsRawat,
+				// 'penanggungJawab' => $klsRawat,
+				'noMR' => $noMR,
+				'asalRujukan' => $rencana_kontrol['sep']['provPerujuk']['asalRujukan'],
+				'tglRujukan' => $rencana_kontrol['sep']['provPerujuk']['tglRujukan'],
+				'noRujukan' => $rencana_kontrol['sep']['provPerujuk']['noRujukan'],
+				'ppkRujukan' => $rencana_kontrol['sep']['provPerujuk']['kdProviderPerujuk'],
+				'catatan' => $catatan,
+				'diagAwal' => $diagAwal,
+				'poli_tujuan' => $tujuan,
+				'poli_eksekutif' => $eksekutif,
+				'cob' => $cob,
+				'katarak' => $katarak,
+				'lakaLantas' => $lakaLantas,
+				'tglKejadian' => $tglKejadian,
+				'keterangan' => $keterangan,
+				'suplesi' => $suplesi,
+				'noSepSuplesi' => $noSepSuplesi,
+				'kdPropinsi' => $kdPropinsi,
+				'kdKabupaten' => $kdKabupaten,
+				'kdKecamatan' => $kdKecamatan,
+				'tujuanKunj' => $tujuan_kunjungan,
+				'flagProcedure' => $flag_procedure,
+				'kdPenunjang' => $kode_penunjang,
+				'assesmentPel' => $assesment,
+				'noSurat' => $rencana_kontrol['noSuratKontrol'],
+				'kodeDPJP' => $rencana_kontrol['kodeDokter'],
+				'dpjpLayan' => $rencana_kontrol['kodeDokter'],
+				'noTelp' => $noTelp,
+				'user' => $user,
+			];
+		} else {
+			$data_sep = [
+				'noKartu' => $noKartu,
+				'tglSep' => $tglSep,
+				'ppkPelayanan' => $ppkPelayanan,
+				'jnsPelayanan' => $jnsPelayanan,
+				'klsRawatHak' => $klsRawat,
+				// 'klsRawatNaik' => $klsRawat,
+				// 'pembiayaan' => $klsRawat,
+				// 'penanggungJawab' => $klsRawat,
+				'noMR' => $noMR,
+				'asalRujukan' => $asalRujukan,
+				'tglRujukan' => $tglRujukan,
+				'noRujukan' => $noRujukan,
+				'ppkRujukan' => $ppkRujukan,
+				'catatan' => $catatan,
+				'diagAwal' => $diagAwal,
+				'poli_tujuan' => $poli ? $poli->KdBPJS : '',
+				'poli_eksekutif' => $eksekutif,
+				'cob' => $cob,
+				'katarak' => $katarak,
+				'lakaLantas' => $lakaLantas,
+				'tglKejadian' => $tglKejadian,
+				'keterangan' => $keterangan,
+				'suplesi' => $suplesi,
+				'noSepSuplesi' => $noSepSuplesi,
+				'kdPropinsi' => $kdPropinsi,
+				'kdKabupaten' => $kdKabupaten,
+				'kdKecamatan' => $kdKecamatan,
+				'tujuanKunj' => $tujuan_kunjungan,
+				'flagProcedure' => $flag_procedure,
+				'kdPenunjang' => $kode_penunjang,
+				'assesmentPel' => $assesment,
+				'noSurat' => $noSurat,
+				'kodeDPJP' => $dokter ? $dokter->KdDPJP : '',
+				'dpjpLayan' => $dokter ? $dokter->KdDPJP : '',
+				'noTelp' => $noTelp,
+				'user' => $user,
+			];
+		}
+	
 		$vclaim_controller = new NewVClaimController();
 		$response = $vclaim_controller->insertSEPV2($data_sep);
 
 		Log::info('BPJS Create SEP API Response:');
-		Log::info(json_encode($response));
+		Log::info($response);
 
 		if (isset($response['sep'])) {
 			$response['metaData'] = [
@@ -495,7 +558,7 @@ class MasterController extends Controller{
 			$response['response'] = $response;
 		}
 		
-		if ($response->metaData->code == '201') {
+		if (isset($response['metaData']['code']) && $response['metaData']['code'] == '201') {
 			return response()->json([
 				'metaData' => $response['metaData'],
 				'data' => $response['response']

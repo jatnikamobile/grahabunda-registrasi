@@ -105,7 +105,7 @@
                         <select type="text" name="rujukan_dari" id="rujukan_dari" style="width:100%;" class="form-control">
                             <option value="">-= Rujukan Dari =-</option>
                             @foreach ($kelompok_rujukan as $kr)
-                                <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : '-= Kunjungan =-'}}>{{ $kr->N_KelompokRujukan }}</option>
+                                <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : ($kr->I_KelompokRujukan == 99 ? 'selected' : '')}}>{{ $kr->N_KelompokRujukan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -967,7 +967,7 @@
                         }
                     }
 
-                    if(response.register == null){
+                    if(response.kunjungan == null){
                         $('#Kunjungan').val('Baru');
                     }else{;
                         $('#Kunjungan').val('Lama');

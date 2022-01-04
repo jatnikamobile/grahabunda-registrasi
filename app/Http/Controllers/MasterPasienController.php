@@ -11,7 +11,10 @@ use App\Models\MasterPS;
 use App\Models\Procedure;
 use App\Models\StoredProcedures;
 use App\Models\FKeyakinan;
+use App\Models\RsNet\TmGolonganDarah;
 use App\Models\TBLAgama;
+use App\Models\TBLKabupaten;
+use App\Models\TBLKelurahan;
 use App\Models\TBLPendidikan;
 use App\Models\TBLPekerjaan;
 
@@ -72,6 +75,48 @@ class MasterPasienController extends Controller
         $agama = TBLAgama::where('NmAgama', $request->Agama)->first();
         $pendi = TBLPendidikan::where('NmDidik', $request->Pendidikan)->first();
         $kerja = TBLPekerjaan::where('NmKerja', $request->Pekerjaan)->first();
+        $kota = TBLKabupaten::where('NmKabupaten', $request->NmKabupaten)->first();
+        $pekerjaan = TBLPekerjaan::where('NmKerja', $request->Pekerjaan)->first();
+        $GolDarah = $request->GolDarah;
+        $RHDarah = $request->RHDarah;
+        $golongan_darah = $GolDarah . $RHDarah;
+        $dt_gol_darah = TmGolonganDarah::where('N_GolonganDarah', $golongan_darah)->first();
+
+        $pendidikan = $request->Pendidikan;
+
+        switch ($pendidikan) {
+            case 'SD':
+                $kode_pendidikan = 2;
+                break;
+            case 'SLTP':
+                $kode_pendidikan = 3;
+                break;
+            case 'SLTA':
+                $kode_pendidikan = 4;
+                break;
+            case 'BELUM SEKOLAH':
+                $kode_pendidikan = 1;
+                break;
+            case 'DIPLOMA 3':
+                $kode_pendidikan = 5;
+                break;
+            case 'S1':
+                $kode_pendidikan = 6;
+                break;
+            case 'S2':
+                $kode_pendidikan = 7;
+                break;
+            case 'S3':
+                $kode_pendidikan = 8;
+                break;
+            case 'TIDAK SEKOLAH':
+                $kode_pendidikan = 1;
+                break;
+            
+            default:
+                $kode_pendidikan = null;
+                break;
+        }
 
         $data_pasien = [
             'I_RekamMedis' => $request->Medrec,
@@ -80,11 +125,17 @@ class MasterPasienController extends Controller
             'D_Lahir' => $request->Bod,
             'A_Lahir' => $request->Pod,
             'A_Rumah' => $request->Alamat,
+            'I_Kelurahan' => $request->Kelurahan,
+            'Kota' => $kota ? $kota->KdKabupaten : null,
             'I_Telepon' => $request->Phone,
-            'I_Agama' => $request->KdAgama,
+            'I_Agama' => $agama ? $agama->KdAgama : null,
             'C_Sex' => $request->KdSex == 'L' ? 1 : 0,
             // 'C_WargaNegara' => $request->WargaNegara,
             // 'C_StatusKawin' => $request->Perkawinan,
+            'I_Pendidikan' => $kode_pendidikan,
+            'I_Pekerjaan' => $pekerjaan ? $pekerjaan->KdKerja : null,
+            'I_GolDarah' => $dt_gol_darah ? $dt_gol_darah->I_GolonganDarah : null,
+            'I_JenisIdentitas' => $request->JenisIdentitas,
             'I_NoIdentitas' => $request->NoIden,
             'I_Entry' => Auth::user() ? Auth::user()->NamaUser : 'system',
             'D_Entry' => date('Y-m-d'),

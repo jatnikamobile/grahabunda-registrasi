@@ -2339,7 +2339,7 @@ class NewVClaimController extends Controller
                         'noSurat' => $noSurat,
                         'kodeDPJP' => $kodeDPJP,
                     ],
-                    'dpjpLayan' => $kodeDPJP,
+                    'dpjpLayan' => $dpjpLayan,
                     'noTelp' => $noTelp,
                     'user' => $user,
                 ]
@@ -2347,7 +2347,7 @@ class NewVClaimController extends Controller
         ];
 
 		Log::info('BPJS Create SEP API Request:');
-		Log::info(json_encode($data_request_sep));
+		Log::info($data_request_sep);
 
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];

@@ -147,7 +147,7 @@
                         <select type="text" name="rujukan_dari" id="rujukan_dari" style="width:100%;" class="form-control">
                             <option value="">-= Rujukan Dari =-</option>
                             @foreach ($kelompok_rujukan as $kr)
-                                <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : '-= Kunjungan =-'}}>{{ $kr->N_KelompokRujukan }}</option>
+                                <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : ($kr->I_KelompokRujukan == 99 ? 'selected' : '')}}>{{ $kr->N_KelompokRujukan }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback text-danger hide" id="rujukan-dari-validation">
@@ -708,6 +708,80 @@
             </div>
         </div>
     </div><!-- MODAL CARI PASIEN -->
+    <!-- MODAL TUJUAN KUNJUNGAN -->
+    <div class="modal fade bd-example-modal-lg-tujuan-kunjungan"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h5 class="modal-title" id="exampleModalLabel">Pilih Tujuan Kunjungan</h5>
+                    </div><hr>
+                    <form method="get" id="bd-example-modal-lg-tujuan-kunjungan">
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right">Tujuan Kunjungan</label>
+                            <div class="input-group col-sm-7">
+                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                                <select type="text" name="tujuan_kunjungan" id="tujuan_kunjungan" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                                    <option value="">-= Tujuan Kunjungan =-</option>
+                                    <option value="0">Normal</option>
+                                    <option value="1">Prosedur</option>
+                                    <option value="2">Konsul Dokter</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right">Flag Procedure</label>
+                            <div class="input-group col-sm-7">
+                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                                <select type="text" name="flag_procedure" id="flag_procedure" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                                    <option value="">-= Flag Procedure =-</option>
+                                    <option value="0">Prosedur Tidak Berkelanjutan</option>
+                                    <option value="1">Prosedur dan Terapi Berkelanjutan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right">Kode Penunjang</label>
+                            <div class="input-group col-sm-7">
+                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                                <select type="text" name="kode_penunjang" id="kode_penunjang" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                                    <option value="">-= Kode Penunjang =-</option>
+                                    <option value="1">Radioterapi</option>
+                                    <option value="2">Kemoterapi</option>
+                                    <option value="3">Rehabilitasi Medik</option>
+                                    <option value="4">Rehabilitasi Psikososial</option>
+                                    <option value="5">Transfusi Darah</option>
+                                    <option value="6">Pelayanan Gigi</option>
+                                    <option value="7">Laboratorium</option>
+                                    <option value="8">USG</option>
+                                    <option value="9">Farmasi</option>
+                                    <option value="10">Lain-Lain</option>
+                                    <option value="11">MRI</option>
+                                    <option value="12">HEMODIALISA</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right">Assesment</label>
+                            <div class="input-group col-sm-7">
+                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                                <select type="text" name="assesment" id="assesment" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                                    <option value="">-= Assesment =-</option>
+                                    <option value="1">Poli spesialis tidak tersedia pada hari sebelumnya</option>
+                                    <option value="2">Jam Poli telah berakhir pada hari sebelumnya</option>
+                                    <option value="3">Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya</option>
+                                    <option value="4">Atas Instruksi RS</option>
+                                    <option value="5">Tujuan Kontrol</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pull-right"><a href="javascript:void(0)" class="btn btn-info btn-sm" id="go_create_sep">OK</a></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- MODAL TUJUAN KUNJUNGAN -->
     <!-- HISTORI PASIEN -->
     <div class="modal fade bd-example-modal-lg-histori" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -2490,7 +2564,7 @@
                         $("input[name=KdSex][value=" + response.data.KdSex.toUpperCase() + "]").attr('checked', 'checked');
                     }
 
-                    if(response.register == null){
+                    if(response.kunjungan == null){
                         $('#Kunjungan').val('Baru');
                     }else{
                         $('#Kunjungan').val('Lama');
@@ -2970,8 +3044,12 @@
         loading.modal('hide');
     });
 
-    $('#createsep').on("click", function(){
-        let btn = $('#createsep');
+    $('#createsep').on('click', function () {
+        $('.bd-example-modal-lg-tujuan-kunjungan').modal();
+    });
+
+    $('#go_create_sep').on("click", function(){
+        let btn = $('#go_create_sep');
         let oldText = btn.html();
         btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
         btn.prop('disabled', true);
@@ -3022,7 +3100,11 @@
                     noSurat: nosurat.substring(0, 6),
                     kodeDPJP: $('#DokterPengirim').val(),
                     noTelp: $('#Notelp').val(),
-                    dokter: $('#Dokter').val()
+                    dokter: $('#Dokter').val(),
+                    tujuan_kunjungan: $('#tujuan_kunjungan').val(),
+                    flag_procedure: $('#flag_procedure').val(),
+                    kode_penunjang: $('#kode_penunjang').val(),
+                    assesment: $('#assesment').val()
                 },
                 success:function(response)
                 {

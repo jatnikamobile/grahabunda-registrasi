@@ -135,8 +135,31 @@
 							<option value="{{ $wn }}" {{ isset($edit->WargaNegara) && @$edit->WargaNegara == $wn ? 'selected' : '-= Warga Negara =-'}}>{{ $wn }}</option>
 							@endforeach
 						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<!-- Input Kewarganegaraan -->
 						<!-- Input Nomor Identitas / KTP -->
-						<span class="input-group-addon" id="" style="border:none;background-color:white;">No Identitas</span>
+					<label class="col-sm-3 control-label no-padding-right">Jenis Identitas</label>
+					<div class="input-group col-sm-9">
+						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+						<select name="JenisIdentitas" id="JenisIdentitas" style="width:100%;" class="form-control select2 input-sm col-xs-6 col-sm-6">
+							<option value="">-= Jenis Identitas =-</option>
+							<option value="0">KTP</option>
+							<option value="1">SIM</option>
+							<option value="2">KTM</option>
+							<option value="3">Paspor</option>
+							<option value="4">KITAS</option>
+							<option value="6">KIA</option>
+							<option value="7">Lain-lain</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<!-- Input Kewarganegaraan -->
+						<!-- Input Nomor Identitas / KTP -->
+					<label class="col-sm-3 control-label no-padding-right">No Identitas</label>
+					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
 						<input type="text" name="NoIden" id="NoIden" class="form-control input-sm col-xs-6 col-sm-6" value="{{ @$edit->NoIden }}" onkeydown="getPesertaBpjsNIK(this, event)" required>
 					</div>
@@ -734,6 +757,7 @@
 					RHDarah: $('[name=RHDarah]').val(),
 					KdNilai: $('[name=KdNilai]').val(),
 					WargaNegara: $('[name=WargaNegara]').val(),
+					JenisIdentitas: $('[name=JenisIdentitas]').val(),
 					NoIden: $('[name=NoIden]').val(),
 					Suku: $('[name=Suku]').val(),
 					Perkawinan: $('[name=Perkawinan]').val(),
