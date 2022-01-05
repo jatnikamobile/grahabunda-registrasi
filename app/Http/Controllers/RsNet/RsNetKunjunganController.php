@@ -301,39 +301,39 @@ class RsNetKunjunganController extends Controller
                 }
                 $kunjungan->save();
 
-                // if ($I_Unit == 30) {
-                //     $i_produk = 6122;
-                //     $v_total_transaksi = 75000;
-                // } elseif ($I_Unit == 2019) {
-                //     $i_produk = 73038;
-                //     $v_total_transaksi = 50000;
-                // } else {
-                //     $i_produk = 6064;
-                //     $v_total_transaksi = 75000;
-                // }
+                if ($I_Unit == 30) {
+                    $i_produk = 6122;
+                    $v_total_transaksi = 75000;
+                } elseif ($I_Unit == 2019) {
+                    $i_produk = 73038;
+                    $v_total_transaksi = 50000;
+                } else {
+                    $i_produk = 6064;
+                    $v_total_transaksi = 75000;
+                }
                 // $pt_produk_unit = PtProdukUnit::where('I_Produk', $i_produk)->where('I_Unit', $I_Unit)->first();
                 // $pt_tarif = $pt_produk_unit ? PtTarif::where('I_ProdukUnit', $pt_produk_unit->I_ProdukUnit)->first() : null;
                 // $i_tarif = $pt_tarif ? $pt_tarif->I_Tarif : 0;
                 // $v_tarif = $pt_tarif ? $pt_tarif->V_Tarif : 0;
 
-                // $last_rows_bt = BillTransaksi::orderBy('I_Transaksi', 'desc')->first();
-                // $next_id_bt = $last_rows_bt ? $last_rows_bt->I_Transaksi + 1 : 1;
+                $last_rows_bt = BillTransaksi::orderBy('I_Transaksi', 'desc')->first();
+                $next_id_bt = $last_rows_bt ? $last_rows_bt->I_Transaksi + 1 : 1;
 
-                // $bill_transaksi = $exists ? BillTransaksi::where('I_Kunjungan', $i_kunjungan)->first() : new BillTransaksi();
+                $bill_transaksi = $exists ? BillTransaksi::where('I_Kunjungan', $i_kunjungan)->first() : new BillTransaksi();
                 // $i_transaksi = $bill_transaksi->I_Transaksi;
-                // $bill_transaksi->I_Transaksi = $exists ? $bill_transaksi->I_Transaksi : $next_id_bt;
-                // $bill_transaksi->I_Kunjungan = $kunjungan->I_Kunjungan;
-                // $bill_transaksi->V_TotalTransaksi = $v_total_transaksi;
-                // $bill_transaksi->IsLunasPendaftaran = 0;
-                // $bill_transaksi->IsLunasLayanan = 0;
-                // $bill_transaksi->IsPulang = 0;
-                // $bill_transaksi->I_Entry = $I_Entry;
-                // $bill_transaksi->D_Entry = $D_Entry;
-                // $bill_transaksi->C_Shift = $C_Shift;
-                // $bill_transaksi->V_TotalDiskon = 0;
-                // $bill_transaksi->V_PersenSJP = 0;
-                // $bill_transaksi->V_NominalSJP = 0;
-                // $bill_transaksi->save();
+                $bill_transaksi->I_Transaksi = $exists ? $bill_transaksi->I_Transaksi : $next_id_bt;
+                $bill_transaksi->I_Kunjungan = $kunjungan->I_Kunjungan;
+                $bill_transaksi->V_TotalTransaksi = $v_total_transaksi;
+                $bill_transaksi->IsLunasPendaftaran = 0;
+                $bill_transaksi->IsLunasLayanan = 0;
+                $bill_transaksi->IsPulang = 0;
+                $bill_transaksi->I_Entry = $I_Entry;
+                $bill_transaksi->D_Entry = $D_Entry;
+                $bill_transaksi->C_Shift = $C_Shift;
+                $bill_transaksi->V_TotalDiskon = 0;
+                $bill_transaksi->V_PersenSJP = 0;
+                $bill_transaksi->V_NominalSJP = 0;
+                $bill_transaksi->save();
 
                 // $last_rows_btd = BillTransaksiDetail::orderBy('D_Entry', 'desc')->first();
                 // $next_id_btd = $last_rows_btd ? $last_rows_btd->I_TransaksiDetail + 1 : 1;
