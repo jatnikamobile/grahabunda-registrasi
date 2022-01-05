@@ -344,7 +344,7 @@
 					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
 						<select type="text" name="Kelurahan" id="Kelurahan" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
-							<option value="{{ isset($edit->Kelurahan) ? $edit->Kelurahan : ''}}">{{ isset($edit->Kelurahan) ? $edit->Kelurahan : '-= Kelurahan =-'}}</option>
+							<option value="{{ isset($edit->KdKelurahan) ? $edit->KdKelurahan : ''}}">{{ isset($edit->Kelurahan) ? $edit->Kelurahan : '-= Kelurahan =-'}}</option>
 						</select>
 						<input type="hidden" name="NmKelurahan" id="NmKelurahan" value="{{ @$edit->Kelurahan }}">
 					</div>
