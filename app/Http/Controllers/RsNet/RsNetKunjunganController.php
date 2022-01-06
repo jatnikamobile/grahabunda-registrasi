@@ -301,16 +301,17 @@ class RsNetKunjunganController extends Controller
                 }
                 $kunjungan->save();
 
-                if ($I_Unit == 30) {
-                    $i_produk = 6122;
-                    $v_total_transaksi = 75000;
-                } elseif ($I_Unit == 2019) {
-                    $i_produk = 73038;
-                    $v_total_transaksi = 50000;
-                } else {
-                    $i_produk = 6064;
-                    $v_total_transaksi = 75000;
-                }
+                $v_total_transaksi = 0 ;
+                // if ($I_Unit == 30) {
+                //     $i_produk = 6122;
+                //     $v_total_transaksi = 75000;
+                // } elseif ($I_Unit == 2019) {
+                //     $i_produk = 73038;
+                //     $v_total_transaksi = 50000;
+                // } else {
+                //     $i_produk = 6064;
+                //     $v_total_transaksi = 75000;
+                // }
                 // $pt_produk_unit = PtProdukUnit::where('I_Produk', $i_produk)->where('I_Unit', $I_Unit)->first();
                 // $pt_tarif = $pt_produk_unit ? PtTarif::where('I_ProdukUnit', $pt_produk_unit->I_ProdukUnit)->first() : null;
                 // $i_tarif = $pt_tarif ? $pt_tarif->I_Tarif : 0;
