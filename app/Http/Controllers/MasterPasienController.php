@@ -197,7 +197,7 @@ class MasterPasienController extends Controller
                 $new_pasien->PekerjaanPJ = $request->PekerjaanPJ;
                 $new_pasien->PhonePJ = $request->PhonePJ;
                 $new_pasien->AlamatPJ = $request->AlamatPJ;
-                $new_pasien->KdKelurahan = $request->Kelurahan;
+                $new_pasien->KdKelurahan = $data_pasien['I_Kelurahan'];
                 $new_pasien->NmSuku = $request->Suku;
                 $new_pasien->KdSex = $request->KdSex;
                 $new_pasien->Keyakinan = $request->KdNilai;
@@ -243,7 +243,7 @@ class MasterPasienController extends Controller
                 $new_pasien->PekerjaanPJ = $request->PekerjaanPJ ?: $new_pasien->PekerjaanPJ;
                 $new_pasien->PhonePJ = $request->PhonePJ ?: $new_pasien->PhonePJ;
                 $new_pasien->AlamatPJ = $request->AlamatPJ ?: $new_pasien->AlamatPJ;
-                $new_pasien->KdKelurahan = $request->Kelurahan ?: $new_pasien->KdKelurahan;
+                $new_pasien->KdKelurahan = $data_pasien['I_Kelurahan'] ?: $new_pasien->KdKelurahan;
                 $new_pasien->NmSuku = $request->Suku ?: $new_pasien->NmSuku;
                 $new_pasien->KdSex = $request->KdSex ?: $new_pasien->KdSex;
                 $new_pasien->Keyakinan = $request->KdNilai ?: $new_pasien->Keyakinan;
