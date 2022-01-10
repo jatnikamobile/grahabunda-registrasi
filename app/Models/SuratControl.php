@@ -43,7 +43,7 @@ class SuratControl extends Model
     public function get_list($medrec = '',$nama = '')
     {
         $tgl=date('Y-m-d');
-        $data = $this->select(DB::connection('main')->raw("POLItpp.NMPoli, AwSuratKontrolHead.NoSurat, AwSuratKontrolHead.Regno, AwSuratKontrolHead.Medrec, AwSuratKontrolHead.Firstname, AwSuratKontrolHead.Norujukan, AwSuratKontrolHead.TanggalRujukan, AwSuratKontrolHead.TanggalSurat"))
+        $data = $this->select(DB::connection('main')->raw("POLItpp.NMPoli, AwSuratKontrolHead.NoSurat, AwSuratKontrolHead.Regno, AwSuratKontrolHead.Medrec, AwSuratKontrolHead.Firstname, AwSuratKontrolHead.Norujukan, AwSuratKontrolHead.TanggalRujukan, AwSuratKontrolHead.TanggalSurat, AwSuratKontrolHead.no_surat_kontrol_bpjs"))
                      ->leftJoin("POLItpp", "POLItpp.KDPoli", "=", "AwSuratKontrolHead.KdPoli");
         if($medrec != ''){ $data->where("AwSuratKontrolHead.Medrec", "like", "%".$medrec."%"); }
         if($nama != ''){ $data->where("AwSuratKontrolHead.Firstname", "like", "%".$nama."%"); }

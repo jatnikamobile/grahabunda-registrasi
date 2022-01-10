@@ -66,6 +66,7 @@
                             <tr class="info">
                                 <th>No</th>
                                 <th>No Surat</th>
+                                <th>No Surat Kontrol BPJS</th>
                                 <th>Rekam Medis</th>
                                 <th>Tgl Kunjungan Sebelum</th>
                                 <th>No Registrasi Sebelum</th>
@@ -84,6 +85,7 @@
                             <tr>
                                 <td>{{ ++$n }}</td>
                                 <td>{{ $l->NoSurat }}</td>
+                                <td>{{ $l->no_surat_kontrol_bpjs }}</td>
                                 <td>{{ $l->Medrec }}</td>
                                 <td>{{ date('d/m/Y',strtotime($l->TanggalRujukan)) }}</td>
                                 <td>{{ $l->Regno }}</td>
