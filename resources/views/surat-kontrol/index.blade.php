@@ -122,6 +122,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>No Surat</th>
+                                <th>No Surat Kontrol BPJS</th>
                                 <th>Rekam Medis</th>
                                 <th>Tgl Kunjungan Sebelum</th>
                                 <th>No Registrasi Sebelum</th>
