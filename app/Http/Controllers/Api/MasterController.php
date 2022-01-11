@@ -467,7 +467,7 @@ class MasterController extends Controller{
 		if (count($rencana_kontrol) > 0) {
 			$data_sep = [
 				'noKartu' => $rencana_kontrol['sep']['peserta']['noKartu'],
-				'tglSep' => $rencana_kontrol['sep']['tglSep'],
+				'tglSep' => $tglSep,
 				'ppkPelayanan' => $ppkPelayanan,
 				'jnsPelayanan' => $jnsPelayanan,
 				'klsRawatHak' => $klsRawat,
@@ -480,8 +480,10 @@ class MasterController extends Controller{
 				'noRujukan' => $rencana_kontrol['sep']['provPerujuk']['noRujukan'],
 				'ppkRujukan' => $rencana_kontrol['sep']['provPerujuk']['kdProviderPerujuk'],
 				'catatan' => $catatan,
-				'diagAwal' => $diagAwal,
-				'poli_tujuan' => $tujuan,
+				'diagAwal' => $rencana_kontrol['sep']['diagnosa'],
+				// 'diagAwal' => $diagAwal,
+				// 'diagAwal' => '480.2',
+				'poli_tujuan' => $poli->KdBPJS,
 				'poli_eksekutif' => $eksekutif,
 				'cob' => $cob,
 				'katarak' => $katarak,
