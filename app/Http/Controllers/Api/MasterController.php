@@ -448,7 +448,7 @@ class MasterController extends Controller{
 		$assesment = $request->input('assesment');
 
 		$register = Register::where('NoRujuk', $noRujukan)->whereNotNull('NoSep')->first();
-		$surat_kontrol = $register ? AwSuratKontrolHead::where('Regno', $register->Regno)->first() : null;
+		$surat_kontrol = $register ? AwSuratKontrolHead::where('Regno', $register->Regno)->where('no_surat_kontrol_bpjs', $noSurat)->first() : null;
 
 		$vclaim_controller = new NewVClaimController();
 		$rencana_kontrol = $surat_kontrol ? $vclaim_controller->cariNomorSuratKontrol($surat_kontrol->no_surat_kontrol_bpjs) : [];

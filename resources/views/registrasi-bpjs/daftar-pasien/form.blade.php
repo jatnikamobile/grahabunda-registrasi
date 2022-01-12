@@ -3097,7 +3097,7 @@
                     kdPropinsi: $('#Provinsi').val(),
                     kdKabupaten: $('#Kabupaten').val(),
                     kdKecamatan: $('#Kecamatan').val(),
-                    noSurat: nosurat.substring(0, 6),
+                    noSurat: nosurat,
                     kodeDPJP: $('#DokterPengirim').val(),
                     noTelp: $('#Notelp').val(),
                     dokter: $('#Dokter').val(),
