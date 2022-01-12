@@ -105,32 +105,32 @@ class MasterController extends Controller{
 		$regdate = $request->input("regdate") ?? '';
 		$regno = $request->input("regno") ?? '';
 		$sep = $request->input("nosep") ?? '';
-		if ($sep == '') {
+		// if ($sep == '') {
 			$resp['stat'] = true;
 			$resp['data'] = array();
-		}else{
-			$cek = (new Register)->cek_sep_pasien($sep);
-			if (empty($cek)) {
-				$resp['stat'] = true;
-				$resp['data'] = array();
-			}else {
-				$resp['stat'] = false;
-				$resp['data'] = $cek;
+		// }else{
+		// 	$cek = (new Register)->cek_sep_pasien($sep);
+		// 	if (empty($cek)) {
+		// 		$resp['stat'] = true;
+		// 		$resp['data'] = array();
+		// 	}else {
+		// 		$resp['stat'] = false;
+		// 		$resp['data'] = $cek;
 				
-				if($cek->Regno == $regno){
-					$resp['stat'] = true;
-				}
-				elseif(
-					$cek->Medrec == $medrec &&
-					date('Y-m-d', strtotime($cek->Regdate)) == date('Y-m-d', strtotime($regdate)) &&
-					$cek->Kategori == $kategori && 
-					$cek->KdCbayar == $cbayar &&
-					$cek->KdPoli == $poli
-				){
-					$resp['stat'] = true;
-				}
-			}
-		}
+		// 		if($cek->Regno == $regno){
+		// 			$resp['stat'] = true;
+		// 		}
+		// 		elseif(
+		// 			$cek->Medrec == $medrec &&
+		// 			date('Y-m-d', strtotime($cek->Regdate)) == date('Y-m-d', strtotime($regdate)) &&
+		// 			$cek->Kategori == $kategori && 
+		// 			$cek->KdCbayar == $cbayar &&
+		// 			$cek->KdPoli == $poli
+		// 		){
+		// 			$resp['stat'] = true;
+		// 		}
+		// 	}
+		// }
 			
 		return response()->json($resp);
 	}
