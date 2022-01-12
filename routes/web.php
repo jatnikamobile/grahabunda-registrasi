@@ -142,6 +142,12 @@ Route::group(['prefix'=>'ReigstrasiBPJS'], function(){
         Route::get('/', ['as' => 'reg-bpjs-detailsep', 'uses' => 'RegistrasiBpjsController@detail_sep']);
         Route::put('/FindSEP', ['as' => 'reg-bpjs-findsep', 'uses' => 'RegistrasiBpjsController@get_sep']);
     });
+    // PENGAJUAN SPRI
+    Route::group(['prefix'=>'PengajuanSPRI'],function(){
+        Route::get('/', ['as' => 'reg-bpjs-pengajuan-spri', 'uses' => 'RegistrasiBpjsController@pengajuanSPRIIndex']);
+        Route::get('/Form', ['as' => 'reg-bpjs-pengajuan-spri.form', 'uses' => 'RegistrasiBpjsController@pengajuanSPRIForm']);
+        Route::post('/Form', ['as' => 'reg-bpjs-pengajuan-spri.create', 'uses' => 'RegistrasiBpjsController@pengajuanSPRISave']);
+    });
 });
 
 // MONITORING STATUS

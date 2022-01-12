@@ -26,6 +26,7 @@ use App\Models\Kepri\Master\TmKelompokRujukan;
 use App\Models\SuratKonsul;
 use App\Models\Radiologi;
 use App\Models\Laboratorium;
+use App\Models\PengajuanSPRI;
 use App\Models\TblKategoriPsn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -823,5 +824,58 @@ class RegistrasiBpjsController extends Controller
         ];
 
         return view('registrasi-bpjs.daftar-pasien.registrasi', $parse);
+    }
+
+    public function pengajuanSPRIIndex(Request $request)
+    {
+        $pengajuan_spri = PengajuanSPRI::orderBy('id', 'desc')->paginate(10);
+
+        return view('registrasi-bpjs.pengajuan-spri.index', compact('pengajuan_spri'));
+    }
+
+    public function pengajuanSPRIForm(Request $request)
+    {
+        $poli = POLItpp::orderBy('KDPoli')->get();
+
+        return view('registrasi-bpjs.pengajuan-spri.form', compact('poli'));
+    }
+
+    public function pengajuanSPRISave(Request $request)
+    {
+        //
+    }
+
+    public function pengajuanSPRIView(Request $request)
+    {
+        return view('registrasi-bpjs.pengajuan-spri.detail');
+    }
+
+    public function pengajuanSPRIAjax(Request $request)
+    {
+        $action = $request->action;
+
+        switch ($action) {
+            case 'get-dokter':
+                $poli_bpjs = $request->poli;
+
+                $poli = POLItpp::where('KdBPJS', $poli_bpjs)->first();
+                $kd_poli = $poli ? $poli->KDPoli : null;
+
+                $dokter = FtDokter::where('KdPoli', $kd_poli)->get();
+
+                $data_dokter = '<option value="0">--- Pilih Dokter ---</option>';
+                if (count($dokter) > 0) {
+                    foreach ($dokter as $dr) {
+                        $data_dokter .= '<option value="' . $dr->KdDoc . '">' . $dr->NmDoc . ' - ' . $dr->KdDPJP . '</option>';
+                    }
+                }
+
+                return response()->json(['status' => 'success', 'data_dokter' => $data_dokter]);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
     }
 }

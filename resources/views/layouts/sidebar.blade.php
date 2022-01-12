@@ -85,6 +85,11 @@
                     <a href="{{ route('reg-bpjs-detailsep') }}"><i class="menu-icon fa fa-caret-right"></i>Detail SEP</a>
                     <b class="arrow"></b>
                 </li>
+                <li class="hover @yield('pengajuan_spri')">
+                    {{-- Bpjs/Pengajuan SPRI --}}
+                    <a href="{{ route('reg-bpjs-pengajuan-spri') }}"><i class="menu-icon fa fa-caret-right"></i>Pengajuan SPRI</a>
+                    <b class="arrow"></b>
+                </li>
             </ul>
         </li>
         <li class="hover @yield('bridging')">

@@ -126,3 +126,6 @@ Route::group(['prefix' => 'api-db'], function () {
     Route::post('register-rujukan', ['as' => 'api.api-db.register-rujukan', 'uses' => 'Api\ApiController@storeRujukan']);
     Route::post('register-pasien', ['as' => 'api.api-db.register-pasien', 'uses' => 'Api\ApiController@storePasien']);
 });
+
+Route::get('reg-bpjs-pengajuan-spri-req', ['as' => 'reg-bpjs-pengajuan-spri-req', 'uses' => 'RegistrasiBpjsController@pengajuanSPRIAjax']);
+
