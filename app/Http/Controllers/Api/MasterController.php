@@ -479,7 +479,7 @@ class MasterController extends Controller{
 				'asalRujukan' => 2,
 				'tglRujukan' => isset($rencana_kontrol['tglRencanaKontrol']) ? $rencana_kontrol['tglRencanaKontrol'] : ($register ? date('Y-m-d', strtotime($register->Regdate)) : ''),
 				'noRujukan' => $register ? $register->NoSep : '',
-				'ppkRujukan' => $ppkPelayanan,
+				'ppkRujukan' => config('vclaim.kode_ppk'),
 				'catatan' => $catatan,
 				'diagAwal' => $register ? $register->KdICD : '',
 				'poli_tujuan' => '',
