@@ -412,6 +412,7 @@ class MasterController extends Controller{
 		Log::info('===========================================================================');
 		$validuser = 'SIMRS';
 
+		$type = $request->input("type");
 		$noKartu = $request->input("noKartu");
 		$tglSep = $request->input("tglSep");
 		$ppkPelayanan = $request->input("ppkPelayanan");
@@ -464,48 +465,7 @@ class MasterController extends Controller{
 		$noTelp = $request->input("noTelp");
 		$user = $validuser;
 
-		if (count($rencana_kontrol) > 0) {
-			$data_sep = [
-				'noKartu' => $rencana_kontrol['sep']['peserta']['noKartu'],
-				'tglSep' => $tglSep,
-				'ppkPelayanan' => $ppkPelayanan,
-				'jnsPelayanan' => $jnsPelayanan,
-				'klsRawatHak' => $klsRawat,
-				// 'klsRawatNaik' => $klsRawat,
-				// 'pembiayaan' => $klsRawat,
-				// 'penanggungJawab' => $klsRawat,
-				'noMR' => $noMR,
-				'asalRujukan' => $rencana_kontrol['sep']['provPerujuk']['asalRujukan'],
-				'tglRujukan' => $rencana_kontrol['sep']['provPerujuk']['tglRujukan'],
-				'noRujukan' => $rencana_kontrol['sep']['provPerujuk']['noRujukan'],
-				'ppkRujukan' => $rencana_kontrol['sep']['provPerujuk']['kdProviderPerujuk'],
-				'catatan' => $catatan,
-				// 'diagAwal' => $rencana_kontrol['sep']['diagnosa'],
-				'diagAwal' => $diagAwal,
-				// 'diagAwal' => '480.2',
-				'poli_tujuan' => $poli->KdBPJS,
-				'poli_eksekutif' => $eksekutif,
-				'cob' => $cob,
-				'katarak' => $katarak,
-				'lakaLantas' => $lakaLantas,
-				'tglKejadian' => $tglKejadian,
-				'keterangan' => $keterangan,
-				'suplesi' => $suplesi,
-				'noSepSuplesi' => $noSepSuplesi,
-				'kdPropinsi' => $kdPropinsi,
-				'kdKabupaten' => $kdKabupaten,
-				'kdKecamatan' => $kdKecamatan,
-				'tujuanKunj' => $tujuan_kunjungan,
-				'flagProcedure' => $flag_procedure,
-				'kdPenunjang' => $kode_penunjang,
-				'assesmentPel' => $assesment,
-				'noSurat' => $rencana_kontrol['noSuratKontrol'],
-				'kodeDPJP' => $rencana_kontrol['kodeDokter'],
-				'dpjpLayan' => $rencana_kontrol['kodeDokter'],
-				'noTelp' => $noTelp,
-				'user' => $user,
-			];
-		} else {
+		if ($type == 'spri') {
 			$data_sep = [
 				'noKartu' => $noKartu,
 				'tglSep' => $tglSep,
@@ -522,7 +482,7 @@ class MasterController extends Controller{
 				'ppkRujukan' => $ppkRujukan,
 				'catatan' => $catatan,
 				'diagAwal' => $diagAwal,
-				'poli_tujuan' => $poli ? $poli->KdBPJS : '',
+				'poli_tujuan' => '',
 				'poli_eksekutif' => $eksekutif,
 				'cob' => $cob,
 				'katarak' => $katarak,
@@ -544,6 +504,88 @@ class MasterController extends Controller{
 				'noTelp' => $noTelp,
 				'user' => $user,
 			];
+		} else {
+			if (count($rencana_kontrol) > 0) {
+				$data_sep = [
+					'noKartu' => $rencana_kontrol['sep']['peserta']['noKartu'],
+					'tglSep' => $tglSep,
+					'ppkPelayanan' => $ppkPelayanan,
+					'jnsPelayanan' => $jnsPelayanan,
+					'klsRawatHak' => $klsRawat,
+					// 'klsRawatNaik' => $klsRawat,
+					// 'pembiayaan' => $klsRawat,
+					// 'penanggungJawab' => $klsRawat,
+					'noMR' => $noMR,
+					'asalRujukan' => $rencana_kontrol['sep']['provPerujuk']['asalRujukan'],
+					'tglRujukan' => $rencana_kontrol['sep']['provPerujuk']['tglRujukan'],
+					'noRujukan' => $rencana_kontrol['sep']['provPerujuk']['noRujukan'],
+					'ppkRujukan' => $rencana_kontrol['sep']['provPerujuk']['kdProviderPerujuk'],
+					'catatan' => $catatan,
+					// 'diagAwal' => $rencana_kontrol['sep']['diagnosa'],
+					'diagAwal' => $diagAwal,
+					// 'diagAwal' => '480.2',
+					'poli_tujuan' => $poli->KdBPJS,
+					'poli_eksekutif' => $eksekutif,
+					'cob' => $cob,
+					'katarak' => $katarak,
+					'lakaLantas' => $lakaLantas,
+					'tglKejadian' => $tglKejadian,
+					'keterangan' => $keterangan,
+					'suplesi' => $suplesi,
+					'noSepSuplesi' => $noSepSuplesi,
+					'kdPropinsi' => $kdPropinsi,
+					'kdKabupaten' => $kdKabupaten,
+					'kdKecamatan' => $kdKecamatan,
+					'tujuanKunj' => $tujuan_kunjungan,
+					'flagProcedure' => $flag_procedure,
+					'kdPenunjang' => $kode_penunjang,
+					'assesmentPel' => $assesment,
+					'noSurat' => $rencana_kontrol['noSuratKontrol'],
+					'kodeDPJP' => $rencana_kontrol['kodeDokter'],
+					'dpjpLayan' => $rencana_kontrol['kodeDokter'],
+					'noTelp' => $noTelp,
+					'user' => $user,
+				];
+			} else {
+				$data_sep = [
+					'noKartu' => $noKartu,
+					'tglSep' => $tglSep,
+					'ppkPelayanan' => $ppkPelayanan,
+					'jnsPelayanan' => $jnsPelayanan,
+					'klsRawatHak' => $klsRawat,
+					// 'klsRawatNaik' => $klsRawat,
+					// 'pembiayaan' => $klsRawat,
+					// 'penanggungJawab' => $klsRawat,
+					'noMR' => $noMR,
+					'asalRujukan' => $asalRujukan,
+					'tglRujukan' => $tglRujukan,
+					'noRujukan' => $noRujukan,
+					'ppkRujukan' => $ppkRujukan,
+					'catatan' => $catatan,
+					'diagAwal' => $diagAwal,
+					'poli_tujuan' => $poli ? $poli->KdBPJS : '',
+					'poli_eksekutif' => $eksekutif,
+					'cob' => $cob,
+					'katarak' => $katarak,
+					'lakaLantas' => $lakaLantas,
+					'tglKejadian' => $tglKejadian,
+					'keterangan' => $keterangan,
+					'suplesi' => $suplesi,
+					'noSepSuplesi' => $noSepSuplesi,
+					'kdPropinsi' => $kdPropinsi,
+					'kdKabupaten' => $kdKabupaten,
+					'kdKecamatan' => $kdKecamatan,
+					'tujuanKunj' => $tujuan_kunjungan,
+					'flagProcedure' => $flag_procedure,
+					'kdPenunjang' => $kode_penunjang,
+					'assesmentPel' => $assesment,
+					'noSurat' => $noSurat,
+					'kodeDPJP' => $dokter ? $dokter->KdDPJP : '',
+					'dpjpLayan' => $dokter ? $dokter->KdDPJP : '',
+					'noTelp' => $noTelp,
+					'user' => $user,
+				];
+			}
 		}
 	
 		$vclaim_controller = new NewVClaimController();
