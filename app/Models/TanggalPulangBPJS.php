@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PengajuanSPRI extends Model
+class TanggalPulangBPJS extends Model
 {
     protected $connection = 'main';
-    protected $table = 'pengajuan_spri';
+    protected $table = 'tanggal_pulang_bpjs';
     protected $primaryKey = 'id';
     public $incrementing = false;
 }

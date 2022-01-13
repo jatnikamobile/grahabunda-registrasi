@@ -178,6 +178,11 @@
                 </li>
             </ul>
         </li>
+        <li class="@yield('menu_tanggal_pulang')">
+            <a href="{{ route('update-tanggal-pulang-list') }}">
+                <i class="menu-icon fa fa-list-alt"></i><span class="menu-text"> Update Tgl Pulang </span>
+            </a> <b class="arrow"></b>
+        </li>
         {{-- <li class="hover">
             <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-bar-chart"></i><span class="menu-text">Laporan</span><b class="arrow fa fa-angle-down"></b></a>
             <b class="arrow"></b>

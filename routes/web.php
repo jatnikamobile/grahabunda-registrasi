@@ -220,4 +220,10 @@ Route::group(['prefix'=>'test-ws'], function(){
     Route::get('/catcher', ['as' => 'catcher', 'uses' => 'WelcomeController@catcher']);
 });
 
+Route::group(['prefix'=>'tanggal-pulang'], function(){
+    Route::get('list', ['as' => 'update-tanggal-pulang-list', 'uses' => 'Api\TanggalPulangController@index']);
+    Route::get('create', ['as' => 'update-tanggal-pulang-create', 'uses' => 'Api\TanggalPulangController@create']);
+    Route::post('save', ['as' => 'update-tanggal-pulang-save', 'uses' => 'Api\TanggalPulangController@store']);
+});
+
 Route::resource('bpjs-tester', 'BPJSTesterController');
