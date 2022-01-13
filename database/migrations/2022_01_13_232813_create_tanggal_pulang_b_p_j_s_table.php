@@ -20,8 +20,8 @@ class CreateTanggalPulangBPJSTable extends Migration
             $table->string('no_surat_meninggal')->nullable();
             $table->date('tanggal_meninggal')->nullable();
             $table->date('tanggal_pulang');
-            $table->date('no_lp_manual')->nullable();
-            $table->date('user')->nullable();
+            $table->string('no_lp_manual')->nullable();
+            $table->string('user')->nullable();
             $table->timestamps();
         });
     }
