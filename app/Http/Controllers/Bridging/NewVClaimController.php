@@ -2715,7 +2715,7 @@ class NewVClaimController extends Controller
         $noLPManual = isset($data_sep['noLPManual']) ? $data_sep['noLPManual'] : '';
         $user = isset($data_sep['user']) ? $data_sep['user'] : '';
         
-        $data_request_pengajuan_sep = [
+        $data_request_update_tanggal_pulang = [
             'request' => [
                 't_sep' => [
                     'noSep' => $noSep,
@@ -2729,10 +2729,13 @@ class NewVClaimController extends Controller
             ]
         ];
 
+		Log::info('BPJS Update Tanggal Pulang API Request:');
+		Log::info($data_request_update_tanggal_pulang);
+
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
 
-        $send_request = $this->sendRequest('PUT', $data_request_pengajuan_sep, $url, $headers['headers']);
+        $send_request = $this->sendRequest('PUT', $data_request_update_tanggal_pulang, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
         $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\TanggalPulangBPJS;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class TanggalPulangController extends Controller
@@ -61,6 +62,9 @@ class TanggalPulangController extends Controller
         $vclaim_controller = new NewVClaimController();
         $update_tanggal_pulang = $vclaim_controller->updateTanggalPulangV2($data_sep);
         $status = isset($update_tanggal_pulang['metaData']['code']) ? $update_tanggal_pulang['metaData']['code'] : 0;
+
+		Log::info('BPJS Update Tanggal Pulang API Response:');
+		Log::info($update_tanggal_pulang);
 
         if ($status == 200) {
             $tanggal_pulang_bpjs = new TanggalPulangBPJS();
