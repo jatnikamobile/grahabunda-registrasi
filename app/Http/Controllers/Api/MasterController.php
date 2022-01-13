@@ -413,6 +413,7 @@ class MasterController extends Controller{
 		$validuser = 'SIMRS';
 
 		$type = $request->input("type");
+		$Regno = $request->input("Regno");
 		$noKartu = $request->input("noKartu");
 		$tglSep = $request->input("tglSep");
 		$ppkPelayanan = $request->input("ppkPelayanan");
@@ -448,24 +449,23 @@ class MasterController extends Controller{
 		$kode_penunjang = $request->input('kode_penunjang');
 		$assesment = $request->input('assesment');
 
-		$register = Register::where('NoRujuk', $noRujukan)->whereNotNull('NoSep')->first();
-		$surat_kontrol = $register ? AwSuratKontrolHead::where('Regno', $register->Regno)->where('no_surat_kontrol_bpjs', $noSurat)->first() : null;
-
-		$vclaim_controller = new NewVClaimController();
-		$rencana_kontrol = $surat_kontrol ? $vclaim_controller->cariNomorSuratKontrol($surat_kontrol->no_surat_kontrol_bpjs) : [];
-	
-		Log::info('BPJS Surat Kontrol API Response:');
-		Log::info($rencana_kontrol);
-
-		$dokter = $request->input("dokter");
-		$dokter = FtDokter::where('KdDoc', $dokter)->first();
-
-		$poli = POLItpp::where('KDPoli', $tujuan)->first();
-
-		$noTelp = $request->input("noTelp");
-		$user = $validuser;
-
 		if ($type == 'spri') {
+			$register = Register::where('Regno', $Regno)->first();
+	
+			$vclaim_controller = new NewVClaimController();
+			$rencana_kontrol = $noSurat ? $vclaim_controller->cariNomorSuratKontrol($noSurat) : [];
+		
+			Log::info('BPJS Surat Kontrol API Response:');
+			Log::info($rencana_kontrol);
+	
+			$dokter = $request->input("dokter");
+			$dokter = FtDokter::where('KdDoc', $register->KdDoc)->first();
+	
+			$poli = POLItpp::where('KDPoli', $tujuan)->first();
+	
+			$noTelp = $request->input("noTelp");
+			$user = $validuser;
+	
 			$data_sep = [
 				'noKartu' => $noKartu,
 				'tglSep' => $tglSep,
@@ -476,12 +476,12 @@ class MasterController extends Controller{
 				// 'pembiayaan' => $klsRawat,
 				// 'penanggungJawab' => $klsRawat,
 				'noMR' => $noMR,
-				'asalRujukan' => $asalRujukan,
-				'tglRujukan' => $tglRujukan,
-				'noRujukan' => $noRujukan,
-				'ppkRujukan' => $ppkRujukan,
+				'asalRujukan' => 2,
+				'tglRujukan' => isset($rencana_kontrol['tglRencanaKontrol']) ? $rencana_kontrol['tglRencanaKontrol'] : ($register ? date('Y-m-d', strtotime($register->Regdate)) : ''),
+				'noRujukan' => $register ? $register->NoSep : '',
+				'ppkRujukan' => $ppkPelayanan,
 				'catatan' => $catatan,
-				'diagAwal' => $diagAwal,
+				'diagAwal' => $register ? $register->KdICD : '',
 				'poli_tujuan' => '',
 				'poli_eksekutif' => $eksekutif,
 				'cob' => $cob,
@@ -494,17 +494,34 @@ class MasterController extends Controller{
 				'kdPropinsi' => $kdPropinsi,
 				'kdKabupaten' => $kdKabupaten,
 				'kdKecamatan' => $kdKecamatan,
-				'tujuanKunj' => $tujuan_kunjungan,
-				'flagProcedure' => $flag_procedure,
-				'kdPenunjang' => $kode_penunjang,
-				'assesmentPel' => $assesment,
+				'tujuanKunj' => '',
+				'flagProcedure' => '',
+				'kdPenunjang' => '',
+				'assesmentPel' => '',
 				'noSurat' => $noSurat,
 				'kodeDPJP' => $dokter ? $dokter->KdDPJP : '',
-				'dpjpLayan' => $dokter ? $dokter->KdDPJP : '',
+				'dpjpLayan' => '',
 				'noTelp' => $noTelp,
 				'user' => $user,
 			];
 		} else {
+			$register = Register::where('NoRujuk', $noRujukan)->whereNotNull('NoSep')->first();
+			$surat_kontrol = $register ? AwSuratKontrolHead::where('Regno', $register->Regno)->where('no_surat_kontrol_bpjs', $noSurat)->first() : null;
+	
+			$vclaim_controller = new NewVClaimController();
+			$rencana_kontrol = $surat_kontrol ? $vclaim_controller->cariNomorSuratKontrol($surat_kontrol->no_surat_kontrol_bpjs) : [];
+		
+			Log::info('BPJS Surat Kontrol API Response:');
+			Log::info($rencana_kontrol);
+	
+			$dokter = $request->input("dokter");
+			$dokter = FtDokter::where('KdDoc', $dokter)->first();
+	
+			$poli = POLItpp::where('KDPoli', $tujuan)->first();
+	
+			$noTelp = $request->input("noTelp");
+			$user = $validuser;
+	
 			if (count($rencana_kontrol) > 0) {
 				$data_sep = [
 					'noKartu' => $rencana_kontrol['sep']['peserta']['noKartu'],

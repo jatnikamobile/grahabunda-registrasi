@@ -353,11 +353,19 @@
                         <div class="radio">
                             <label>
                                 <input name="KasKe" id="Kecelaakan1" type="radio" class="ace" value="0" {{ isset($edit->KdKasus) && strtolower(strtoupper($edit->KdKasus)) == '0' ? 'checked' : 'checked' }}/>
-                                <span class="lbl">&nbsp; Tidak</span>
-                            </label>
+                                <span class="lbl">&nbsp; Bukan Kecelakaan lalu lintas [BKLL]</span>
+                            </label><br>
                             <label>
                                 <input name="KasKe" id="Kecelaakan2" type="radio" class="ace" value="1" {{ isset($edit->KdKasus) && strtolower(strtoupper($edit->KdKasus)) == '1' ? 'checked' : '' }}/>
-                                <span class="lbl">&nbsp; Ya</span>
+                                <span class="lbl">&nbsp; KLL dan bukan kecelakaan Kerja [BKK]</span>
+                            </label><br>
+                            <label>
+                                <input name="KasKe" id="Kecelaakan3" type="radio" class="ace" value="2" {{ isset($edit->KdKasus) && strtolower(strtoupper($edit->KdKasus)) == '2' ? 'checked' : '' }}/>
+                                <span class="lbl">&nbsp; KLL dan KK</span>
+                            </label><br>
+                            <label>
+                                <input name="KasKe" id="Kecelaakan4" type="radio" class="ace" value="3" {{ isset($edit->KdKasus) && strtolower(strtoupper($edit->KdKasus)) == '3' ? 'checked' : '' }}/>
+                                <span class="lbl">&nbsp; KK</span>
                             </label>
                         </div>
                     </div>
@@ -661,80 +669,6 @@
             </div>
         </div>
     </div>
-    <!-- MODAL TUJUAN KUNJUNGAN -->
-    <div class="modal fade bd-example-modal-lg-tujuan-kunjungan"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h5 class="modal-title" id="exampleModalLabel">Pilih Tujuan Kunjungan</h5>
-                    </div><hr>
-                    <form method="get" id="bd-example-modal-lg-tujuan-kunjungan">
-                        <div class="form-group">
-                            <label class="col-sm-5 control-label no-padding-right">Tujuan Kunjungan</label>
-                            <div class="input-group col-sm-7">
-                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                <select type="text" name="tujuan_kunjungan" id="tujuan_kunjungan" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
-                                    <option value="">-= Tujuan Kunjungan =-</option>
-                                    <option value="0">Normal</option>
-                                    <option value="1">Prosedur</option>
-                                    <option value="2">Konsul Dokter</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-5 control-label no-padding-right">Flag Procedure</label>
-                            <div class="input-group col-sm-7">
-                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                <select type="text" name="flag_procedure" id="flag_procedure" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
-                                    <option value="">-= Flag Procedure =-</option>
-                                    <option value="0">Prosedur Tidak Berkelanjutan</option>
-                                    <option value="1">Prosedur dan Terapi Berkelanjutan</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-5 control-label no-padding-right">Kode Penunjang</label>
-                            <div class="input-group col-sm-7">
-                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                <select type="text" name="kode_penunjang" id="kode_penunjang" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
-                                    <option value="">-= Kode Penunjang =-</option>
-                                    <option value="1">Radioterapi</option>
-                                    <option value="2">Kemoterapi</option>
-                                    <option value="3">Rehabilitasi Medik</option>
-                                    <option value="4">Rehabilitasi Psikososial</option>
-                                    <option value="5">Transfusi Darah</option>
-                                    <option value="6">Pelayanan Gigi</option>
-                                    <option value="7">Laboratorium</option>
-                                    <option value="8">USG</option>
-                                    <option value="9">Farmasi</option>
-                                    <option value="10">Lain-Lain</option>
-                                    <option value="11">MRI</option>
-                                    <option value="12">HEMODIALISA</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-5 control-label no-padding-right">Assesment</label>
-                            <div class="input-group col-sm-7">
-                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                <select type="text" name="assesment" id="assesment" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
-                                    <option value="">-= Assesment =-</option>
-                                    <option value="1">Poli spesialis tidak tersedia pada hari sebelumnya</option>
-                                    <option value="2">Jam Poli telah berakhir pada hari sebelumnya</option>
-                                    <option value="3">Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya</option>
-                                    <option value="4">Atas Instruksi RS</option>
-                                    <option value="5">Tujuan Kontrol</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="pull-right"><a href="javascript:void(0)" class="btn btn-info btn-sm" id="go_create_sep">OK</a></div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div><!-- MODAL TUJUAN KUNJUNGAN -->
     <!-- Modal Print -->
     <div class="modal fade" id="modalPrintSurat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
@@ -1148,15 +1082,7 @@
     // =====================================
     $(".select2").select2();
     $('[name=KasKe]').on('change', function(ev,xv){
-        if($(this).val() == '1'){
-            $('#Keterangan').removeAttr('readonly');
-            $('#NoSepSup').removeAttr('readonly');
-            $('#RegdKej').removeAttr('readonly');
-            $('#Suplesi').prop('disabled', false);
-            $('#Provinsi').prop('disabled', false);
-            $('#Kabupaten').prop('disabled', false);
-            $('#Kecamatan').prop('disabled', false);
-        }else{
+        if($(this).val() == '0'){
             $('#Keterangan').attr('readonly','readonly');
             $('#NoSepSup').attr('readonly','readonly');
             $('#RegdKej').attr('readonly','readonly');
@@ -1164,6 +1090,14 @@
             $('#Provinsi').prop('disabled', true);
             $('#Kabupaten').prop('disabled', true);
             $('#Kecamatan').prop('disabled', true);
+        }else{
+            $('#Keterangan').removeAttr('readonly');
+            $('#NoSepSup').removeAttr('readonly');
+            $('#RegdKej').removeAttr('readonly');
+            $('#Suplesi').prop('disabled', false);
+            $('#Provinsi').prop('disabled', false);
+            $('#Kabupaten').prop('disabled', false);
+            $('#Kecamatan').prop('disabled', false);
         }
     });
 
@@ -1997,10 +1931,6 @@
     });
 
     $('#createsep').on('click', function () {
-        $('.bd-example-modal-lg-tujuan-kunjungan').modal();
-    });
-    
-    $('#go_create_sep').on("click", function(){
         let btn = $('#createsep');
         let oldText = btn.html();
         btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
@@ -2024,6 +1954,7 @@
                 dataType:"json",
                 data:{
                     type: 'spri',
+                    Regno: $('#Regno').val(),
                     noMR: $('#Medrec').val(),
                     noKartu: $('#noKartu').val(),
                     tglSep: $('#Regdate').val(),
@@ -2052,10 +1983,6 @@
                     noSurat: $('#NoSuratKontrol').val(),
                     kodeDPJP: $('#Dokter').val(),
                     noTelp: $('#Notelp').val(),
-                    tujuan_kunjungan: $('#tujuan_kunjungan').val(),
-                    flag_procedure: $('#flag_procedure').val(),
-                    kode_penunjang: $('#kode_penunjang').val(),
-                    assesment: $('#assesment').val()
                 },
                 beforeSend(){
                     loading.modal('show');
