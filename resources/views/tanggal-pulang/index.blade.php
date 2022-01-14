@@ -32,9 +32,24 @@
                         <tbody>
                             @if (count($tanggal_pulang) > 0)
                                 @foreach ($tanggal_pulang as $tp)
+                                    @switch($tp->status_pulang)
+                                        @case(1)
+                                            <?php $sp_desc = 'Atas Persetujuan Dokter' ?>
+                                            @break
+                                        @case(3)
+                                            <?php $sp_desc = 'Atas Permintaan Sendiri' ?>
+                                            @break
+                                        @case(4)
+                                            <?php $sp_desc = 'Meninggal' ?>
+                                            @break
+                                        @default
+                                            <?php $sp_desc = 'Lain-lain' ?>
+                                            @break
+                                            
+                                    @endswitch
                                     <tr>
                                         <td>{{ $tp->no_sep }}</td>
-                                        <td>{{ $tp->status_pulang }}</td>
+                                        <td>{{ $sp_desc }}</td>
                                         <td>{{ $tp->no_surat_meninggal }}</td>
                                         <td>{{ $tp->tanggal_meninggal }}</td>
                                         <td>{{ $tp->tanggal_pulang }}</td>
