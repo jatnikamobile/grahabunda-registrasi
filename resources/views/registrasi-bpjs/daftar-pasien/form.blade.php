@@ -2258,70 +2258,74 @@
                     },
                     success:function(response)
                     {
-                        if (response.data) {
-                            if (response.pasien) {
-                                $('#Medrec').val(response.pasien.Medrec);
-                                // $('#btnCari').click();
-                                $('#Kunjungan').val('Lama');
-                                $('#Notelp').val(response.pasien.Phone);
-                                $('#kat_NoRM').val(response.pasien.Medrec);
-                                $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
-                                get_kategori_pasien_master(response.pasien.Medrec);
-                            } else {
-                                alert("No Rekam Medik tidak ada!");
+                        if (response.code != 200) {
+                            alert(response.message)
+                        } else {
+                            if (response.data) {
+                                if (response.pasien) {
+                                    $('#Medrec').val(response.pasien.Medrec);
+                                    // $('#btnCari').click();
+                                    $('#Kunjungan').val('Lama');
+                                    $('#Notelp').val(response.pasien.Phone);
+                                    $('#kat_NoRM').val(response.pasien.Medrec);
+                                    $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
+                                    get_kategori_pasien_master(response.pasien.Medrec);
+                                } else {
+                                    alert("No Rekam Medik tidak ada!");
+                                }
+
+                                $('#Firstname').val(response.data.rujukan.peserta.nama);
+                                $('#NoIden').val(response.data.rujukan.peserta.nik);
+                                $('#pisat').val(response.data.rujukan.peserta.pisa);
+                                $('#noKartu').val(response.data.rujukan.peserta.noKartu);
+                                $(`input[name=Faskes][value=${response.data.rujukan.asalFaskes}]`).prop('checked', true);
+
+                                $('#jatah_kelas').val(response.data.rujukan.peserta.hakKelas.kode);
+
+                                $('#TglDaftar').val(response.data.rujukan.peserta.tglCetakKartu);
+
+                                $('#Bod').val(response.data.rujukan.peserta.tglLahir).trigger('change');
+                                $('#RegRujuk').val(response.data.rujukan.tglKunjungan);
+
+                                var $ppk = $("<option selected></option>").val(response.data.rujukan.provPerujuk.kode).text(response.data.rujukan.provPerujuk.nama);
+                                $('#Ppk').append($ppk).trigger('change');
+                                $('#noPpk').val(response.data.rujukan.provPerujuk.nama);
+                                $('#kodePpk').val(response.data.rujukan.provPerujuk.kode);
+
+                                $('#statusPeserta').val(response.data.rujukan.peserta.statusPeserta.keterangan);
+
+                                $('#Peserta').val(response.data.rujukan.peserta.jenisPeserta.keterangan);
+
+                                if (response.data.rujukan.peserta.sex != null) {
+                                    $("input[name=KdSex][value=" + response.data.rujukan.peserta.sex.toUpperCase() + "]").attr('checked', 'checked');
+                                }
+
+                                var $poli = $("<option selected></option>").val(response.data.poli_local.KDPoli).text(response.data.poli_local.NMPoli);
+                                $('#poli').append($poli).trigger('change');
+                                $('[name=KdPoliBpjs]').val(response.data.poli_local.KdBPJS);
+                                setKodePoli(response.data.poli_local.KDPoli, response.data.poli_local.KdBPJS);
+
+                                polirujukan = response.data.rujukan.poliRujukan;
+                                if (response.data.rujukan.poliRujukan.kode) {
+                                    $('#DokterPengirim').prop('readonly', false);
+                                }
+
+                                $('#Dinsos').val(response.data.rujukan.peserta.informasi.dinsos);
+                                $('#NoSktm').val(response.data.rujukan.peserta.informasi.noSKTM);
+                                $('#Prolanis').val(response.data.rujukan.peserta.informasi.prolanisPRB);
+
+                                var $diagnosa = $("<option selected></option>").val(response.data.rujukan.diagnosa.kode).text(response.data.rujukan.diagnosa.nama);
+                                $('#Diagnosa').append($diagnosa).trigger('change');
+
+                                var $pengobatan = $("<option selected></option>").val(response.data.rujukan.pelayanan.kode).text(response.data.rujukan.pelayanan.nama);
+                                $('#pengobatan').append($pengobatan).trigger('change');                        
+
+                                // Panggil histori
+                                get_histori(response.data.rujukan.peserta.noKartu);
+                            }else{
+                                loading.modal('hide');
+                                alert('Pasien tidak ada!');
                             }
-
-                            $('#Firstname').val(response.data.rujukan.peserta.nama);
-                            $('#NoIden').val(response.data.rujukan.peserta.nik);
-                            $('#pisat').val(response.data.rujukan.peserta.pisa);
-                            $('#noKartu').val(response.data.rujukan.peserta.noKartu);
-                            $(`input[name=Faskes][value=${response.data.rujukan.asalFaskes}]`).prop('checked', true);
-
-                            $('#jatah_kelas').val(response.data.rujukan.peserta.hakKelas.kode);
-
-                            $('#TglDaftar').val(response.data.rujukan.peserta.tglCetakKartu);
-
-                            $('#Bod').val(response.data.rujukan.peserta.tglLahir).trigger('change');
-                            $('#RegRujuk').val(response.data.rujukan.tglKunjungan);
-
-                            var $ppk = $("<option selected></option>").val(response.data.rujukan.provPerujuk.kode).text(response.data.rujukan.provPerujuk.nama);
-                            $('#Ppk').append($ppk).trigger('change');
-                            $('#noPpk').val(response.data.rujukan.provPerujuk.nama);
-                            $('#kodePpk').val(response.data.rujukan.provPerujuk.kode);
-
-                            $('#statusPeserta').val(response.data.rujukan.peserta.statusPeserta.keterangan);
-
-                            $('#Peserta').val(response.data.rujukan.peserta.jenisPeserta.keterangan);
-
-                            if (response.data.rujukan.peserta.sex != null) {
-                                $("input[name=KdSex][value=" + response.data.rujukan.peserta.sex.toUpperCase() + "]").attr('checked', 'checked');
-                            }
-
-                            var $poli = $("<option selected></option>").val(response.data.poli_local.KDPoli).text(response.data.poli_local.NMPoli);
-                            $('#poli').append($poli).trigger('change');
-                            $('[name=KdPoliBpjs]').val(response.data.poli_local.KdBPJS);
-                            setKodePoli(response.data.poli_local.KDPoli, response.data.poli_local.KdBPJS);
-
-                            polirujukan = response.data.rujukan.poliRujukan;
-                            if (response.data.rujukan.poliRujukan.kode) {
-                                $('#DokterPengirim').prop('readonly', false);
-                            }
-
-                            $('#Dinsos').val(response.data.rujukan.peserta.informasi.dinsos);
-                            $('#NoSktm').val(response.data.rujukan.peserta.informasi.noSKTM);
-                            $('#Prolanis').val(response.data.rujukan.peserta.informasi.prolanisPRB);
-
-                            var $diagnosa = $("<option selected></option>").val(response.data.rujukan.diagnosa.kode).text(response.data.rujukan.diagnosa.nama);
-                            $('#Diagnosa').append($diagnosa).trigger('change');
-
-                            var $pengobatan = $("<option selected></option>").val(response.data.rujukan.pelayanan.kode).text(response.data.rujukan.pelayanan.nama);
-                            $('#pengobatan').append($pengobatan).trigger('change');                        
-
-                            // Panggil histori
-                            get_histori(response.data.rujukan.peserta.noKartu);
-                        }else{
-                            loading.modal('hide');
-                            alert('Pasien tidak ada!');
                         }
                         loading.modal('hide');
                     }
@@ -2347,73 +2351,74 @@
                     },
                     success:function(response)
                     {
-                        console.log(response);
-                        loading.modal('hide');
-                        console.log(response);
-                        if(response.data){
+                        if (response.code != 200) {
+                            alert(response.message)
+                        } else {
+                            if (response.data) {
+                                if (response.pasien) {
+                                    $('#Medrec').val(response.pasien.Medrec);
+                                    // $('#btnCari').click();
+                                    $('#Kunjungan').val('Lama');
+                                    $('#Notelp').val(response.pasien.Phone);
+                                    $('#kat_NoRM').val(response.pasien.Medrec);
+                                    $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
+                                    get_kategori_pasien_master(response.pasien.Medrec);
+                                } else {
+                                    alert("No Rekam Medik tidak ada!");
+                                }
 
-                            if (response.data.rujukan.peserta.mr.noMR == null) {
-                                alert("No Rekam Medik tidak ada!");
+                                $('#Firstname').val(response.data.rujukan.peserta.nama);
+                                $('#NoIden').val(response.data.rujukan.peserta.nik);
+                                $('#pisat').val(response.data.rujukan.peserta.pisa);
+                                $('#noKartu').val(response.data.rujukan.peserta.noKartu);
+                                $(`input[name=Faskes][value=${response.data.rujukan.asalFaskes}]`).prop('checked', true);
+
+                                $('#jatah_kelas').val(response.data.rujukan.peserta.hakKelas.kode);
+
+                                $('#TglDaftar').val(response.data.rujukan.peserta.tglCetakKartu);
+
+                                $('#Bod').val(response.data.rujukan.peserta.tglLahir).trigger('change');
+                                $('#RegRujuk').val(response.data.rujukan.tglKunjungan);
+
+                                var $ppk = $("<option selected></option>").val(response.data.rujukan.provPerujuk.kode).text(response.data.rujukan.provPerujuk.nama);
+                                $('#Ppk').append($ppk).trigger('change');
+                                $('#noPpk').val(response.data.rujukan.provPerujuk.nama);
+                                $('#kodePpk').val(response.data.rujukan.provPerujuk.kode);
+
+                                $('#statusPeserta').val(response.data.rujukan.peserta.statusPeserta.keterangan);
+
+                                $('#Peserta').val(response.data.rujukan.peserta.jenisPeserta.keterangan);
+
+                                if (response.data.rujukan.peserta.sex != null) {
+                                    $("input[name=KdSex][value=" + response.data.rujukan.peserta.sex.toUpperCase() + "]").attr('checked', 'checked');
+                                }
+
+                                var $poli = $("<option selected></option>").val(response.data.poli_local.KDPoli).text(response.data.poli_local.NMPoli);
+                                $('#poli').append($poli).trigger('change');
+                                $('[name=KdPoliBpjs]').val(response.data.poli_local.KdBPJS);
+                                setKodePoli(response.data.poli_local.KDPoli, response.data.poli_local.KdBPJS);
+
+                                polirujukan = response.data.rujukan.poliRujukan;
+                                if (response.data.rujukan.poliRujukan.kode) {
+                                    $('#DokterPengirim').prop('readonly', false);
+                                }
+
+                                $('#Dinsos').val(response.data.rujukan.peserta.informasi.dinsos);
+                                $('#NoSktm').val(response.data.rujukan.peserta.informasi.noSKTM);
+                                $('#Prolanis').val(response.data.rujukan.peserta.informasi.prolanisPRB);
+
+                                var $diagnosa = $("<option selected></option>").val(response.data.rujukan.diagnosa.kode).text(response.data.rujukan.diagnosa.nama);
+                                $('#Diagnosa').append($diagnosa).trigger('change');
+
+                                var $pengobatan = $("<option selected></option>").val(response.data.rujukan.pelayanan.kode).text(response.data.rujukan.pelayanan.nama);
+                                $('#pengobatan').append($pengobatan).trigger('change');                        
+
+                                // Panggil histori
+                                get_histori(response.data.rujukan.peserta.noKartu);
                             }else{
-                                $('#Medrec').val(response.data.rujukan.peserta.mr.noMR);
-                                // $('#btnCari').click();
-                                $('#Kunjungan').val('Lama');
-                                $('#Notelp').val(response.data.rujukan.peserta.mr.noTelepon);
-                                $('#kat_NoRM').val(response.data.rujukan.peserta.mr.noMR);
-                                $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
-                                get_kategori_pasien_master(response.data.rujukan.peserta.mr.noMR);
+                                loading.modal('hide');
+                                alert('Pasien tidak ada!');
                             }
-
-                            $('#Firstname').val(response.data.rujukan.peserta.nama);
-                            $('#NoIden').val(response.data.rujukan.peserta.nik);
-                            $('#pisat').val(response.data.rujukan.peserta.pisa);
-                            $('#noKartu').val(response.data.rujukan.peserta.noKartu);
-                            $('#RegRujuk').val(response.data.rujukan.tglKunjungan);
-                            $(`input[name=Faskes][value=${response.data.asalFaskes}]`).prop('checked', true);
-
-                            $('#jatah_kelas').val(response.data.rujukan.peserta.hakKelas.kode);
-
-                            $('#TglDaftar').val(response.data.rujukan.peserta.tglCetakKartu);
-
-                            $('#Bod').val(response.data.rujukan.peserta.tglLahir).trigger('change');
-
-                            var $ppk = $("<option selected></option>").val(response.data.rujukan.provPerujuk.kode).text(response.data.rujukan.provPerujuk.nama);
-                            $('#Ppk').append($ppk).trigger('change');
-                            $('#noPpk').val(response.data.rujukan.provPerujuk.nama);
-                            $('#kodePpk').val(response.data.rujukan.provPerujuk.kode);
-
-                            $('#statusPeserta').val(response.data.rujukan.peserta.statusPeserta.keterangan);
-
-                            $('#Peserta').val(response.data.rujukan.peserta.jenisPeserta.keterangan);
-
-                            if (response.data.rujukan.peserta.sex != null) {
-                                $("input[name=KdSex][value=" + response.data.rujukan.peserta.sex.toUpperCase() + "]").attr('checked', 'checked');
-                            }
-
-                            var $poli = $("<option selected></option>").val(response.data.poli_local.KDPoli).text(response.data.poli_local.NMPoli);
-                            $('#poli').append($poli).trigger('change');
-                            $('[name=KdPoliBpjs]').val(response.data.poli_local.KdBPJS);
-                            setKodePoli(response.data.poli_local.KDPoli, response.data.poli_local.KdBPJS);
-
-                            polirujukan = response.data.rujukan.poliRujukan;
-                            if (response.data.rujukan.poliRujukan.kode) {
-                                $('#DokterPengirim').prop('readonly', false);
-                            }
-
-                            $('#Dinsos').val(response.data.rujukan.peserta.informasi.dinsos);
-                            $('#NoSktm').val(response.data.rujukan.peserta.informasi.noSKTM);
-                            $('#Prolanis').val(response.data.rujukan.peserta.informasi.prolanisPRB);
-
-                            var $diagnosa = $("<option selected></option>").val(response.data.rujukan.diagnosa.kode).text(response.data.rujukan.diagnosa.nama);
-                            $('#Diagnosa').append($diagnosa).trigger('change');
-
-                            var $pengobatan = $("<option selected></option>").val(response.data.rujukan.pelayanan.kode).text(response.data.rujukan.pelayanan.nama);
-                            $('#pengobatan').append($pengobatan).trigger('change');                        
-                            // Panggil histori
-                            get_histori(response.data.rujukan.peserta.noKartu);
-                        }else{
-                            loading.modal('hide');
-                            alert('Pasien tidak ada!');
                         }
                     }
                 });
@@ -3072,6 +3077,7 @@
                 type:"post",
                 dataType:"json",
                 data:{
+                    StatusRujuk: $('input[name=StatusRujuk]:checked').val(),
                     noMR: $('#Medrec').val(),
                     noKartu: $('#noKartu').val(),
                     tglSep: $('#Regdate').val(),

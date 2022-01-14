@@ -117,7 +117,7 @@ class RegistrasiBpjsController extends Controller
         $vclaim_controller = new NewVClaimController();
         $bpjs_data = $vclaim_controller->cariNomorSuratKontrol($nosurat);
 
-        Log::info("data BPJS Surat Kontrol: " . json_encode($bpjs_data));
+        Log::info("data BPJS Surat Kontrol: " . $bpjs_data);
 
         if (isset($bpjs_data['noSuratKontrol'])) {
             $no_peserta = isset($bpjs_data['sep']['peserta']['noKartu']) ? $bpjs_data['sep']['peserta']['noKartu'] : null;

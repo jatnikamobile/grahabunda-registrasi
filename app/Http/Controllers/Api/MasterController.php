@@ -310,7 +310,7 @@ class MasterController extends Controller{
 		$request = $vclaim_controller->getRujukanByNomor($noRujukan);
 
 		Log::info('BPJS Get Rujukan API Response:');
-		Log::info(json_encode($request));
+		Log::info($request);
 
 		$nik = isset($request['rujukan']['peserta']['nik']) ? $request['rujukan']['peserta']['nik'] : null;
 		$pasien = null;
@@ -326,6 +326,8 @@ class MasterController extends Controller{
 		$data['poli_local']['KdBPJS'] = $KdBPJS;
 
 		return response()->json([
+			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : null,
+			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
 			'data' => $data,
 			'pasien' => $pasien
@@ -334,16 +336,32 @@ class MasterController extends Controller{
 
 	public function get_peserta_rujukan_rs(Request $request)
 	{
-		$bpjs = new Bridging_bpjs();
-		$data = $bpjs->get_perserta_rujukan_RS($request->noRujukan);
-		if($data)
-		$data->poli_local = @$data->rujukan->poliRujukan->kode
-			? POLItpp::where('KdBPJS', $data->rujukan->poliRujukan->kode)->first()->toArray()
-			: null;
+		$vclaim_controller = new NewVClaimController();
+		$noRujukan = $request->noRujukan;
+		$request = $vclaim_controller->getRujukanByNomor($noRujukan);
+
+		Log::info('BPJS Get Rujukan API Response:');
+		Log::info($request);
+
+		$nik = isset($request['rujukan']['peserta']['nik']) ? $request['rujukan']['peserta']['nik'] : null;
+		$pasien = null;
+		if ($nik) {
+			$pasien = MasterPS::where('NoIden', $nik)->first();
+		}
+
+		$data = $request;
+		$KdBPJS = isset($request['rujukan']['poliRujukan']['kode']) ? $request['rujukan']['poliRujukan']['kode'] : '';
+		$poli = POLItpp::where('KdBPJS', $KdBPJS)->first();
+		$data['poli_local']['KDPoli'] = $poli ? $poli->KDPoli : '';
+		$data['poli_local']['NMPoli'] = $poli ? $poli->NMPoli : '';
+		$data['poli_local']['KdBPJS'] = $KdBPJS;
 
 		return response()->json([
+			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : null,
+			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
-			'data' => $data
+			'data' => $data,
+			'pasien' => $pasien
 		]);
 	}
 
@@ -412,6 +430,7 @@ class MasterController extends Controller{
 		Log::info('===========================================================================');
 		$validuser = 'SIMRS';
 
+		$StatusRujuk = $request->input('StatusRujuk');
 		$type = $request->input("type");
 		$Regno = $request->input("Regno");
 		$noKartu = $request->input("noKartu");
@@ -476,7 +495,7 @@ class MasterController extends Controller{
 				// 'pembiayaan' => $klsRawat,
 				// 'penanggungJawab' => $klsRawat,
 				'noMR' => $noMR,
-				'asalRujukan' => 2,
+				'asalRujukan' => $StatusRujuk == 2 ? 1 : 2,
 				'tglRujukan' => date('Y-m-d', strtotime($register->Regdate)),
 				'noRujukan' => $register ? $register->NoSep : '',
 				'ppkRujukan' => config('vclaim.kode_ppk'),
