@@ -47,6 +47,8 @@ window.AntrianWS = function(host, type, id, onmessage, onerror) {
   };
 };
 
+// ===================================
+
 /*
 // init web shocket
 let ws = new AntrianWS('{{ config('ws.host') }}', {{ config('ws.port') }}, 'loket', idLoket, function(data) {

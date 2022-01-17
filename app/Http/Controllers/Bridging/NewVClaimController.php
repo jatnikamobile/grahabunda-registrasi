@@ -10,6 +10,7 @@ use LZCompressor\LZString;
 class NewVClaimController extends Controller
 {
     private $url;
+    private $antrean_url;
     private $cons_id;
     private $secret_key;
     private $user_key;
@@ -19,6 +20,7 @@ class NewVClaimController extends Controller
     public function __construct()
     {
         $this->url = config('vclaim.url');
+        $this->antrean_url = config('vclaim.antrean_url');
         $this->cons_id = config('vclaim.cons_id');
         $this->secret_key = config('vclaim.secret_key');
         $this->user_key = config('vclaim.user_key');
@@ -133,6 +135,22 @@ class NewVClaimController extends Controller
         ];
     }
 
+    private function setAntreanHeaders()
+    {
+        $signature = $this->createSignature();
+
+        return [
+            'headers' => [
+                'Accept: application/json',
+                'X-cons-id: ' . $this->cons_id,
+                'X-timestamp: ' . $signature['timestamp'],
+                'X-signature: ' . $signature['signature'],
+                'user_key: ' . $this->user_key_antrean,
+            ],
+            'timestamp' => $signature['timestamp']
+        ];
+    }
+
     public function insertLPK($data_lpk = [])
     {
         if (count($data_lpk) > 0) {
@@ -193,6 +211,9 @@ class NewVClaimController extends Controller
 
             $headers = $this->setHeaders();
             $timestamp = $headers['timestamp'];
+
+            Log::info('BPJS Insert LPK API Request:');
+            Log::info($data_request_lpk);
 
             $send_request = $this->sendRequest('POST', json_encode($data_request_lpk), $url, $headers['headers']);
             $result = json_decode($send_request, true);
@@ -1477,9 +1498,13 @@ class NewVClaimController extends Controller
         }
     }
 
-    public function getRujukanByNomor($nomor_rujukan)
+    public function getRujukanByNomor($nomor_rujukan, $faskes)
     {
-        $url = $this->url . 'Rujukan/' . $nomor_rujukan;
+        if ($faskes == 1) {
+            $url = $this->url . 'Rujukan/' . $nomor_rujukan;
+        } else {
+            $url = $this->url . 'Rujukan/RS/' . $nomor_rujukan;
+        }
 
 		Log::info('BPJS Get Rujukan API Request:');
 		Log::info($url);
@@ -1506,9 +1531,13 @@ class NewVClaimController extends Controller
         }
     }
 
-    public function getOneRujukanByNoKartu($nomor_kartu)
+    public function getOneRujukanByNoKartu($nomor_kartu, $faskes)
     {
-        $url = $this->url . 'Rujukan/Peserta/' . $nomor_kartu;
+        if ($faskes == 1) {
+            $url = $this->url . 'Rujukan/Peserta/' . $nomor_kartu;
+        } else {
+            $url = $this->url . 'Rujukan/RS/Peserta/' . $nomor_kartu;
+        }
 
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
@@ -2904,16 +2933,16 @@ class NewVClaimController extends Controller
 
     public function wsBpjsReferensiPoli()
     {
-        $url = $this->url . 'ref/poli';
+        $url = $this->antrean_url . 'ref/poli';
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('GET', null, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
-        if ($result_code == 200) {
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
+        if ($result_code == 1) {
             $response = isset($result['response']) ? $result['response'] : null;
 
             if ($response) {
@@ -2921,25 +2950,30 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 
     public function wsBpjsReferensiDokter()
     {
-        $url = $this->url . 'ref/dokter';
+        $url = $this->antrean_url . 'ref/dokter';
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('GET', null, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
-        if ($result_code == 200) {
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
+        if ($result_code == 1) {
             $response = isset($result['response']) ? $result['response'] : null;
 
             if ($response) {
@@ -2947,24 +2981,32 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 
     public function wsBpjsReferensiJadwalDokter($kode_poli_bpjs, $tanggal)
     {
-        $url = $this->url . 'jadwaldokter/kodepoli/' . $kode_poli_bpjs . '/tanggal/' . $tanggal;
+        $url = $this->antrean_url . 'jadwaldokter/kodepoli/' . $kode_poli_bpjs . '/tanggal/' . $tanggal;
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
+
+        Log::info('headers');
+        Log::info($headers);
 
         $send_request = $this->sendRequest('GET', null, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
         if ($result_code == 200) {
             $response = isset($result['response']) ? $result['response'] : null;
 
@@ -2973,16 +3015,21 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 
     public function wsBpjsUpdateJadwalDokter($data_update)
     {
-        $url = $this->url . 'jadwaldokter/updatejadwaldokter';
+        $url = $this->antrean_url . 'jadwaldokter/updatejadwaldokter';
 
         $kodepoli = isset($data_update['kodepoli']) ? $data_update['kodepoli'] : '';
         $kodesubspesialis = isset($data_update['kodesubspesialis']) ? $data_update['kodesubspesialis'] : '';
@@ -2996,13 +3043,13 @@ class NewVClaimController extends Controller
             'jadwal' => $jadwal,
         ];
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('POST', $data_request_update, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
         if ($result_code == 200) {
             $response = isset($result['response']) ? $result['response'] : null;
 
@@ -3011,16 +3058,21 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 
     public function wsBpjsTambahAntrean($data_antrean)
     {
-        $url = $this->url . 'antrean/add';
+        $url = $this->antrean_url . 'antrean/add';
 
         $kodebooking = isset($data_antrean['kodebooking']) ? $data_antrean['kodebooking'] : '';
         $jenispasien = isset($data_antrean['jenispasien']) ? $data_antrean['jenispasien'] : '';
@@ -3072,13 +3124,13 @@ class NewVClaimController extends Controller
             'keterangan' => $keterangan,
         ];
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('POST', $data_request_antrean, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
         if ($result_code == 200) {
             $response = isset($result['response']) ? $result['response'] : null;
 
@@ -3087,16 +3139,21 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 
     public function wsBpjsUpdateWaktuAntrean($data_antrean)
     {
-        $url = $this->url . 'antrean/updatewaktu';
+        $url = $this->antrean_url . 'antrean/updatewaktu';
 
         $kodebooking = isset($data_antrean['kodebooking']) ? $data_antrean['kodebooking'] : '';
         $taskid = isset($data_antrean['taskid']) ? $data_antrean['taskid'] : '';
@@ -3108,13 +3165,13 @@ class NewVClaimController extends Controller
             'waktu' => $waktu,
         ];
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('POST', $data_request_antrean, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
         if ($result_code == 200) {
             $response = isset($result['response']) ? $result['response'] : null;
 
@@ -3123,16 +3180,57 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
+        }
+    }
+
+    public function wsBpjsBatalAntrean($kodebooking, $keterangan)
+    {
+        $url = $this->antrean_url . 'antrean/batal';
+
+        $data_request_antrean = [
+            'kodebooking' => $kodebooking,
+            'keterangan' => $keterangan,
+        ];
+
+        $headers = $this->setAntreanHeaders();
+        $timestamp = $headers['timestamp'];
+
+        $send_request = $this->sendRequest('POST', $data_request_antrean, $url, $headers['headers']);
+        $result = json_decode($send_request, true);
+
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
+        if ($result_code == 200) {
+            $response = isset($result['response']) ? $result['response'] : null;
+
+            if ($response) {
+                $arr_response = $this->getResult($response, $timestamp);
+
+                return $arr_response;
+            } else {
+                return $result;
+            }
+        } else {
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 
     public function wsBpjsListWaktuTaskId($data_booking)
     {
-        $url = $this->url . 'antrean/getlisttask';
+        $url = $this->antrean_url . 'antrean/getlisttask';
 
         $kodebooking = isset($data_booking['kodebooking']) ? $data_booking['kodebooking'] : '';
 
@@ -3140,13 +3238,13 @@ class NewVClaimController extends Controller
             'kodebooking' => $kodebooking,
         ];
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('POST', $data_request_booking, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
         if ($result_code == 200) {
             $response = isset($result['response']) ? $result['response'] : null;
 
@@ -3155,24 +3253,29 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 
     public function wsBpjsDashboardPerTanggal($tanggal, $waktu)
     {
-        $url = $this->url . 'dashboard/waktutunggu/tanggal/' . $tanggal . '/waktu/' . $waktu;
+        $url = $this->antrean_url . 'dashboard/waktutunggu/tanggal/' . $tanggal . '/waktu/' . $waktu;
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('GET', null, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
         if ($result_code == 200) {
             $response = isset($result['response']) ? $result['response'] : null;
 
@@ -3181,24 +3284,29 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 
     public function wsBpjsDashboardPerBulan($bulan, $tahun, $waktu)
     {
-        $url = $this->url . 'dashboard/waktutunggu/bulan/' . $bulan . '/tahun/' . $tahun . '/waktu/' . $waktu;
+        $url = $this->antrean_url . 'dashboard/waktutunggu/bulan/' . $bulan . '/tahun/' . $tahun . '/waktu/' . $waktu;
 
-        $headers = $this->setHeaders();
+        $headers = $this->setAntreanHeaders();
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('GET', null, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 
-        $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
+        $result_code = isset($result['metadata']['code']) ? $result['metadata']['code'] : null;
         if ($result_code == 200) {
             $response = isset($result['response']) ? $result['response'] : null;
 
@@ -3207,10 +3315,15 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return [
+                'metadata' => [
+                    'message' => isset($result['metadata']['message']) ? $result['metadata']['message'] : 'API BPJS Request gagal',
+                    'code' => 201
+                ]
+            ];
         }
     }
 }

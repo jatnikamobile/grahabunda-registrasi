@@ -307,7 +307,7 @@ class MasterController extends Controller{
 		
 		$vclaim_controller = new NewVClaimController();
 		$noRujukan = $request->noRujukan;
-		$request = $vclaim_controller->getRujukanByNomor($noRujukan);
+		$request = $vclaim_controller->getRujukanByNomor($noRujukan, 1);
 
 		Log::info('BPJS Get Rujukan API Response:');
 		Log::info($request);
@@ -326,7 +326,7 @@ class MasterController extends Controller{
 		$data['poli_local']['KdBPJS'] = $KdBPJS;
 
 		return response()->json([
-			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : null,
+			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : 200,
 			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
 			'data' => $data,
@@ -338,7 +338,7 @@ class MasterController extends Controller{
 	{
 		$vclaim_controller = new NewVClaimController();
 		$noRujukan = $request->noRujukan;
-		$request = $vclaim_controller->getRujukanByNomor($noRujukan);
+		$request = $vclaim_controller->getRujukanByNomor($noRujukan, 2);
 
 		Log::info('BPJS Get Rujukan API Response:');
 		Log::info($request);
@@ -357,7 +357,7 @@ class MasterController extends Controller{
 		$data['poli_local']['KdBPJS'] = $KdBPJS;
 
 		return response()->json([
-			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : null,
+			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : 200,
 			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
 			'data' => $data,
@@ -367,29 +367,65 @@ class MasterController extends Controller{
 
 	public function get_peserta_rujukan_no_kartu_pcare(Request $request)
 	{
-		$bpjs = new Bridging_bpjs();
-		$data = $bpjs->get_peserta_rujukan_noKartu_pCare($request->nopeserta);
-		if($data)
-		$data->poli_local = @$data->rujukan->poliRujukan->kode
-			? POLItpp::where('KdBPJS', $data->rujukan->poliRujukan->kode)->first()->toArray()
-			: null;
+		$vclaim_controller = new NewVClaimController();
+		$nopeserta = $request->nopeserta;
+		$request = $vclaim_controller->getOneRujukanByNoKartu($nopeserta, 1);
+
+		Log::info('BPJS Get Rujukan API Response:');
+		Log::info($request);
+
+		$nik = isset($request['rujukan']['peserta']['nik']) ? $request['rujukan']['peserta']['nik'] : null;
+		$pasien = null;
+		if ($nik) {
+			$pasien = MasterPS::where('NoIden', $nik)->first();
+		}
+
+		$data = $request;
+		$KdBPJS = isset($request['rujukan']['poliRujukan']['kode']) ? $request['rujukan']['poliRujukan']['kode'] : '';
+		$poli = POLItpp::where('KdBPJS', $KdBPJS)->first();
+		$data['poli_local']['KDPoli'] = $poli ? $poli->KDPoli : '';
+		$data['poli_local']['NMPoli'] = $poli ? $poli->NMPoli : '';
+		$data['poli_local']['KdBPJS'] = $KdBPJS;
+
 		return response()->json([
+			'asalFaskes' => isset($request['asalFaskes']) ? $request['asalFaskes'] : null,
+			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : 200,
+			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
-			'data' => $data
+			'data' => $data,
+			'pasien' => $pasien
 		]);
 	}
 
 	public function get_peserta_rujukan_no_kartu_rs(Request $request)
 	{
-		$bpjs = new Bridging_bpjs();
-		$data = $bpjs->get_peserta_rujukan_noKartu_rs($request->nopeserta);
-		if($data)
-		$data->poli_local = @$data->rujukan->poliRujukan->kode
-			? POLItpp::where('KdBPJS', $data->rujukan->poliRujukan->kode)->first()->toArray()
-			: null;
+		$vclaim_controller = new NewVClaimController();
+		$nopeserta = $request->nopeserta;
+		$request = $vclaim_controller->getOneRujukanByNoKartu($nopeserta, 2);
+
+		Log::info('BPJS Get Rujukan API Response:');
+		Log::info($request);
+
+		$nik = isset($request['rujukan']['peserta']['nik']) ? $request['rujukan']['peserta']['nik'] : null;
+		$pasien = null;
+		if ($nik) {
+			$pasien = MasterPS::where('NoIden', $nik)->first();
+		}
+
+		$data = $request;
+		$KdBPJS = isset($request['rujukan']['poliRujukan']['kode']) ? $request['rujukan']['poliRujukan']['kode'] : '';
+		$poli = POLItpp::where('KdBPJS', $KdBPJS)->first();
+		$data['poli_local']['KDPoli'] = $poli ? $poli->KDPoli : '';
+		$data['poli_local']['NMPoli'] = $poli ? $poli->NMPoli : '';
+		$data['poli_local']['KdBPJS'] = $KdBPJS;
+
 		return response()->json([
+			'asalFaskes' => isset($request['asalFaskes']) ? $request['asalFaskes'] : null,
+			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : 200,
+			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
-			'data' => $data
+			'data' => $data,
+			'pasien' => $pasien
 		]);
 	}
 

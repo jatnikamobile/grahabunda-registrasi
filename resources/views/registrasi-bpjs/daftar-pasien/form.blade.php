@@ -8,10 +8,10 @@
 <script src="<?=asset('public/js/ws-client.js')?>"></script>
 <script>
   // init web shocket
-  let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {
-    // if(data.type == 'broadcast') { console.log(data);}
-  });
-  ws.init();
+//   let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {
+//     // if(data.type == 'broadcast') { console.log(data);}
+//   });
+//   ws.init();
   
   // send data web shocket
   function push_print(regno) {
@@ -1889,7 +1889,7 @@
                     {
                         console.log(response);
                         if(response.data){
-                            let medrec = response.data.peserta.mr.noMR == undefined ? (response.pasien.Medrec == undefined ? null : response.pasien.Medrec) : response.data.peserta.mr.noMR
+                            let medrec = response.data.peserta.mr.noMR == undefined ? (response.pasien ? response.pasien.Medrec : null) : response.data.peserta.mr.noMR
 
                             if (medrec == null) {
                                 alert("No Rekam Medik tidak ada!");
@@ -2171,7 +2171,7 @@
                 {
                     console.log(response);
                     if(response.data){
-                        let medrec = response.data.peserta.mr.noMR == undefined ? (response.pasien.Medrec == undefined ? null : response.pasien.Medrec) : response.data.peserta.mr.noMR
+                        let medrec = response.data.peserta.mr.noMR == undefined ? (response.pasien ? response.pasien.Medrec : null) : response.data.peserta.mr.noMR
 
                         if (medrec == null) {
                             alert("No Rekam Medik tidak ada!");
