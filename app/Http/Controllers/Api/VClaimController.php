@@ -46,19 +46,25 @@ class VClaimController extends Controller
 
 	public function propinsi(Request $request)
 	{
-		return response()->json(VClaim::get_propinsi());
+		$vclaim = new NewVClaimController();
+		$propinsi = $vclaim->referensiPropinsi();
+		return response()->json($propinsi);
 	}
 
 	public function kabupaten(Request $request)
 	{
 		$propinsi = $request->propinsi;
-		return response()->json(VClaim::get_kabupaten($propinsi));
+		$vclaim = new NewVClaimController();
+		$kabupaten = $vclaim->referensiKabupaten($propinsi);
+		return response()->json($kabupaten);
 	}
 
 	public function kecamatan(Request $request)
 	{
 		$kabupaten = $request->kabupaten;
-		return response()->json(VClaim::get_kecamatan($kabupaten));
+		$vclaim = new NewVClaimController();
+		$kecamatan = $vclaim->referensiKecamatan($kabupaten);
+		return response()->json($kecamatan);
 	}
 
 	public function tindakan(Request $request)

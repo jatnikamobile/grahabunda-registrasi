@@ -227,3 +227,5 @@ Route::group(['prefix'=>'tanggal-pulang'], function(){
 });
 
 Route::resource('bpjs-tester', 'BPJSTesterController');
+
+Route::get('reg-bpjs-pengajuan-spri-req', ['as' => 'reg-bpjs-pengajuan-spri-req', 'uses' => 'RegistrasiBpjsController@pengajuanSPRIAjax']);

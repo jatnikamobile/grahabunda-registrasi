@@ -440,11 +440,19 @@
                         <div class="radio">
                             <label>
                                 <input name="KasKe" id="Kecelaakan1" type="radio" class="ace" value="0" {{ isset($edit->KdKasus) && strtolower(strtoupper($edit->KdKasus)) == '0' ? 'checked' : 'checked' }}/>
-                                <span class="lbl">&nbsp; Tidak</span>
-                            </label>
+                                <span class="lbl">&nbsp; Bukan Kecelakaan lalu lintas [BKLL]</span>
+                            </label><br>
                             <label>
                                 <input name="KasKe" id="Kecelaakan2" type="radio" class="ace" value="1" {{ isset($edit->KdKasus) && strtolower(strtoupper($edit->KdKasus)) == '1' ? 'checked' : '' }}/>
-                                <span class="lbl">&nbsp; Ya</span>
+                                <span class="lbl">&nbsp; KLL dan bukan kecelakaan Kerja [BKK]</span>
+                            </label><br>
+                            <label>
+                                <input name="KasKe" id="Kecelaakan3" type="radio" class="ace" value="2" {{ isset($edit->KdKasus) && strtolower(strtoupper($edit->KdKasus)) == '2' ? 'checked' : '' }}/>
+                                <span class="lbl">&nbsp; KLL dan KK</span>
+                            </label><br>
+                            <label>
+                                <input name="KasKe" id="Kecelaakan4" type="radio" class="ace" value="3" {{ isset($edit->KdKasus) && strtolower(strtoupper($edit->KdKasus)) == '3' ? 'checked' : '' }}/>
+                                <span class="lbl">&nbsp; KK</span>
                             </label>
                         </div>
                     </div>
@@ -1226,9 +1234,9 @@
         ajax: {
             url: '{{ route('vclaim.propinsi') }}',
             processResults: function(data, params) {
-                return select2VClaimResponse(data, params, function(data, params) {
+                // return select2VClaimResponse(data, params, function(data, params) {
                     return {
-                        results: data.response.list.map(function(item) {
+                        results: data.list.map(function(item) {
                             return $.extend(item, {
                                 id: item.kode,
                                 text: item.nama,
@@ -1236,7 +1244,7 @@
                         }),
                         pagination: {more: false},
                     };
-                });
+                // });
             }
         }
     }));
@@ -1252,9 +1260,9 @@
                 });
             },
             processResults: function(data, params) {
-                return select2VClaimResponse(data, params, function(data, params) {
+                // return select2VClaimResponse(data, params, function(data, params) {
                     return {
-                        results: data.response.list.map(function(item) {
+                        results: data.list.map(function(item) {
                             return $.extend(item, {
                                 id: item.kode,
                                 text: item.nama,
@@ -1262,7 +1270,7 @@
                         }),
                         pagination: {more: false},
                     };
-                });
+                // });
             }
         }
     }));
@@ -1276,9 +1284,9 @@
                 });
             },
             processResults: function(data, params) {
-                return select2VClaimResponse(data, params, function(data, params) {
+                // return select2VClaimResponse(data, params, function(data, params) {
                     return {
-                        results: data.response.list.map(function(item) {
+                        results: data.list.map(function(item) {
                             return $.extend(item, {
                                 id: item.kode,
                                 text: item.nama,
@@ -1286,7 +1294,7 @@
                         }),
                         pagination: {more: false},
                     };
-                });
+                // });
             }
         }
     }));

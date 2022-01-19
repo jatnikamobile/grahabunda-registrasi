@@ -1,16 +1,16 @@
 @extends('layouts.main')
 @section('title','Pengajuan SPRI Pasien BPJS | Modul Registrasi')
 @section('bpjs','active')
-@section('pengajuan_sep','active')
+@section('pengajuan_spri','active')
 @section('header','Pengajuan SPRI Pasien BPJS')
 @section('subheader','Form Data')
 @section('content')
 <section>
 	<div>
-		<a href="{{route('reg-bpjs-pengajuan')}}" class="btn btn-warning btn-sm"> Kembali</a>
+		<a href="{{route('reg-bpjs-pengajuan-spri')}}" class="btn btn-warning btn-sm"> Kembali</a>
 	</div>
 	<hr>
-	<form action="{{route('reg-bpjs-pengajuan.create')}}" method="post" class="row" id="form">
+	<form action="{{route('reg-bpjs-pengajuan-spri.create')}}" method="post" class="row" id="form">
 		{{ csrf_field() }}
 		<div class="row">
 			<div class="col-md-8">
@@ -53,12 +53,12 @@
 					<label class="col-sm-3 control-label no-padding-right">Tanggal Rencana Kontrol</label>
 					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-						<input type="text" name="poli" class="form-control input-sm" id="poli" required="required"/>
+						<input type="text" name="tanggal" class="form-control input-sm" id="poli" required="required"/>
 					</div>
 				</div>
 			</div>
 		</div>
-		<button type="button" id="btn-pengajuan" class="btn btn-success" value="pengajuan">
+		<button type="submit" id="btn-pengajuan" class="btn btn-success" value="pengajuan">
 			<i class="fa fa-save"></i>
 			Pengajuan SPRI
 		</button>
@@ -82,7 +82,7 @@ $('document').ready(function () {
 			},
 			success: function (data) {
 				if ($('#dokter').length > 0) {
-					$('#dokter').html(data)
+					$('#dokter').html(data.data_dokter)
 				}
 			}
 		})

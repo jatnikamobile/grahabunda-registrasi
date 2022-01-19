@@ -842,7 +842,39 @@ class RegistrasiBpjsController extends Controller
 
     public function pengajuanSPRISave(Request $request)
     {
-        //
+        $no_kartu = $request->no_kartu;
+        $poli = $request->poli;
+        $dokter = $request->dokter;
+        $tanggal = $request->tanggal;
+
+        $data_req = [
+            'noKartu' => $no_kartu,
+            'kodeDokter' => $dokter,
+            'poliKontrol' => $poli,
+            'tglRencanaKontrol' => $tanggal,
+            'user' => Auth::user()['NamaUser']
+        ];
+        $vclaim = new NewVClaimController();
+        $insert_spri = $vclaim->insertSPRI($data_req);
+        $status = isset($insert_spri['metaData']['code']) ? $insert_spri['metaData']['code'] : ($insert_spri == false ? 201 : 200);
+
+        if ($status == 200) {
+            $pengajuan_spri = new PengajuanSPRI();
+            $pengajuan_spri->no_kartu = $no_kartu;
+            $pengajuan_spri->nama = $insert_spri['nama'];
+            $pengajuan_spri->kelamin = $insert_spri['kelamin'];
+            $pengajuan_spri->tanggal_lahir = $insert_spri['tglLahir'];
+            $pengajuan_spri->kode_dokter = $dokter;
+            $pengajuan_spri->nama_dokter = $insert_spri['namaDokter'];
+            $pengajuan_spri->poli_kontrol = $poli;
+            $pengajuan_spri->tanggal_rencana_kontrol = $tanggal;
+            $pengajuan_spri->no_spri = $insert_spri['noSPRI'];
+            $pengajuan_spri->nama_diagnosa = $insert_spri['namaDiagnosa'];
+            $pengajuan_spri->user = Auth::user()['NamaUser'];
+            $pengajuan_spri->save();
+        }
+
+        return redirect(route('reg-bpjs-pengajuan-spri'));
     }
 
     public function pengajuanSPRIView(Request $request)
@@ -866,7 +898,7 @@ class RegistrasiBpjsController extends Controller
                 $data_dokter = '<option value="0">--- Pilih Dokter ---</option>';
                 if (count($dokter) > 0) {
                     foreach ($dokter as $dr) {
-                        $data_dokter .= '<option value="' . $dr->KdDoc . '">' . $dr->NmDoc . ' - ' . $dr->KdDPJP . '</option>';
+                        $data_dokter .= '<option value="' . $dr->KdDPJP . '">' . $dr->NmDoc . ' - ' . $dr->KdDPJP . '</option>';
                     }
                 }
 
