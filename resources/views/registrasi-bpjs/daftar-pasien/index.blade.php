@@ -169,7 +169,7 @@
                                         @if($l->Deleted != '')
                                         <td></td>
                                         @else
-                                        <td>@if($l->NoSep != '')<a href="{{ route('reg-bpjs-daftar.print-sep', ['Regno' => $l->Regno]) }}" target="_blank" class="btn-print"><i class="fa fa-print"></i>SEP</a>
+                                        <td>@if($l->NoSep != '')<a href="{{ route('reg-bpjs-daftar.print-sep', ['Regno' => $l->Regno]) }}" target="_blank" class="btn-print"><i class="fa fa-print"></i>SEP</a>&nbsp;<a href="{{ route('reg-bpjs-pengajuan-spri.form', ['Regno' => $l->Regno]) }}" target="_blank">SPRI</a>
                                             @endif
                                             <a href="{{ route('reg-bpjs-daftar.form-edit', [$l->Regno]) }}"> <i class="fa fa-pencil green"></i>
                                             </a>

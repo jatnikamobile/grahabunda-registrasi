@@ -1232,19 +1232,18 @@
 
     $('#Provinsi').select2($.extend(true, baseSelect2, {
         ajax: {
-            url: '{{ route('vclaim.propinsi') }}',
+            url: '{{ route('api.select2.provinsi') }}',
             processResults: function(data, params) {
-                // return select2VClaimResponse(data, params, function(data, params) {
-                    return {
-                        results: data.list.map(function(item) {
-                            return $.extend(item, {
-                                id: item.kode,
-                                text: item.nama,
-                            });
-                        }),
-                        pagination: {more: false},
-                    };
-                // });
+                return {
+                    results: data.data.map(function(item) {
+
+                        return $.extend(item, {
+                            id: item.KdPropinsi,
+                            text: item.NmPropinsi,
+                        });
+                    }),
+                    pagination: { more: data.next_page_url }
+                }
             }
         }
     }));
@@ -1253,48 +1252,44 @@
 
     $('#Kabupaten').select2($.extend(true, baseSelect2, {
         ajax: {
-            url: '{{ route('vclaim.kabupaten') }}',
+            url: '{{ route('api.select2.kabupaten') }}',
             data: function(params) {
                 return $.extend(params, {
-                    propinsi: $('#Provinsi').val(),
+                    provinsi : $('#Provinsi option:selected').val(),
                 });
             },
             processResults: function(data, params) {
-                // return select2VClaimResponse(data, params, function(data, params) {
-                    return {
-                        results: data.list.map(function(item) {
-                            return $.extend(item, {
-                                id: item.kode,
-                                text: item.nama,
-                            });
-                        }),
-                        pagination: {more: false},
-                    };
-                // });
+                return {
+                    results: data.data.map(function(item) {
+
+                        return $.extend(item, {
+                            id: item.KdKabupaten,
+                            text: item.NmKabupaten,
+                        });
+                    }),
+                    pagination: { more: data.next_page_url }
+                }
             }
         }
     }));
 
     $('#Kecamatan').select2($.extend(true, baseSelect2, {
         ajax: {
-            url: '{{ route('vclaim.kecamatan') }}',
+            url: '{{ route('api.select2.kecamatan') }}',
             data: function(params) {
                 return $.extend(params, {
-                    kabupaten: $('#Kabupaten').val(),
+                    kabupaten : $('#Kabupaten option:selected').val(),
                 });
             },
             processResults: function(data, params) {
-                // return select2VClaimResponse(data, params, function(data, params) {
-                    return {
-                        results: data.list.map(function(item) {
-                            return $.extend(item, {
-                                id: item.kode,
-                                text: item.nama,
-                            });
-                        }),
-                        pagination: {more: false},
-                    };
-                // });
+                return {
+                    results: data.data.map(function(item){
+                        item.id = item.KdKecamatan;
+                        item.text = item.NmKecamatan;
+                        return item;
+                    }),
+                    pagination: { more: data.next_page_url }
+                };
             }
         }
     }));

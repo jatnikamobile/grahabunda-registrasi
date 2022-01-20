@@ -835,9 +835,12 @@ class RegistrasiBpjsController extends Controller
 
     public function pengajuanSPRIForm(Request $request)
     {
+        $regno = $request->Regno;
+        $register = $regno ? Register::where('Regno', $regno)->first() : null;
         $poli = POLItpp::orderBy('KDPoli')->get();
+        $dokter = $register ? FtDokter::where('KdPoli', $register->KdPoli)->get() : null;
 
-        return view('registrasi-bpjs.pengajuan-spri.form', compact('poli'));
+        return view('registrasi-bpjs.pengajuan-spri.form', compact('register', 'poli', 'dokter'));
     }
 
     public function pengajuanSPRISave(Request $request)
@@ -903,6 +906,18 @@ class RegistrasiBpjsController extends Controller
                 }
 
                 return response()->json(['status' => 'success', 'data_dokter' => $data_dokter]);
+                break;
+
+            case 'get-register':
+                $regno = $request->Regno;
+
+                $register = $regno ? Register::where('Regno', $regno)->first() : null;
+                $poli = POLItpp::orderBy('KDPoli')->get();
+                $dokter = $register ? FtDokter::where('KdPoli', $register->KdPoli)->get() : [];
+                $data_dokter = $register ? FtDokter::where('KdDoc', $register->KdDoc)->first() : null;
+                $data_poli = $register ? POLItpp::where('KDPoli', $register->KdPoli)->first() : null;
+
+                return response()->json(['status' => 'success', 'register' => $register, 'poli' => $poli, 'dokter' => $dokter, 'data_dokter' => $data_dokter, 'data_poli' => $data_poli]);
                 break;
             
             default:

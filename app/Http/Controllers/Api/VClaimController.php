@@ -20,20 +20,26 @@ class VClaimController extends Controller
 	public function diagnosa(Request $request)
 	{
 		$term = $request->term;
-		return response()->json(VClaim::get_diagnosa($term));
+		$vclaim = new NewVClaimController();
+		$diagnosa =$vclaim->referensiDiagnosa($term);
+		return response()->json($diagnosa);
 	}
 
 	public function poli(Request $request)
 	{
 		$term = $request->term;
-		return response()->json(VClaim::get_poli($term));
+		$vclaim = new NewVClaimController();
+		$poli =$vclaim->referensiPoli($term);
+		return response()->json($poli);
 	}
 
 	public function faskes(Request $request)
 	{
 		$term = $request->term;
 		$faskes = $request->faskes;
-		return response()->json(VClaim::get_faskes($faskes, $term));
+		$vclaim = new NewVClaimController();
+		$faskes =$vclaim->referensiFasilitasKesehatan($term, $faskes);
+		return response()->json($faskes);
 	}
 
 	public function dokter_dpjp(Request $request)
@@ -41,7 +47,9 @@ class VClaimController extends Controller
 		$pelayanan = $request->pelayanan;
 		$tanggal = $request->tanggal ?: date('Y-m-d');
 		$spesialis = $request->spesialis;
-		return response()->json(VClaim::get_dokter_dpjp($pelayanan, $tanggal, $spesialis));
+		$vclaim = new NewVClaimController();
+		$dokter = $vclaim->referensiDokterDPJP($pelayanan, $tanggal, $spesialis);
+		return response()->json($dokter);
 	}
 
 	public function propinsi(Request $request)
@@ -70,38 +78,52 @@ class VClaimController extends Controller
 	public function tindakan(Request $request)
 	{
 		$term = $request->term;
-		return response()->json(VClaim::get_tindakan($term));
+		$vclaim = new NewVClaimController();
+		$tindakan = $vclaim->referensiProcedureTindakan($term);
+		return response()->json($tindakan);
 	}
 
 	public function kelas_rawat(Request $request)
 	{
-		return response()->json(VClaim::get_kelas_rawat());
+		$vclaim = new NewVClaimController();
+		$kelas_rawat = $vclaim->referensiKelasRawat();
+		return response()->json($kelas_rawat);
 	}
 
 	public function dokter(Request $request)
 	{
 		$term = $request->term;
-		return response()->json(VClaim::get_dokter($term));
+		$vclaim = new NewVClaimController();
+		$dokter = $vclaim->referensiDokter($term);
+		return response()->json($dokter);
 	}
 
 	public function spesialistik(Request $request)
 	{
-		return response()->json(VClaim::get_spesialistik());
+		$vclaim = new NewVClaimController();
+		$spesialistik = $vclaim->referensiSpesialistik();
+		return response()->json($spesialistik);
 	}
 
 	public function ruang_rawat(Request $request)
 	{
-		return response()->json(VClaim::get_ruang_rawat());
+		$vclaim = new NewVClaimController();
+		$ruang_rawat = $vclaim->referensiRuangRawat();
+		return response()->json($ruang_rawat);
 	}
 
 	public function cara_keluar(Request $request)
 	{
-		return response()->json(VClaim::get_cara_keluar());
+		$vclaim = new NewVClaimController();
+		$cara_keluar = $vclaim->referensiCaraKeluar();
+		return response()->json($cara_keluar);
 	}
 
 	public function pasca_pulang(Request $request)
 	{
-		return response()->json(VClaim::get_pasca_pulang());
+		$vclaim = new NewVClaimController();
+		$pasca_pulang = $vclaim->referensiPascaPulang();
+		return response()->json($pasca_pulang);
 	}
 
 	public function rujukan(Request $request)

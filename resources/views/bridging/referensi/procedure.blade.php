@@ -58,14 +58,14 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.metaData) {
+				if(!res || !res.procedure) {
 					return alert('[ERR] Tidak ada response dari server');
 				}
-				else if(res.metaData.code != 200) {
+				else if(!res.procedure) {
 					return alert(res.metaData.message);
 				}
 
-				let data = res.response.procedure;
+				let data = res.procedure;
 				$('#table-procedure tbody').html('');
 				data.forEach(function(item) {
 					$('#table-procedure tbody').append(`

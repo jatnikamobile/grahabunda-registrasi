@@ -15,12 +15,20 @@
 		<div class="row">
 			<div class="col-md-8">
 				<p><u>Form Pengajuan SPRI</u></p>
+				<!-- Regno -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right">Nomor Registrasi</label>
+					<div class="input-group col-sm-9">
+						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+						<input type="text" name="regno" id="regno" class="form-control input-sm col-xs-6 col-sm-6" value="{{ $register ? $register->Regno : '' }}" required="required" {{ $register ? 'readonly' : '' }} onchange="getRegData()">
+					</div>
+				</div>
 				<!-- Nomor Peserta -->
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right">Nomor Peserta</label>
 					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-						<input type="text" name="no_kartu" id="no_kartu" class="form-control input-sm col-xs-6 col-sm-6" value="" required="required">
+						<input type="text" name="no_kartu" id="no_kartu" class="form-control input-sm col-xs-6 col-sm-6" value="{{ $register ? $register->NoPeserta : '' }}" required="required">
 					</div>
 				</div>
 				<!-- Poli -->
@@ -32,7 +40,7 @@
 							<option>-= Pilih Poli =-</option>
 							@if (count($poli) > 0)
 								@foreach ($poli as $pli)
-									<option value="{{ $pli->KdBPJS }}">{{ $pli->NMPoli }}</option>
+									<option value="{{ $pli->KdBPJS }}" {{ $pli->KDPoli == $register->KdPoli ? 'selected' : '' }}>{{ $pli->NMPoli }}</option>
 								@endforeach
 							@endif
 						</select>
@@ -45,6 +53,11 @@
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
 						<select name="dokter" id="dokter" class="form-control input-sm col-xs-6 col-sm-6" required="required">
 							<option>-= Pilih Dokter =-</option>
+							@if ($dokter)
+								@foreach ($dokter as $dok)
+									<option value="{{ $dok->KdDoc }}" {{ $dok->KdDoc == $register->KdDoc ? 'selected' : '' }}>{{ $dok->NmDoc }}</option>
+								@endforeach
+							@endif
 						</select>
 					</div>
 				</div>
@@ -53,7 +66,7 @@
 					<label class="col-sm-3 control-label no-padding-right">Tanggal Rencana Kontrol</label>
 					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-						<input type="text" name="tanggal" class="form-control input-sm" id="poli" required="required"/>
+						<input type="date" name="tanggal" class="form-control input-sm" id="poli" required="required"/>
 					</div>
 				</div>
 			</div>
@@ -89,6 +102,45 @@ $('document').ready(function () {
 	})
 
 	$('#dokter').select2();
+
+	$('#regno').on('change', function () {
+		$.ajax({
+			url: "{{ route('reg-bpjs-pengajuan-spri-req') }}",
+			type: 'GET',
+			data: {
+				action: 'get-register',
+				Regno: $('#regno').val()
+			},
+			success: function (data) {
+				if (data.status == 'success') {
+					let register = data.register
+					let poli = data.poli
+					let dokter = data.dokter
+					let data_dokter = data.data_dokter
+					let data_poli = data.data_poli
+
+					let opt_poli = '<option>-= Pilih Poli =-</option>';
+					if (poli.length > 0) {
+						poli.forEach(pol => {
+							opt_poli += '<option value="' + pol.KdBPJS + '" ' + (pol.KDPoli == register.KdPoli ? 'selected' : '') + '>' + pol.NMPoli + '</option>'
+						});
+					}
+
+					let opt_dok = '<option>-= Pilih Dokter =-</option>';
+					if (dokter.length > 0) {
+						dokter.forEach(dok => {
+							opt_dok += '<option value="' + dok.KdDPJP + '" ' + (dok.KdDoc == register.KdDoc ? 'selected' : '') + '>' + dok.NmDoc + '</option>'
+						});
+					}
+					$('#poli').html(opt_poli);
+					$('#dokter').html(opt_dok);
+					$('#no_kartu').val(data.register.NoPeserta)
+				} else {
+					alert('Registrasi tidak ditemukan')
+				}
+			}
+		})
+	});
 })
 </script>
 @endsection

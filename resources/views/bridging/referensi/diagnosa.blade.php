@@ -58,14 +58,14 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.metaData) {
+				if(!res || !res.diagnosa) {
 					return alert('[ERR] Tidak ada response dari server');
 				}
-				else if(res.metaData.code != 200) {
+				else if(!res.diagnosa) {
 					return alert(res.metaData.message);
 				}
 
-				let data = res.response.diagnosa;
+				let data = res.diagnosa;
 				$('#table-diagnosa tbody').html('');
 				data.forEach(function(item) {
 					$('#table-diagnosa tbody').append(`

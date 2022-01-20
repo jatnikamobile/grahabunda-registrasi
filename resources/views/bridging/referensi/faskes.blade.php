@@ -69,14 +69,14 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.metaData) {
+				if(!res || !res.faskes) {
 					return alert('[ERR] Tidak ada response dari server');
 				}
-				else if(res.metaData.code != 200) {
+				else if(!res.faskes) {
 					return alert(res.metaData.message);
 				}
 
-				let data = res.response.faskes;
+				let data = res.faskes;
 				$('#table-faskes tbody').html('');
 				data.forEach(function(item) {
 					$('#table-faskes tbody').append(`

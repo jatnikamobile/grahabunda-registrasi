@@ -732,10 +732,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -758,10 +758,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -784,10 +784,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -810,16 +810,16 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
     public function referensiDokterDPJP($jenis_pelayanan, $tanggal_pelayanan, $kode_spesialis)
     {
-        $url = $this->url . 'referensi/dokter/pelayanan/' . $jenis_pelayanan . '/tglPelayanan/' . $tanggal_pelayanan . '/Spesialis' . $kode_spesialis;
+        $url = $this->url . 'referensi/dokter/pelayanan/' . $jenis_pelayanan . '/tglPelayanan/' . $tanggal_pelayanan . '/Spesialis/' . $kode_spesialis;
 
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
@@ -836,10 +836,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -862,10 +862,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -888,10 +888,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -914,10 +914,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -940,10 +940,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -966,16 +966,16 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
     public function referensiProcedureTindakan($kode)
     {
-        $url = $this->url . 'referensi/procedure/' + $kode;
+        $url = $this->url . 'referensi/procedure/' . $kode;
 
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
@@ -992,10 +992,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1018,10 +1018,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1044,10 +1044,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1070,10 +1070,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1096,10 +1096,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1122,10 +1122,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1148,10 +1148,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 

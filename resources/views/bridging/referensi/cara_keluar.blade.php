@@ -52,14 +52,11 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.metaData) {
-					return alert('[ERR] Tidak ada response dari server');
-				}
-				else if(res.metaData.code != 200) {
+				if(!res.list) {
 					return alert(res.metaData.message);
 				}
 
-				let data = res.response.list;
+				let data = res.list;
 				$('#table-cara-keluar tbody').html('');
 				data.forEach(function(item) {
 					$('#table-cara-keluar tbody').append(`

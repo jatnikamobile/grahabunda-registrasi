@@ -58,14 +58,14 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.metaData) {
+				if(!res || !res.poli) {
 					return alert('[ERR] Tidak ada response dari server');
 				}
-				else if(res.metaData.code != 200) {
+				else if(!res.poli) {
 					return alert(res.metaData.message);
 				}
 
-				let data = res.response.poli;
+				let data = res.poli;
 				$('#table-poli tbody').html('');
 				data.forEach(function(item) {
 					$('#table-poli tbody').append(`

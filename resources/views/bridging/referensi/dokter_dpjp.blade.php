@@ -74,14 +74,14 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.metaData) {
+				if(!res || !res.list) {
 					return alert('[ERR] Tidak ada response dari server');
 				}
-				else if(res.metaData.code != 200) {
+				else if(!res.list) {
 					return alert(res.metaData.message);
 				}
 
-				let data = res.response.list;
+				let data = res.list;
 				$('#table-dokter-dpjp tbody').html('');
 				data.forEach(function(item) {
 					$('#table-dokter-dpjp tbody').append(`
