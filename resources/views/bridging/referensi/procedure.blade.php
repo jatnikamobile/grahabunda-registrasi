@@ -58,10 +58,7 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.procedure) {
-					return alert('[ERR] Tidak ada response dari server');
-				}
-				else if(!res.procedure) {
+				if('metaData' in res) {
 					return alert(res.metaData.message);
 				}
 

@@ -1867,6 +1867,9 @@ class NewVClaimController extends Controller
             ]
         ];
 
+		Log::info('BPJS Create Rujukan API Request:');
+		Log::info($data_request_rujukan);
+
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
 

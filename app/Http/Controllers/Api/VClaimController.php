@@ -239,6 +239,9 @@ class VClaimController extends Controller
 		$vklaim_controller = new NewVClaimController();
 		$response = $vklaim_controller->insertRujukanV2($data);
 
+		Log::info('BPJS Create Rujukan API Response:');
+		Log::info($response);
+
 		return response()->json($response);
 	}
 

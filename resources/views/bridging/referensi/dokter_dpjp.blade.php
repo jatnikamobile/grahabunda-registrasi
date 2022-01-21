@@ -74,10 +74,7 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.list) {
-					return alert('[ERR] Tidak ada response dari server');
-				}
-				else if(!res.list) {
+				if('metaData' in res) {
 					return alert(res.metaData.message);
 				}
 

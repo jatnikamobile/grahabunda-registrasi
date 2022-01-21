@@ -52,7 +52,7 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res.list) {
+				if('metaData' in res) {
 					return alert(res.metaData.message);
 				}
 
