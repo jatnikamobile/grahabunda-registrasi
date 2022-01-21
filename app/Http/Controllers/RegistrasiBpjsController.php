@@ -585,30 +585,15 @@ class RegistrasiBpjsController extends Controller
 
     public function rujukan_create(Request $request)
     {
-        $data = [
-            'request' => [
-                't_rujukan' => [
-                    'noRujukan' => $request->NoRujukan,
-                    'ppkDirujuk' => $request->Ppk,
-                    'tipe' => $request->TipeRujukan,
-                    'jnsPelayanan' => $request->JenisPelayanan,
-                    'catatan' => $request->Catatan,
-                    'diagRujukan' => $request->DiagRujuk,
-                    'tipeRujukan' => $request->TipeRujukan,
-                    'poliRujukan' => $request->KdPoli,
-                    'user' => 'SIMRS',
-                ]
-            ]
-        ];
+		$no_sep = $request->NoSep;
+		$vclaim = new NewVClaimController();
+		$peserta = $vclaim->cariSEP($no_sep);
 
         $icd = TBLICD10::where('KDICD', $request->DiagRujuk)->first();
         $ppk = Refppk::where('kdppk', $request->Ppk)->first();
         $poli = POLItpp::where('KdBPJS', $request->KdPoli)->first();
-        $peserta = VClaim::get_sep($request->NoSep);
-        // dd($peserta->response->peserta->noMr);
 
-        VClaim::update_rujukan($data);
-        StoredProcedures::stpnet_AddNewRujukanBPJS_REGxhos([
+        $data_rujukan = [
             'nosep' => $request->NoSep,
             'tglrujukan' => $request->TglRujukan,
             'kdrujukan' => $request->Ppk,
@@ -620,8 +605,8 @@ class RegistrasiBpjsController extends Controller
             'jnspelayanan' => $request->JenisPelayanan,
             'tiperujukan' => $request->TipeRujukan,
             'norujukan' => $request->NoRujukan,
-            'nopeserta' => $peserta->response->peserta->noKartu,
-            'medrec' => $peserta->response->peserta->noMr,
+            'nopeserta' => $peserta['peserta']['noKartu'],
+            'medrec' => $peserta['peserta']['noMr'],
             'firstname' => $request->Firstname,
             'sex' => $request->Sex,
             'bod' => $request->TglLahir,
@@ -631,7 +616,15 @@ class RegistrasiBpjsController extends Controller
             'nmasalrujukan' => VClaim::$namaPpkPelayanan,
             'catatan' => $request->Catatan,
             'validuser' => $request->user()->NamaUser.' '.date('Y-m-d H:i:s'),
-        ]);
+        ];
+
+        StoredProcedures::stpnet_AddNewRujukanBPJS_REGxhos($data_rujukan);
+
+        $rujukan = RujukanBPJS::where('NoSep', $request->NoSep)->where('NoRujukan', $request->NoRujukan)->first();
+        if ($rujukan) {
+            $rujukan->tglRencanaKunjungan = $request->tglRencanaKunjungan;
+            $rujukan->save();
+        }
 
         return redirect()->route('reg-bpjs-rujukan');
     }

@@ -69,10 +69,8 @@
 				alert('[ERR] Tidak ada response dari server');
 			})
 			.done(function(res) {
-				if(!res || !res.faskes) {
-					return alert('[ERR] Tidak ada response dari server');
-				}
-				else if(!res.faskes) {
+				console.log(res)
+				if('metaData' in res) {
 					return alert(res.metaData.message);
 				}
 

@@ -45,6 +45,14 @@
 						<input type="date" name="TglRujukan" id="TglRujukan" value="{{ $rujukan->TglRujukan ? $rujukan->TglRujukan->format('Y-m-d') : date('Y-m-d') }}" class="form-control input-sm col-xs-6 col-sm-6">
 					</div>
 				</div>
+				<!-- Tanggal Rencana Kunjungan -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right">Tanggal Rencana Kunjungan</label>
+					<div class="input-group col-sm-4">
+						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+						<input type="date" name="TglRencanaKunjungan" id="TglRencanaKunjungan" value="{{ $rujukan->TglRencanaKunjungan ? $rujukan->TglRencanaKunjungan->format('Y-m-d') : date('Y-m-d') }}" class="form-control input-sm col-xs-6 col-sm-6">
+					</div>
+				</div>
 				<!-- Nama Pasien -->
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right"> Nama Pasien</label>
@@ -260,17 +268,15 @@
 				return $.extend(params, { faskes: $('[name=TipeRujukan]:checked').val() == 2 ? 1 : 2 });
 			},
 			processResults: function(data, params) {
-				return select2VClaimResponse(data, params, function(data, params) {
-					return {
-						results: data.response.faskes.map(function(item) {
-							return $.extend(item, {
-								id: item.kode,
-								text: item.nama,
-							});
-						}),
-						pagination: {more: false},
-					};
-				});
+				return {
+					results: data.faskes.map(function(item) {
+						return $.extend(item, {
+							id: item.kode,
+							text: item.nama,
+						});
+					}),
+					pagination: {more: false},
+				};
 			}
 		}
 	}));
@@ -295,17 +301,15 @@
 			url: '{{ route('vclaim.poli') }}',
 
 			processResults: function(data, params) {
-				return select2VClaimResponse(data, params, function(data, params) {
-					return {
-						results: data.response.poli.map(function(item) {
-							return $.extend(item, {
-								id: item.kode,
-								text: item.nama,
-							});
-						}),
-						pagination: {more: false},
-					};
-				});
+				return {
+					results: data.poli.map(function(item) {
+						return $.extend(item, {
+							id: item.kode,
+							text: item.nama,
+						});
+					}),
+					pagination: {more: false},
+				};
 			}
 		}
 	}));
@@ -315,17 +319,15 @@
 			url: '{{ route('vclaim.diagnosa') }}',
 
 			processResults: function(data, params) {
-				return select2VClaimResponse(data, params, function(data, params) {
-					return {
-						results: data.response.diagnosa.map(function(item) {
-							return $.extend(item, {
-								id: item.kode,
-								text: item.nama,
-							});
-						}),
-						pagination: {more: false},
-					};
-				});
+				return {
+					results: data.diagnosa.map(function(item) {
+						return $.extend(item, {
+							id: item.kode,
+							text: item.nama,
+						});
+					}),
+					pagination: {more: false},
+				};
 			}
 		}
 	}));
@@ -346,14 +348,12 @@
 			$this.html(content).removeAttr('disabled');
 		})
 		.done(function(res) {
-			if(!res || !res.metaData) {
-				return alert('[ERR] Tidak ada respon dari server');
-			}
-			else if(res.metaData.code != 200) {
+			console.log(res)
+			if ('metaData' in res) {
 				return alert(res.metaData.message);
 			}
 
-			let data = res.response;
+			let data = res;
 
 			$('#Firstname').val(data.peserta.nama);
 			$('#Sex').val(data.peserta.kelamin == 'L' ? 'Laki-laki' : (data.peserta.kelamin == 'P' ? 'Perempuan' : ''));
@@ -379,8 +379,9 @@
 		$this.html(`<i class="fa fa-spin fa-spinner"></i> Create Rujukan`).attr('disabled', 'disabled');
 
 		$.post('{{ route('vclaim.create-rujukan') }}', {
-			NoSep: $('#NoSep').val(),
+			NoSep: $('#NoSep').val().trim(),
 			TglRujukan: $('#TglRujukan').val(),
+			TglRencanaKunjungan: $('#TglRencanaKunjungan').val(),
 			Ppk: $('#Ppk').val(),
 			JenisPelayanan: $('[name=JenisPelayanan]:checked').val(),
 			Catatan: $('#Catatan').val(),
@@ -395,10 +396,7 @@
 			alert('Gagal membuat rujukan');
 		})
 		.done(function(res) {
-			if(!res || !res.metaData) {
-				return alert('[ERR] Tidak ada respon dari server');
-			}
-			else if(res.metaData.code != 200) {
+			if ('metaData' in res) {
 				return alert(res.metaData.message);
 			}
 

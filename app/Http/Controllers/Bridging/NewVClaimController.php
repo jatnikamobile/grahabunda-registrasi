@@ -1882,10 +1882,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2264,10 +2264,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 

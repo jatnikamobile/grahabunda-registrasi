@@ -134,7 +134,9 @@ class VClaimController extends Controller
 	public function sep(Request $request)
 	{
 		$no_sep = $request->no_sep;
-		return response()->json(VClaim::get_sep($no_sep));
+		$vclaim = new NewVClaimController();
+		$data_sep = $vclaim->cariSEP($no_sep);
+		return response()->json($data_sep);
 	}
 
 	public function lembar_pk(Request $request)
@@ -222,22 +224,22 @@ class VClaimController extends Controller
 	public function create_rujukan(Request $request)
 	{
 		$data = [
-			'request' => [
-				't_rujukan' => [
-					'noSep' => $request->NoSep,
-					'tglRujukan' => $request->TglRujukan,
-					'ppkDirujuk' => $request->Ppk,
-					'jnsPelayanan' => $request->JenisPelayanan,
-					'catatan' => $request->Catatan,
-					'diagRujukan' => $request->DiagRujuk,
-					'tipeRujukan' => $request->TipeRujukan,
-					'poliRujukan' => $request->KdPoli,
-					'user' => 'SIMRS',
-				]
-			]
+			'noSep' => $request->NoSep,
+			'tglRujukan' => $request->TglRujukan,
+			'tglRencanaKunjungan' => $request->TglRencanaKunjungan,
+			'ppkDirujuk' => $request->Ppk,
+			'jnsPelayanan' => $request->JenisPelayanan,
+			'catatan' => $request->Catatan,
+			'diagRujukan' => $request->DiagRujuk,
+			'tipeRujukan' => $request->TipeRujukan,
+			'poliRujukan' => $request->KdPoli,
+			'user' => 'SIMRS',
 		];
 
-		return response()->json(VClaim::insert_rujukan($data));
+		$vklaim_controller = new NewVClaimController();
+		$response = $vklaim_controller->insertRujukanV2($data);
+
+		return response()->json($response);
 	}
 
 	public function monitoring_kunjungan(Request $request)
