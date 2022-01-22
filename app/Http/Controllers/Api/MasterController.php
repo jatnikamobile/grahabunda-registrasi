@@ -796,6 +796,8 @@ class MasterController extends Controller{
 	public function delete_sep(Request $request)
 	{
 		$noSep = $request->input("noSep");
+		$no_sep = $request->noSep;
+		$vclaim_controller = new NewVClaimController();
 		$validuser = 'SIMRS';
 
 		$data = array(
@@ -807,9 +809,8 @@ class MasterController extends Controller{
 			]
 		);
 
-		$sep = new Bridging_bpjs();
-		$response = $sep->delete_sep($data);
-		if ($response->metaData->code == '201') {
+		$response = $vclaim_controller->hapusSEP($data);
+		if (isset($response->metaData->code)) {
 			return response()->json([
 				'metaData' => $response->metaData,
 				'data' => $response->response
