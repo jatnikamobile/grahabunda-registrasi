@@ -400,7 +400,7 @@
 				return alert(res.metaData.message);
 			}
 
-			let data = res.response;
+			let data = res;
 
 			$('#NoRujukan').val(data.rujukan.noRujukan);
 		});

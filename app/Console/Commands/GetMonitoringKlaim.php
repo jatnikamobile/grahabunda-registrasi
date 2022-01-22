@@ -43,7 +43,7 @@ class GetMonitoringKlaim extends Command
     public function handle()
     {
         $period = new DatePeriod(
-            new DateTime('2022-01-01'),
+            new DateTime('2021-12-01'),
             new DateInterval('P1D'),
             new DateTime()
         );
@@ -59,7 +59,9 @@ class GetMonitoringKlaim extends Command
 
                 if (count($current_data) == 0) {
                     $vclaim = new NewVClaimController();
-                    $response = $vclaim->dataKlaim($date, 2, 3);
+                    $response = $vclaim->dataKlaim($date, 1, 3);
+                    echo json_encode($response);
+                    echo PHP_EOL;
 
                     if (isset($response['metaData'])) {
                         if ($response['metaData']['code'] == 201) {
