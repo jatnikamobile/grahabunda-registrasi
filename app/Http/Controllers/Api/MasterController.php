@@ -783,11 +783,13 @@ class MasterController extends Controller{
 
 	public function get_sep(Request $request)
 	{
-		$bpjs = new Bridging_bpjs();
-		$data = $bpjs->get_sep($request->noSep);
+		$no_sep = $request->noSep;
+		$vclaim_controller = new NewVClaimController();
+		$data_sep = $vclaim_controller->cariSEP($no_sep);
+
 		return response()->json([
 			'status' => true,
-			'data' => $data
+			'data' => $data_sep
 		]);
 	}
 

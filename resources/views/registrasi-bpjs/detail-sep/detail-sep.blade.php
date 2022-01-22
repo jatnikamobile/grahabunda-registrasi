@@ -305,7 +305,7 @@
                 },
                 success:function(response)
                 {
-                    if(response.data != false){
+                    if('noSep' in response.data){
                         btn.prop('disabled', false);
                         btn.html(oldText);
 
