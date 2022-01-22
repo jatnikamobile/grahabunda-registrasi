@@ -59,6 +59,15 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
         ],
+        'sqlsrv_vclaim' => [
+            'driver' => 'sqlsrv',
+            'host' => env('MAIN_VKLAIM_HOST', '192.168.0.3'),
+            'database' => env('MAIN_VKLAIM_DATABASE', 'dbBRIDGING'),
+            'username' => env('MAIN_VKLAIM_USERNAME', 'kepri'),
+            'password' => env('MAIN_VKLAIM_PASSWORD', 'simrskepri2012'),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),

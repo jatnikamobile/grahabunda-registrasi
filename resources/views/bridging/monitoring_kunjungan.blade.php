@@ -90,14 +90,13 @@
 			alert('[ERR] Tidak ada response dari server');
 		})
 		.done(function(res) {
-			if(!res || !res.metaData) {
-				return alert('[ERR] Tidak ada response dari server');
-			}
-			else if(res.metaData.code != 200) {
-				return alert(res.metaData.message);
+			if('metaData' in res) {
+				if (res.metaData.code == 201) {
+					return alert(res.metaData.message);
+				}
 			}
 
-			let data = res.response.sep;
+			let data = res.sep;
 			$('#table tbody').html('');
 			data.forEach(function(item) {
 				$('#table tbody').append(`

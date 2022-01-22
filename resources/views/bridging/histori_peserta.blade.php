@@ -71,50 +71,54 @@
 	$('#form-histori [name=tanggal_akhir]').datepicker({format: 'yyyy-mm-dd'});
 	$('#form-histori').submit(function(ev) {
 		ev.preventDefault();
-		let $btn = $(this).find('button[type=submit]');
-		let content = $btn.html();
 
-		$btn.html('<i class="fa fa-spin fa-spinner"></i> Cari').attr('disabled', 'disabled');
+		if (!$(this).find('[name=no_kartu]').val()) {
+			alert('Nomor Kartu Harus Diisi')
+		} else {
+			let $btn = $(this).find('button[type=submit]');
+			let content = $btn.html();
 
-		$.get('{{ route('vclaim.histori_peserta') }}', {
-			no_kartu: $(this).find('[name=no_kartu]').val(),
-			tanggal_mulai: $(this).find('[name=tanggal_mulai]').val(),
-			tanggal_akhir: $(this).find('[name=tanggal_akhir]').val(),
-		})
-		.always(function() {
-			$btn.html(content).removeAttr('disabled');
-		})
-		.fail(function() {
-			alert('[ERR] Gagal mendapatkan data dari server');
-		})
-		.done(function(res) {
-			if(!res || !res.metaData) {
-				return alert('Tidak ada respon dari server');
-			}
-			else if(res.metaData.code != 200) {
-				return alert(res.metaData.message);
-			}
+			$btn.html('<i class="fa fa-spin fa-spinner"></i> Cari').attr('disabled', 'disabled');
 
-			let data = res.response.histori;
-			$('#table-histori tbody').html('');
-			data.forEach(function(item) {
-				$('#table-histori tbody').append(`
-					<tr>
-						<td>${item.noKartu}</td>
-						<td>${item.noSep}</td>
-						<td>${item.noRujukan}</td>
-						<td>${item.namaPeserta}</td>
-						<td>${item.jnsPelayanan == 1 ? 'Rawat Inap' : (item.jnsPelayanan == 2 ? 'Rawat Jalan' : '')}</td>
-						<td>${item.poli}</td>
-						<td>${item.kelasRawat}</td>
-						<td>${item.diagnosa}</td>
-						<td>${item.ppkPelayanan}</td>
-						<td>${item.tglPlgSep}</td>
-						<td>${item.tglSep}</td>
-					</tr>
-					`);
+			$.get('{{ route('vclaim.histori_peserta') }}', {
+				no_kartu: $(this).find('[name=no_kartu]').val(),
+				tanggal_mulai: $(this).find('[name=tanggal_mulai]').val(),
+				tanggal_akhir: $(this).find('[name=tanggal_akhir]').val(),
+			})
+			.always(function() {
+				$btn.html(content).removeAttr('disabled');
+			})
+			.fail(function() {
+				alert('[ERR] Gagal mendapatkan data dari server');
+			})
+			.done(function(res) {
+				if ('metaData' in res) {
+					if (res.metaData.code == 201) {
+						return alert(res.metaData.message);
+					}
+				}
+
+				let data = res.histori;
+				$('#table-histori tbody').html('');
+				data.forEach(function(item) {
+					$('#table-histori tbody').append(`
+						<tr>
+							<td>${item.noKartu}</td>
+							<td>${item.noSep}</td>
+							<td>${item.noRujukan}</td>
+							<td>${item.namaPeserta}</td>
+							<td>${item.jnsPelayanan == 1 ? 'Rawat Inap' : (item.jnsPelayanan == 2 ? 'Rawat Jalan' : '')}</td>
+							<td>${item.poli}</td>
+							<td>${item.kelasRawat}</td>
+							<td>${item.diagnosa}</td>
+							<td>${item.ppkPelayanan}</td>
+							<td>${item.tglPlgSep}</td>
+							<td>${item.tglSep}</td>
+						</tr>
+						`);
+				});
 			});
-		});
+		}
 	});
 })();
 </script>

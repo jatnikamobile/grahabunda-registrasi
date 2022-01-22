@@ -151,8 +151,10 @@ class VClaimController extends Controller
 	{
 		$tanggal = $request->tanggal;
 		$no_kartu = $request->no_kartu;
+		$vclaim = new NewVClaimController();
+		$response = $vclaim->suplesiJasaRaharja($no_kartu, $tanggal);
 
-		return response()->json(VClaim::get_suplesi_jasa_raharja($no_kartu, $tanggal));
+		return response()->json($response);
 	}
 
 	public function histori_peserta(Request $request)
@@ -180,10 +182,13 @@ class VClaimController extends Controller
 
 	public function klaim_jasa_raharja(Request $request)
 	{
+		$pelayanan = $request->pelayanan;
 		$tanggal_mulai = $request->tanggal_mulai;
 		$tanggal_akhir = $request->tanggal_akhir;
+		$vclaim = new NewVClaimController();
+		$response = $vclaim->dataKlaimJaminanJasaRaharja($pelayanan, $tanggal_mulai, $tanggal_akhir);
 
-		return response()->json(VClaim::data_klaim_jasa_raharja($tanggal_mulai, $tanggal_akhir));
+		return response()->json($response);
 	}
 
 	public function create_pengajuan_sep(Request $request)
@@ -250,7 +255,10 @@ class VClaimController extends Controller
 		$tanggal_sep = $request->tanggal_sep;
 		$pelayanan = $request->pelayanan;
 
-		return response()->json(VClaim::monitoring_kunjungan($tanggal_sep, $pelayanan));
+		$vklaim_controller = new NewVClaimController();
+		$response = $vklaim_controller->dataKunjungan($tanggal_sep, $pelayanan);
+
+		return response()->json($response);
 	}
 
 	public function monitoring_klaim(Request $request)
@@ -259,7 +267,10 @@ class VClaimController extends Controller
 		$pelayanan = $request->pelayanan;
 		$status = $request->status;
 
-		return response()->json(VClaim::monitoring_klaim($tanggal_sep, $pelayanan, $status));
+		$vklaim_controller = new NewVClaimController();
+		$response = $vklaim_controller->dataKlaim($tanggal_sep, $pelayanan, $status);
+
+		return response()->json($response);
 	}
 
 	public function rujukan_list(Request $request)

@@ -75,7 +75,9 @@
 			})
 			.done(function(res) {
 				if('metaData' in res) {
-					return alert(res.metaData.message);
+					if (res.metaData.code == 201) {
+						return alert(res.metaData.message);
+					}
 				}
 
 				let data = res.list;

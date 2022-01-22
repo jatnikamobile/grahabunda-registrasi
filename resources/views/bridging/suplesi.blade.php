@@ -78,14 +78,13 @@
 			alert('[ERR] Gagal mendapatkan data dari server');
 		})
 		.done(function(res) {
-			if(!res || !res.metaData) {
-				return alert('Tidak ada respon dari server');
-			}
-			else if(res.metaData.code != 200) {
-				return alert(res.metaData.message);
+			if ('metaData' in res) {
+				if (res.metaData.code == 201) {
+					return alert(res.metaData.message);
+				}
 			}
 
-			let data = res.response.list;
+			let data = res.list;
 			$('#table-suplesi tbody').html('');
 			data.forEach(function(item) {
 				$('#table-suplesi tbody').append(`
