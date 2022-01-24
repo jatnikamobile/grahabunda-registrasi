@@ -111,16 +111,6 @@ class RsNetKunjunganController extends Controller
                 if ($kunjungan) {
                     $kunjungan->I_Kontraktor = $kategori;
                     $kunjungan->save();
-
-                    // $bill_transaksi = BillTransaksi::where('I_Kunjungan', $kunjungan->I_Kunjungan)->first();
-                    // if ($bill_transaksi) {
-                    //     $bill_transaksi_detail = BillTransaksiDetail::where('I_Transaksi', $bill_transaksi->I_Transaksi)->first();
-
-                    //     if ($bill_transaksi_detail) {
-                    //         $bill_transaksi_detail->I_Kontraktor = $I_Kontraktor;
-                    //         $bill_transaksi_detail->save();
-                    //     }
-                    // }
                 }
             } elseif ($action == 'update_dokter') {
                 $dokter_data = FtDokter::where('KdDoc', $dokter_pil)->first();
@@ -133,51 +123,7 @@ class RsNetKunjunganController extends Controller
                 if ($kunjungan) {
                     $kunjungan->C_Pegawai = $nip_dokter;
                     $kunjungan->save();
-
-                    // if ($I_Unit == 30) {
-                    //     $i_produk = 6122;
-                    //     $v_total_transaksi = 75000;
-                    // } elseif ($I_Unit == 2019) {
-                    //     $i_produk = 73038;
-                    //     $v_total_transaksi = 50000;
-                    // } else {
-                    //     $i_produk = 6064;
-                    //     $v_total_transaksi = 75000;
-                    // }
-                    // $pt_produk_unit = PtProdukUnit::where('I_Produk', $i_produk)->where('I_Unit', $kunjungan->I_Unit)->first();
-                    // $pt_tarif = $pt_produk_unit ? PtTarif::where('I_ProdukUnit', $pt_produk_unit->I_ProdukUnit)->first() : null;
-                    // $i_tarif = $pt_tarif ? $pt_tarif->I_Tarif : 0;
-                    // $v_tarif = $pt_tarif ? $pt_tarif->V_Tarif : 0;
-
-
-                    // $bill_transaksi = BillTransaksi::where('I_Kunjungan', $kunjungan->I_Kunjungan)->first();
-                    // if ($bill_transaksi) {
-                    //     $bill_transaksi_detail = BillTransaksiDetail::where('I_Transaksi', $bill_transaksi->I_Transaksi)->first();
-
-                    //     if ($bill_transaksi_detail) {
-                    //         $bill_transaksi->V_TotalTransaksi = $v_total_transaksi;
-                    //         $bill_transaksi_detail->save();
-                    //     }
-                    // }
-
-                    // $bill_transaksi_detail = BillTransaksiDetail::where('I_Transaksi', $bill_transaksi->I_Transaksi)->first();
-                    // if ($bill_transaksi_detail) {
-                    //     $bill_transaksi_detail->I_ProdukUnit = $pt_produk_unit ? $pt_produk_unit->I_ProdukUnit : 0;
-                    //     $bill_transaksi_detail->V_TarifProdukUnit = $v_tarif;
-                    //     $bill_transaksi_detail->C_Pegawai = $nip_dokter;
-                    //     $bill_transaksi_detail->I_Unit = $I_Unit;
-                    //     $bill_transaksi_detail->I_Tarif = $i_tarif;
-                    //     $bill_transaksi_detail->save();
-                    // }
                 }
-
-                // $bill_transaksi_dokter = BillTransaksiDokter::where('I_Transaksi', $bill_transaksi->I_Transaksi)->first();
-                // $bill_transaksi_dokter->C_Pegawai = $nip_dokter;
-                // $bill_transaksi_dokter->JP_Persen = 100;
-                // $bill_transaksi_dokter->JP_Rp = $i_tarif;
-                // $bill_transaksi_dokter->I_ProdukComponent = 20;
-                // $bill_transaksi_dokter->I_PaketAskes = '-';
-                // $bill_transaksi_dokter->save();
             } else {
                 $dokter_data = FtDokter::where('KdDoc', $C_Pegawai)->first();
                 $nip_dokter = $dokter_data ? $dokter_data->C_PEGAWAI : null;
@@ -186,7 +132,7 @@ class RsNetKunjunganController extends Controller
                 $bagian = $tm_unit ? $tm_unit->I_Bagian : 0;
 
                 $exists = true;
-                $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->first();
+                $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_Kontraktor', $I_Kontraktor)->first();
                 if (!$kunjungan) {
                     $exists = false;
                     $i_kunjungan = null;
@@ -302,26 +248,11 @@ class RsNetKunjunganController extends Controller
                 $kunjungan->save();
 
                 $v_total_transaksi = 0 ;
-                // if ($I_Unit == 30) {
-                //     $i_produk = 6122;
-                //     $v_total_transaksi = 75000;
-                // } elseif ($I_Unit == 2019) {
-                //     $i_produk = 73038;
-                //     $v_total_transaksi = 50000;
-                // } else {
-                //     $i_produk = 6064;
-                //     $v_total_transaksi = 75000;
-                // }
-                // $pt_produk_unit = PtProdukUnit::where('I_Produk', $i_produk)->where('I_Unit', $I_Unit)->first();
-                // $pt_tarif = $pt_produk_unit ? PtTarif::where('I_ProdukUnit', $pt_produk_unit->I_ProdukUnit)->first() : null;
-                // $i_tarif = $pt_tarif ? $pt_tarif->I_Tarif : 0;
-                // $v_tarif = $pt_tarif ? $pt_tarif->V_Tarif : 0;
 
                 $last_rows_bt = BillTransaksi::orderBy('I_Transaksi', 'desc')->first();
                 $next_id_bt = $last_rows_bt ? $last_rows_bt->I_Transaksi + 1 : 1;
 
                 $bill_transaksi = $exists ? BillTransaksi::where('I_Kunjungan', $i_kunjungan)->first() : new BillTransaksi();
-                // $i_transaksi = $bill_transaksi->I_Transaksi;
                 $bill_transaksi->I_Transaksi = $exists ? $bill_transaksi->I_Transaksi : $next_id_bt;
                 $bill_transaksi->I_Kunjungan = $kunjungan->I_Kunjungan;
                 $bill_transaksi->V_TotalTransaksi = $v_total_transaksi;
@@ -335,45 +266,6 @@ class RsNetKunjunganController extends Controller
                 $bill_transaksi->V_PersenSJP = 0;
                 $bill_transaksi->V_NominalSJP = 0;
                 $bill_transaksi->save();
-
-                // $last_rows_btd = BillTransaksiDetail::orderBy('D_Entry', 'desc')->first();
-                // $next_id_btd = $last_rows_btd ? $last_rows_btd->I_TransaksiDetail + 1 : 1;
-
-                // $bill_transaksi_detail = $exists ? BillTransaksiDetail::where('I_Transaksi', $i_transaksi)->first() : new BillTransaksiDetail();
-                // $bill_transaksi_detail->I_TransaksiDetail = $exists ? $bill_transaksi_detail->I_TransaksiDetail : $next_id_btd;
-                // $bill_transaksi_detail->I_Transaksi = $exists ? $bill_transaksi_detail->I_Transaksi : $next_id_bt;
-                // $bill_transaksi_detail->D_TransaksiDetail = $D_Entry;
-                // $bill_transaksi_detail->I_ProdukUnit = $pt_produk_unit ? $pt_produk_unit->I_ProdukUnit : 0;
-                // $bill_transaksi_detail->V_TarifProdukUnit = $v_tarif;
-                // $bill_transaksi_detail->I_Qty = 1;
-                // $bill_transaksi_detail->C_Pegawai = $nip_dokter;
-                // $bill_transaksi_detail->I_DetailBayar = 0;
-                // $bill_transaksi_detail->I_Entry = $I_Entry;
-                // $bill_transaksi_detail->D_Entry = $D_Entry;
-                // $bill_transaksi_detail->C_Shift = $C_Shift;
-                // $bill_transaksi_detail->I_Kontraktor = $I_Kontraktor;
-                // $bill_transaksi_detail->I_Unit = $I_Unit;
-                // $bill_transaksi_detail->IsJurnalTemp = 0;
-                // $bill_transaksi_detail->I_JmlTenagaMedis = 1;
-                // $bill_transaksi_detail->I_Tarif = $i_tarif;
-                // $bill_transaksi_detail->I_PaketAskes = '-';
-                // $bill_transaksi_detail->V_DibayarAskes = 0;
-                // $bill_transaksi_detail->V_TarifBaru = 0;
-                // $bill_transaksi_detail->V_CostSharing = 0;
-                // $bill_transaksi_detail->V_Tunai = 75000;
-                // $bill_transaksi_detail->I_Pengaktifan = 0;
-                // $bill_transaksi_detail->save();
-
-                // $bill_transaksi_dokter = $exists ? BillTransaksiDokter::where('I_Transaksi', $i_transaksi)->where('I_TransaksiDetail', $bill_transaksi_detail->I_TransaksiDetail)->first() : new BillTransaksiDokter();
-                // $bill_transaksi_dokter->I_Transaksi = $exists ? $bill_transaksi_dokter->I_Transaksi : $next_id_bt;
-                // $bill_transaksi_dokter->I_TransaksiDetail = $exists ? $bill_transaksi_dokter->I_TransaksiDetail : $next_id_btd;
-                // $bill_transaksi_dokter->I_TRDetailDokter = 1;
-                // $bill_transaksi_dokter->C_Pegawai = $nip_dokter;
-                // $bill_transaksi_dokter->JP_Persen = 100;
-                // $bill_transaksi_dokter->JP_Rp = $i_tarif;
-                // $bill_transaksi_dokter->I_ProdukComponent = 20;
-                // $bill_transaksi_dokter->I_PaketAskes = '-';
-                // $bill_transaksi_dokter->save();
             }
 
             DB::commit();
