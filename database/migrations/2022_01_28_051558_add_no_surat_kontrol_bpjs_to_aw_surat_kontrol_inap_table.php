@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNoSuratKontrolBpjsToAwSuratKontrolHeadTable extends Migration
+class AddNoSuratKontrolBpjsToAwSuratKontrolInapTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddNoSuratKontrolBpjsToAwSuratKontrolHeadTable extends Migration
      */
     public function up()
     {
-        Schema::table('AwSuratKontrolHead', function(Blueprint $table) {
+        Schema::table('AwSuratKontrolInap', function(Blueprint $table) {
             $table->string('no_surat_kontrol_bpjs')->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddNoSuratKontrolBpjsToAwSuratKontrolHeadTable extends Migration
      */
     public function down()
     {
-        Schema::table('AwSuratKontrolHead', function(Blueprint $table) {
+        Schema::table('AwSuratKontrolInap', function(Blueprint $table) {
             $table->dropColumn('no_surat_kontrol_bpjs');
         });
     }

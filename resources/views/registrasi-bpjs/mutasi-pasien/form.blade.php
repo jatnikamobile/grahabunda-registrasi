@@ -1638,7 +1638,7 @@
                     $('#Regdate').val(response.data.Regdate.substring(0,10));
                     $('#Regtime').val(response.data.Regtime.substring(11,16));
                     $('#Bod').val(response.data.Bod.substring(0,10));
-                    $('#TglDaftar').val(response.data.TglDaftar.substring(0,10));
+                    $('#TglDaftar').val(response.data.TglDaftar ? response.data.TglDaftar.substring(0,10) : response.data.Regdate.substring(0,10));
                     $('#pisat').val(response.data.Pisat);
                     $('#RegRujuk').val(response.data.TglRujuk.substring(0,10));
                     KdDPJP = response.data.KdDPJP;
@@ -1684,6 +1684,12 @@
                     var $unit = $("<option selected></option>").val(response.data.NmUnit).text(response.data.NmUnit);
                     $('#Unit').append($unit).trigger('change');
 
+                    var $diagnosa = $("<option selected></option>").val(response.data.KdICD).text(response.data.DIAGNOSA);
+                    $('#Diagnosa').append($diagnosa).trigger('change')
+
+                    var $dok_rawat = $("<option selected></option>").val(response.data.KdDoc).text(response.data.NmDoc);
+                    $('#DocYgMerawat').append($dok_rawat).trigger('change')
+                    
                     // Tambah Keyakinan
                     $('#ke_NoRM').val(response.data.Medrec);
                     $('#ke_Firstname').val(response.data.Firstname);

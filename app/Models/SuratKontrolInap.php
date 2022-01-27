@@ -28,7 +28,7 @@ class SuratKontrolInap extends Model
     public function get_list($medrec = '',$nama = '')
     {
         $tgl=date('Y-m-d');
-        $data = $this->select(DB::connection('main')->raw("POLItpp.NMPoli, AwSuratKontrolInap.NoSurat, Regno, Medrec, Firstname, '-' as Norujukan, CreateAt as TanggalRujukan, AwSuratKontrolInap.TglKePoli as TanggalSurat"))
+        $data = $this->select(DB::connection('main')->raw("POLItpp.NMPoli, AwSuratKontrolInap.NoSurat, Regno, Medrec, Firstname, '-' as Norujukan, CreateAt as TanggalRujukan, AwSuratKontrolInap.TglKePoli as TanggalSurat, AwSuratKontrolInap.no_surat_kontrol_bpjs"))
                      ->leftJoin("POLItpp", "POLItpp.KDPoli", "=", "AwSuratKontrolInap.KdPoli");
         if($medrec != ''){ $data->where("AwSuratKontrolInap.Medrec", "like", "%".$medrec."%"); }
         if($nama != ''){ $data->where("AwSuratKontrolInap.Firstname", "like", "%".$nama."%"); }

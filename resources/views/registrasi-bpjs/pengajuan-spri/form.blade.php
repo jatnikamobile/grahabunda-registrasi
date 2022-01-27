@@ -55,7 +55,7 @@
 							<option>-= Pilih Dokter =-</option>
 							@if ($dokter)
 								@foreach ($dokter as $dok)
-									<option value="{{ $dok->KdDoc }}" {{ $dok->KdDoc == $register->KdDoc ? 'selected' : '' }}>{{ $dok->NmDoc }}</option>
+									<option value="{{ $dok->KdDPJP }}" {{ $dok->KdDoc == $register->KdDoc ? 'selected' : '' }}>{{ $dok->NmDoc }}</option>
 								@endforeach
 							@endif
 						</select>

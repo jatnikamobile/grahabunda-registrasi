@@ -1336,7 +1336,7 @@
             processResults: function(data, params) {
                 return select2VClaimResponse(data, params, function(data, params) {
                     return {
-                        results: data.response.faskes.map(function(item) {
+                        results: data.faskes.map(function(item) {
                             return $.extend(item, {
                                 id: item.kode,
                                 text: item.nama,
@@ -2478,13 +2478,13 @@
                     var $dokter = $("<option selected></option>").val(dokter_data.KdDoc).text(dokter_data.NmDoc);
                     $('#Dokter').append($dokter).trigger('change');
 
-                    var $poli = $("<option selected></option>").val(poli_data.KdPoli).text(poli_data.NmPoli);
+                    var $poli = $("<option selected></option>").val(poli_data.KDPoli).text(poli_data.NMPoli);
                     $('#poli').append($poli).trigger('change');
                     // setKodePoli(response.KdPoli, response.KdPoliBpjs);
 
-                    $('#jatah_kelas').val(register_data.NmKelas);
+                    $('#jatah_kelas').val(bpjs_data.sep.peserta.hakKelas);
 
-                    var $diagnosa = $("<option selected></option>").val(register_data.KdICDBPJS).text(bpjs_data.sep.diagnosa);
+                    var $diagnosa = $("<option selected></option>").val(response.diag).text(bpjs_data.sep.diagnosa);
                     $('#Diagnosa').append($diagnosa).trigger('change');
 
                     if (master_ps_data.KdSex != null) {

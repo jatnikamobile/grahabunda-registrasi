@@ -6,6 +6,7 @@ use Auth;
 use PDF;
 use App\Bridging\VClaim;
 use App\Http\Controllers\Bridging\NewVClaimController;
+use App\Http\Controllers\RsNet\RsNetBridgingController;
 use App\Http\Controllers\RsNet\RsNetKunjunganController;
 use App\Http\Controllers\RsNet\RsNetPasienController;
 use App\Http\Controllers\RsNet\RsNetRujukanController;
@@ -120,13 +121,21 @@ class RegistrasiBpjsController extends Controller
         Log::info("data BPJS Surat Kontrol: " . $bpjs_data);
 
         if (isset($bpjs_data['noSuratKontrol'])) {
+            $jenis_pelayanan = $bpjs_data['sep']['jnsPelayanan'];
             $no_peserta = isset($bpjs_data['sep']['peserta']['noKartu']) ? $bpjs_data['sep']['peserta']['noKartu'] : null;
-    
-            $register = $no_peserta ? Register::where('NoPeserta', $no_peserta)->orderBy('Regno', 'desc')->first() : null;
-            $master_ps = $register ? MasterPS::where('Medrec', $register->Medrec)->first() : null;
-            $kategori = $register ? TblKategoriPsn::where('KdKategori', $register->Kategori)->first() : null;
-            $dokter = $register ? FtDokter::where('KdDoc', $register->KdDoc)->first() : null;
-            $poli = $register ? FtDokter::where('KdPoli', $register->KdPoli)->first() : null;
+            if ($jenis_pelayanan == 'Rawat Inap') {
+                $register = Fppri::where('nosep', $bpjs_data['sep']['noSep'])->first();
+                $master_ps = $register ? MasterPS::where('Medrec', $register->Medrec)->first() : null;
+                $kategori = TblKategoriPsn::where('KdKategori', 28)->first();
+                $dokter = FtDokter::where('KdDPJP', $bpjs_data['kodeDokter'])->first();
+                $poli = POLItpp::where('KdBPJS', $bpjs_data['poliTujuan'])->first();
+            } else {
+                $register = $no_peserta ? Register::where('NoPeserta', $no_peserta)->where('NoSep', $bpjs_data['sep']['noSep'])->orderBy('Regno', 'desc')->first() : null;
+                $master_ps = $register ? MasterPS::where('Medrec', $register->Medrec)->first() : null;
+                $kategori = $register ? TblKategoriPsn::where('KdKategori', $register->Kategori)->first() : null;
+                $dokter = $register ? FtDokter::where('KdDoc', $register->KdDoc)->first() : null;
+                $poli = $register ? POLItpp::where('KDPoli', $register->KdPoli)->first() : null;
+            }
 
             $response_data['metaData'] = ['code' => 200];
             $response_data['response'] = $bpjs_data;
@@ -139,6 +148,7 @@ class RegistrasiBpjsController extends Controller
                 'kategori' => $kategori,
                 'dokter' => $dokter,
                 'poli' => $poli,
+                'diag' => $jenis_pelayanan == 'Rawat Inap' ? $register->KdIcd : $register->KdICDBPJS
             ];
 
             Log::info("data BPJS Surat Kontrol: " . json_encode($data));
@@ -447,6 +457,8 @@ class RegistrasiBpjsController extends Controller
 
             $KdTuju = Register::where('Regno',$request->Regno)->update(['KdTuju'=>'RI']);
 
+            $rs_net_bridging = new RsNetBridgingController();
+            $rs_net_ranap = $rs_net_bridging->addDataRanap($request);
 
             $parse = array(
                 'status' => true,

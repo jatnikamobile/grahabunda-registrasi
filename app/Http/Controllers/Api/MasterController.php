@@ -17,6 +17,7 @@ use App\Models\Procedure;
 use App\Models\Bridging_bpjs;
 use App\Models\Fppri;
 use App\Models\RsNet\AdmKunjungan;
+use App\Models\SuratKontrolInap;
 use Illuminate\Support\Facades\Log;
 
 class MasterController extends Controller{
@@ -562,9 +563,10 @@ class MasterController extends Controller{
 		} else {
 			$register = Register::where('NoRujuk', $noRujukan)->whereNotNull('NoSep')->first();
 			$surat_kontrol = $register ? AwSuratKontrolHead::where('Regno', $register->Regno)->where('no_surat_kontrol_bpjs', $noSurat)->first() : null;
+			$no_surat_kontrol = $surat_kontrol ? $surat_kontrol->no_surat_kontrol_bpjs : $noSurat;
 	
 			$vclaim_controller = new NewVClaimController();
-			$rencana_kontrol = $surat_kontrol ? $vclaim_controller->cariNomorSuratKontrol($surat_kontrol->no_surat_kontrol_bpjs) : [];
+			$rencana_kontrol = $vclaim_controller->cariNomorSuratKontrol($no_surat_kontrol);
 		
 			Log::info('BPJS Surat Kontrol API Response:');
 			Log::info($rencana_kontrol);
@@ -578,6 +580,7 @@ class MasterController extends Controller{
 			$user = $validuser;
 	
 			if (count($rencana_kontrol) > 0) {
+				$register = $register ?: Fppri::where('nosep', $rencana_kontrol['sep']['noSep'])->first();
 				$data_sep = [
 					'noKartu' => $rencana_kontrol['sep']['peserta']['noKartu'],
 					'tglSep' => $tglSep,
@@ -594,7 +597,7 @@ class MasterController extends Controller{
 					'ppkRujukan' => $rencana_kontrol['sep']['provPerujuk']['kdProviderPerujuk'],
 					'catatan' => $catatan,
 					// 'diagAwal' => $rencana_kontrol['sep']['diagnosa'],
-					'diagAwal' => $diagAwal,
+					'diagAwal' => $diagAwal ?: ($register ? $register->KdIcd : null),
 					// 'diagAwal' => '480.2',
 					'poli_tujuan' => $poli->KdBPJS,
 					'poli_eksekutif' => $eksekutif,
