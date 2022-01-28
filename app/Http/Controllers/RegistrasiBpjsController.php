@@ -455,6 +455,7 @@ class RegistrasiBpjsController extends Controller
         if ($up) {
             $fppri = Fppri::where('nosep', $request->NoSep)->first();
             if ($fppri) {
+                $fppri->Kategori = '28';
                 $fppri->no_spri = $request->noSurat;
                 $fppri->save();
             }
