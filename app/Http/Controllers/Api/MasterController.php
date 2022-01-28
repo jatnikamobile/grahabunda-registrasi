@@ -578,8 +578,10 @@ class MasterController extends Controller{
 	
 			$noTelp = $request->input("noTelp");
 			$user = $validuser;
+
+			$code = isset($rencana_kontrol['metaData']['code']) ? $rencana_kontrol['metaData']['code'] : 201;
 	
-			if (count($rencana_kontrol) > 0) {
+			if ($code == 200) {
 				$register = $register ?: Fppri::where('nosep', $rencana_kontrol['sep']['noSep'])->first();
 				$data_sep = [
 					'noKartu' => $rencana_kontrol['sep']['peserta']['noKartu'],
