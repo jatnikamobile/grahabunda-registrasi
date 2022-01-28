@@ -134,7 +134,7 @@ class Fppri extends Model
                                        Register.KdPerusahaan, Fppri.NoPeserta, Fppri.Regdate, Fppri.KdDocRs, Fppri.Keterangan, Fppri.KdDocRS,
                                        Fppri.StatPeserta, Fppri.NmRefPeserta, Fppri.KdRefPeserta, Fppri.nosep, Fppri.notifsep,
                                        FtDokter.NmDoc, Fppri.Kategori, TblKategoriPsn.NmKategori, Fppri.TglRujuk, Register.ValidUser,
-                                       Fppri.KdDocRawat, Fppri.NmDocRS, Fppri.jtnmkelas, Fppri.catatan"))
+                                       Fppri.KdDocRawat, Fppri.NmDocRS, Fppri.jtnmkelas, Fppri.catatan, Fppri.no_spri"))
                     ->join("TblKategoriPsn", "Fppri.Kategori", "=", "TblKategoriPsn.KdKategori")
                     ->join("Register", "Fppri.Regno", "=", "Register.Regno")
                     ->leftJoin("TBLICD10", "Fppri.KdICD", "=", "TBLICD10.KDICD")

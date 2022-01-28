@@ -453,6 +453,11 @@ class RegistrasiBpjsController extends Controller
         // return response()->json($request->all());
         $up = StoredProcedures::stpnet_AddMutasiPasienBPJS_REGxhos($request->all());
         if ($up) {
+            $fppri = Fppri::where('nosep', $request->NoSep)->first();
+            if ($fppri) {
+                $fppri->no_spri = $request->noSurat;
+                $fppri->save();
+            }
             $cetakan = Procedure::stpnet_NomCetakSEP_REGxhos($request->Regno);
 
             $KdTuju = Register::where('Regno',$request->Regno)->update(['KdTuju'=>'RI']);

@@ -124,7 +124,7 @@
                     <label class="col-sm-3 control-label no-padding-right">No Surat Kontrol</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                        <input type="text" name="NoSuratKontrol" class="form-control input-sm" id="NoSuratKontrol" value="{{ @$edit->NoKontrol }}"/>
+                        <input type="text" name="NoSuratKontrol" class="form-control input-sm" id="NoSuratKontrol" value="{{ $edit->NoKontrol ? $edit->NoKontrol : @$edit->no_spri }}"/>
                         <!-- Tanggal Registrasi -->
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">Tgl Rujukan</span>
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
@@ -1882,6 +1882,7 @@
                 DocRawat: $('#DocYgMerawat').val(),
                 Keyakinan: $('#change_keyakinan').val(),
                 asalRujukan: $('[name=Faskes]:checked').val(),
+                noSurat: $('#NoSuratKontrol').val(),
                 catatan: $('#catatan').val()
             }
             @if(!isset($edit))

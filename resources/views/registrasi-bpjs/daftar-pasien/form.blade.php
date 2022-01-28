@@ -3346,15 +3346,14 @@
             alert('[ERR] Gagal mendapatkan data dari server');
         })
         .done(function(res) {
-            if(!res || !res.metaData) {
-                return alert('Tidak ada respon dari server');
-            }
-            else if(res.metaData.code != 200) {
-                return alert('Histori: ' + res.metaData.message);
+            if ('metaData' in res) {
+                if(res.metaData.code != 200) {
+                    return alert('Histori: ' + res.metaData.message);
+                }
             }
             console.log(res);
 
-            let data = res.response.histori;
+            let data = res.histori;
             $('#table-histori tbody').html('');
             data.forEach(function(item) {
                 $('#table-histori tbody').append(`
