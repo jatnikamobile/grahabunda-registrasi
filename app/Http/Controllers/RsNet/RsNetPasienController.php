@@ -60,11 +60,11 @@ class RsNetPasienController extends Controller
             $I_Kelurahan = isset($data_pasien['I_Kelurahan']) ? $data_pasien['I_Kelurahan'] : null;
             $Kota = isset($data_pasien['Kota']) ? $data_pasien['Kota'] : null;
             $I_Agama = isset($data_pasien['I_Agama']) ? $data_pasien['I_Agama'] : null;
-            $C_Sex = isset($data_pasien['C_Sex']) == 'L' ? 1 : 0;
+            $C_Sex = isset($data_pasien['C_Sex']) && $data_pasien['C_Sex'] == 'L' ? 1 : 0;
             $C_WargaNegara = isset($data_pasien['C_WargaNegara']) == 'WNI' ? 0 : 1;
             $I_Pendidikan = isset($data_pasien['I_Pendidikan']) ? $data_pasien['I_Pendidikan'] : null;
             $I_Pekerjaan = isset($data_pasien['I_Pekerjaan']) ? $data_pasien['I_Pekerjaan'] : null;
-            $C_StatusKawin = isset($data_pasien['C_StatusKawin']) == 'NIKAH' ? 1 : 0;
+            $C_StatusKawin = isset($data_pasien['C_StatusKawin']) && $data_pasien['C_StatusKawin'] == 'NIKAH' ? 1 : 0;
             $I_GolDarah = isset($data_pasien['I_GolDarah']) ? $data_pasien['I_GolDarah'] : null;
             $I_JenisIdentitas = isset($data_pasien['I_JenisIdentitas']) ? $data_pasien['I_JenisIdentitas'] : null;
             $I_NoIdentitas = isset($data_pasien['I_NoIdentitas']) ? $data_pasien['I_NoIdentitas'] : null;

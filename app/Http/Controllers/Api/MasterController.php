@@ -268,11 +268,13 @@ class MasterController extends Controller{
 		$request = $vclaim_controller->pesertaKartu($nopeserta, $tanggal);
 		$peserta = $request['peserta'];
 		$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->first() : null;
+		$registers = Register::where('NoPeserta', $nopeserta)->get();
 
 		return response()->json([
 			'status' => true,
 			'data' => $request,
-			'pasien' => $pasien
+			'pasien' => $pasien,
+			'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru'
 		]);
 	}
 
@@ -284,11 +286,14 @@ class MasterController extends Controller{
 		$request = $vclaim_controller->pesertaNIK($nik, $tanggal);
 		$peserta = $request['peserta'];
 		$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->first() : null;
+		$no_peserta = $peserta ? $peserta['noKartu'] : null;
+		$registers = $no_peserta ? Register::where('NoPeserta', $no_peserta)->get() : [];
 
 		return response()->json([
 			'status' => true,
 			'data' => $request,
-			'pasien' => $pasien
+			'pasien' => $pasien,
+			'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru'
 		]);
 	}
 
@@ -325,13 +330,16 @@ class MasterController extends Controller{
 		$data['poli_local']['KDPoli'] = $poli ? $poli->KDPoli : '';
 		$data['poli_local']['NMPoli'] = $poli ? $poli->NMPoli : '';
 		$data['poli_local']['KdBPJS'] = $KdBPJS;
+		$no_peserta = isset($request['rujukan']['peserta']['noKartu']) ? $request['rujukan']['peserta']['noKartu'] : null;
+		$registers = $no_peserta ? Register::where('NoPeserta', $no_peserta)->get() : [];
 
 		return response()->json([
 			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : 200,
 			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
 			'data' => $data,
-			'pasien' => $pasien
+			'pasien' => $pasien,
+			'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru'
 		]);
 	}
 
@@ -356,13 +364,16 @@ class MasterController extends Controller{
 		$data['poli_local']['KDPoli'] = $poli ? $poli->KDPoli : '';
 		$data['poli_local']['NMPoli'] = $poli ? $poli->NMPoli : '';
 		$data['poli_local']['KdBPJS'] = $KdBPJS;
+		$no_peserta = isset($request['rujukan']['peserta']['noKartu']) ? $request['rujukan']['peserta']['noKartu'] : null;
+		$registers = $no_peserta ? Register::where('NoPeserta', $no_peserta)->get() : [];
 
 		return response()->json([
 			'code' => isset($request['metaData']['code']) ? $request['metaData']['code'] : 200,
 			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
 			'data' => $data,
-			'pasien' => $pasien
+			'pasien' => $pasien,
+			'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru'
 		]);
 	}
 
@@ -387,6 +398,8 @@ class MasterController extends Controller{
 		$data['poli_local']['KDPoli'] = $poli ? $poli->KDPoli : '';
 		$data['poli_local']['NMPoli'] = $poli ? $poli->NMPoli : '';
 		$data['poli_local']['KdBPJS'] = $KdBPJS;
+		$no_peserta = isset($request['rujukan']['peserta']['noKartu']) ? $request['rujukan']['peserta']['noKartu'] : null;
+		$registers = $no_peserta ? Register::where('NoPeserta', $no_peserta)->get() : [];
 
 		return response()->json([
 			'asalFaskes' => isset($request['asalFaskes']) ? $request['asalFaskes'] : null,
@@ -394,7 +407,8 @@ class MasterController extends Controller{
 			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
 			'data' => $data,
-			'pasien' => $pasien
+			'pasien' => $pasien,
+			'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru'
 		]);
 	}
 
@@ -419,6 +433,8 @@ class MasterController extends Controller{
 		$data['poli_local']['KDPoli'] = $poli ? $poli->KDPoli : '';
 		$data['poli_local']['NMPoli'] = $poli ? $poli->NMPoli : '';
 		$data['poli_local']['KdBPJS'] = $KdBPJS;
+		$no_peserta = isset($request['rujukan']['peserta']['noKartu']) ? $request['rujukan']['peserta']['noKartu'] : null;
+		$registers = $no_peserta ? Register::where('NoPeserta', $no_peserta)->get() : [];
 
 		return response()->json([
 			'asalFaskes' => isset($request['asalFaskes']) ? $request['asalFaskes'] : null,
@@ -426,7 +442,8 @@ class MasterController extends Controller{
 			'message' => isset($request['metaData']['message']) ? $request['metaData']['message'] : null,
 			'status' => true,
 			'data' => $data,
-			'pasien' => $pasien
+			'pasien' => $pasien,
+			'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru'
 		]);
 	}
 

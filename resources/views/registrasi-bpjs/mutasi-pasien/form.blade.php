@@ -104,6 +104,22 @@
                     </div>
                 </div>
                 </form>
+                <!-- Asal Rujukan -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label no-padding-right">Rujukan Dari</label>
+                    <div class="input-group col-md-9">
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                        <select type="text" name="rujukan_dari" id="rujukan_dari" style="width:100%;" class="form-control">
+                            <option value="">-= Rujukan Dari =-</option>
+                            @foreach ($kelompok_rujukan as $kr)
+                                <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : ($kr->I_KelompokRujukan == 99 ? 'selected' : '')}}>{{ $kr->N_KelompokRujukan }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback text-danger hide" id="rujukan-dari-validation">
+                            Pilih asal rujukan pasien!
+                        </div>
+                    </div>
+                </div>
                 <!-- No Rujukan -->
                 <form method="get" id="search_noRujukan">
                 <div class="form-group">
@@ -1080,6 +1096,13 @@
     }
     
     // =====================================
+
+    // $('#rujukan_dari').select2();
+
+    // $('#rujukan_dari').on('select2:select', function(ev) {
+    //     $('#rujukan-dari-validation').addClass('hide');
+    // });
+
     $(".select2").select2();
     $('[name=KasKe]').on('change', function(ev,xv){
         if($(this).val() == '0'){
@@ -1837,6 +1860,7 @@
             alert('Pilih jenis kelamin Pasien');
         } else {
             var send = {
+                rujukan_dari: $('#rujukan_dari').val(),
                 Regno: $('#Regno').val(),
                 Medrec: $('#Medrec').val(),
                 Firstname: $('#Firstname').val(),

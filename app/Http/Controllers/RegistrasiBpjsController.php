@@ -445,6 +445,7 @@ class RegistrasiBpjsController extends Controller
             ];
         }
         // dd($parse);
+        $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
         return view('registrasi-bpjs.mutasi-pasien.form',$parse);
     }
 
@@ -464,7 +465,7 @@ class RegistrasiBpjsController extends Controller
             $KdTuju = Register::where('Regno',$request->Regno)->update(['KdTuju'=>'RI']);
 
             $rs_net_bridging = new RsNetBridgingController();
-            $rs_net_ranap = $rs_net_bridging->addDataRanap($request);
+            $rs_net_ranap = $rs_net_bridging->addDataRanap($request, $fppri);
 
             $parse = array(
                 'status' => true,

@@ -129,7 +129,7 @@ class MasterPasienController extends Controller
             'Kota' => $kota ? $kota->KdKabupaten : null,
             'I_Telepon' => $request->Phone,
             'I_Agama' => $agama ? $agama->KdAgama : null,
-            'C_Sex' => $request->KdSex == 'L' ? 1 : 0,
+            'C_Sex' => $request->KdSex,
             // 'C_WargaNegara' => $request->WargaNegara,
             // 'C_StatusKawin' => $request->Perkawinan,
             'I_Pendidikan' => $kode_pendidikan,

@@ -227,10 +227,10 @@ class NewVClaimController extends Controller
 
                     return $arr_response;
                 } else {
-                    return false;
+                    return $result;
                 }
             } else {
-                return false;
+                return $result;
             }
         } else {
             return false;
@@ -310,10 +310,10 @@ class NewVClaimController extends Controller
 
                     return $arr_response;
                 } else {
-                    return false;
+                    return $result;
                 }
             } else {
-                return false;
+                return $result;
             }
         } else {
             return false;
@@ -349,10 +349,10 @@ class NewVClaimController extends Controller
 
                     return $arr_response;
                 } else {
-                    return false;
+                    return $result;
                 }
             } else {
-                return false;
+                return $result;
             }
         } else {
             return false;
@@ -378,10 +378,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -511,10 +511,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -537,10 +537,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -590,10 +590,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -641,10 +641,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -680,10 +680,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -706,10 +706,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -949,7 +949,7 @@ class NewVClaimController extends Controller
 
     public function referensiObatGenerikProgramPRB($nama_obat_generik)
     {
-        $url = $this->url . 'referensi/obatprb/' + $nama_obat_generik;
+        $url = $this->url . 'referensi/obatprb/' . $nama_obat_generik;
 
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
@@ -1190,10 +1190,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1234,10 +1234,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1272,10 +1272,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1314,10 +1314,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1356,10 +1356,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1382,10 +1382,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1439,10 +1439,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1465,10 +1465,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1491,10 +1491,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1554,10 +1554,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1580,10 +1580,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1632,10 +1632,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1684,10 +1684,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1722,10 +1722,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1762,10 +1762,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1802,10 +1802,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1828,10 +1828,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1939,10 +1939,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1965,10 +1965,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -1991,10 +1991,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2101,10 +2101,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2203,10 +2203,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2241,10 +2241,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2492,10 +2492,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2530,10 +2530,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2582,10 +2582,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2628,10 +2628,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2688,10 +2688,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2728,10 +2728,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2805,10 +2805,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2831,10 +2831,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2875,10 +2875,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2901,10 +2901,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 
@@ -2927,10 +2927,10 @@ class NewVClaimController extends Controller
 
                 return $arr_response;
             } else {
-                return false;
+                return $result;
             }
         } else {
-            return false;
+            return $result;
         }
     }
 

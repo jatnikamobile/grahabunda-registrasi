@@ -129,7 +129,7 @@ class RsNetKunjunganController extends Controller
                 $nip_dokter = $dokter_data ? $dokter_data->C_PEGAWAI : null;
 
                 $tm_unit = TmUnit::where('I_Unit', $I_Unit)->first();
-                $bagian = $tm_unit ? $tm_unit->I_Bagian : 0;
+                $bagian = $I_Bagian ? $I_Bagian : ($tm_unit ? $tm_unit->I_Bagian : 0);
 
                 $exists = true;
                 $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_Kontraktor', $I_Kontraktor)->first();

@@ -1898,7 +1898,7 @@
                                 alert("No Rekam Medik tidak ada!");
                             } else {
                                 $('#Medrec').val(medrec);
-                                $('#Kunjungan').val('Lama');
+                                $('#Kunjungan').val(response.kunjungan);
                                 $('#Notelp').val(response.data.peserta.mr.noTelepon);
                                 $('#kat_NoRM').val(medrec);
                                 $('#kat_Firstname').val(response.data.peserta.nama);
@@ -1980,7 +1980,7 @@
                             }else{
                                 $('#Medrec').val(response.data.rujukan.peserta.mr.noMR);
                                 // $('#btnCari').click();
-                                $('#Kunjungan').val('Lama');
+                                $('#Kunjungan').val(response.kunjungan);
                                 $('#Notelp').val(response.data.rujukan.peserta.mr.noTelepon);
                                 $('#kat_NoRM').val(response.data.rujukan.peserta.mr.noMR);
                                 $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
@@ -2075,7 +2075,7 @@
                             }else{
                                 $('#Medrec').val(response.data.rujukan.peserta.mr.noMR);
                                 // $('#btnCari').click();
-                                $('#Kunjungan').val('Lama');
+                                $('#Kunjungan').val(response.kunjungan);
                                 $('#Notelp').val(response.data.rujukan.peserta.mr.noTelepon);
                                 $('#kat_NoRM').val(response.data.rujukan.peserta.mr.noMR);
                                 $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
@@ -2181,7 +2181,7 @@
                         }else{
                             $('#Medrec').val(medrec);
                             // $('#btnCari').click();
-                            $('#Kunjungan').val('Lama');
+                            $('#Kunjungan').val(response.kunjungan);
                             $('#Notelp').val(response.data.peserta.mr.noTelepon);
                             $('#kat_NoRM').val(medrec);
                             $('#kat_Firstname').val(response.data.peserta.nama);
@@ -2268,7 +2268,7 @@
                                 if (response.pasien) {
                                     $('#Medrec').val(response.pasien.Medrec);
                                     // $('#btnCari').click();
-                                    $('#Kunjungan').val('Lama');
+                                    $('#Kunjungan').val(response.kungjungan);
                                     $('#Notelp').val(response.pasien.Phone);
                                     $('#kat_NoRM').val(response.pasien.Medrec);
                                     $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
@@ -2361,7 +2361,7 @@
                                 if (response.pasien) {
                                     $('#Medrec').val(response.pasien.Medrec);
                                     // $('#btnCari').click();
-                                    $('#Kunjungan').val('Lama');
+                                    $('#Kunjungan').val(response.kungjungan);
                                     $('#Notelp').val(response.pasien.Phone);
                                     $('#kat_NoRM').val(response.pasien.Medrec);
                                     $('#kat_Firstname').val(response.data.rujukan.peserta.nama);
@@ -2491,7 +2491,7 @@
                         $("input[name=KdSex][value=" + master_ps_data.KdSex.toUpperCase() + "]").attr('checked', 'checked');
                     }
 
-                    $('#Kunjungan').val('Lama');
+                    $('#Kunjungan').val(response.kunjungan);
 
                     // Masukan buat update kategori
                     $('#kat_NoRM').val(master_ps_data.Medrec);
