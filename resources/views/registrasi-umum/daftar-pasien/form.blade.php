@@ -8,15 +8,15 @@
 <script src="<?=asset('public/js/ws-client.js')?>"></script>
 <script>
   // init web shocket
-  let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {
+//   let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {
     // if(data.type == 'broadcast') { console.log(data);}
-  });
-  ws.init();
+//   });
+//   ws.init();
   
   // send data web shocket
-  function push_print(regno) {
-    if(ws) { ws.broadcast( {command: 'print', parameters: {regno: regno}},{ tracer:1 }); };
-  }
+//   function push_print(regno) {
+//     if(ws) { ws.broadcast( {command: 'print', parameters: {regno: regno}},{ tracer:1 }); };
+//   }
 </script>
 <section>
     <div>
@@ -75,6 +75,7 @@
                     </div>
                 </div>
                 <!-- NIK KTP / PASSPORT -->
+                <form method="get" id="search_nik">
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">NIK KTP / PASSPORT</label>
                     <div class="input-group col-sm-9">
@@ -82,6 +83,7 @@
                         <input type="text" name="NoIden" class="form-control input-sm" id="NoIden" value="{{ @$edit->nikktp }}"/>
                     </div>
                 </div>
+            </form>
                 <!-- Tanggal Daftar -->
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">Tanggal Registrasi</label>
@@ -427,6 +429,63 @@
             $("#printSlip").css("display","none");
         }
     });
+
+    $('#search_nik').submit(function(ev) {
+        ev.preventDefault();
+        let loading = $('.modal-loading');
+        loading.modal('show');
+        if ($('#NoIden').val().length == 16) {
+            $.ajax({
+                url:"{{ route('peserta-nik') }}",
+                type:"get",
+                dataType:"json",
+                data:{
+                    reg_type: 'umum',
+                    nik: $('#NoIden').val(),
+                },
+                beforeSend(){
+                    loading.modal('show');
+                },
+                success:function(response)
+                {
+                    console.log(response);
+                    if(response.data){
+                        let medrec = response.pasien ? response.pasien.Medrec : null
+
+                        if (medrec == null) {
+                            alert("No Rekam Medik tidak ada!");
+                        }else{
+                            $('#Medrec').val(medrec);
+                            // $('#btnCari').click();
+                            $('#Kunjungan').val(response.kunjungan);
+                            $('#Notelp').val(response.pasien.Phone);
+                            $('#kat_NoRM').val(medrec);
+                            $('#kat_Firstname').val(response.pasien.Firstname);
+                        }
+
+                        $('#Firstname').val(response.pasien.Firstname);
+                        $('#NoIden').val(response.pasien.NoIden);
+
+                        $('#Bod').val(response.bod).trigger('change');
+
+                        $("input[name=KdSex][value=" + response.pasien.KdSex.toUpperCase() + "]").attr('checked', 'checked');
+
+                        loading.modal('hide');
+                    }else{
+                        alert('Pasien tidak ada!');
+                    }
+                }
+            })
+        } else if($('#NoIden').val().length < 16) {
+            loading.modal('hide');
+            alert('Nik kurang dari 16 digit');
+        } else {
+            loading.modal('hide');
+            alert('Nik lebih dari 16 digit');
+        }
+        loading.modal('hide');
+    });
+
     $(".select2").select2();
     // =====================================
     

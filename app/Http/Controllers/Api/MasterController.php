@@ -280,20 +280,32 @@ class MasterController extends Controller{
 
 	public function get_peserta_nik(Request $request)
 	{
-		$vclaim_controller = new NewVClaimController();
-		$nik = $request->nik;
-		$tanggal = date('Y-m-d');
-		$request = $vclaim_controller->pesertaNIK($nik, $tanggal);
-		$peserta = $request['peserta'];
-		$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->first() : null;
-		$no_peserta = $peserta ? $peserta['noKartu'] : null;
-		$registers = $no_peserta ? Register::where('NoPeserta', $no_peserta)->get() : [];
+		$reg_type = $request->reg_type;
+
+		if ($reg_type == 'umum') {
+			$nik = $request->nik;
+			$data = true;
+			$pasien = MasterPS::where('NoIden', $nik)->first();
+			$no_peserta = $pasien ? $pasien->AskesNo : null;
+			$registers = $pasien ? Register::where('Medrec', $pasien->Medrec)->get() : [];
+		} else {
+			$vclaim_controller = new NewVClaimController();
+			$nik = $request->nik;
+			$tanggal = date('Y-m-d');
+			$data = $vclaim_controller->pesertaNIK($nik, $tanggal);
+			$peserta = $data['peserta'];
+			$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->first() : null;
+			$no_peserta = $peserta ? $peserta['noKartu'] : null;
+			$registers = $no_peserta ? Register::where('NoPeserta', $no_peserta)->get() : [];
+		}
+		$bod = $pasien ? date('Y-m-d', strtotime($pasien->Bod)) : null;
 
 		return response()->json([
 			'status' => true,
-			'data' => $request,
+			'data' => $data,
 			'pasien' => $pasien,
-			'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru'
+			'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru',
+			'bod' => $bod
 		]);
 	}
 
@@ -823,12 +835,8 @@ class MasterController extends Controller{
 		$validuser = 'SIMRS';
 
 		$data = array(
-			'request' => [
-				't_sep' => [
-					'noSep' => $noSep,
-					'user' => $validuser
-				]
-			]
+			'noSep' => $noSep,
+			'user' => $validuser
 		);
 
 		$response = $vclaim_controller->hapusSEP($data);

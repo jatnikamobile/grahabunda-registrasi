@@ -97,7 +97,7 @@ class NewVClaimController extends Controller
                 break;
             case "DELETE":
             case "delete":
-                $headers[] = 'Content-Type: application/json; charset=UTF-8';
+                $headers[] = 'Content-Type: Application/x-www-form-urlencoded';
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
                 if ($json_data)
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $json_data);
@@ -2212,7 +2212,7 @@ class NewVClaimController extends Controller
 
     public function hapusSEP($data_sep)
     {
-        $url = $this->url . 'SEP/Delete';
+        $url = $this->url . 'SEP/2.0/delete';
 
         $noSep = isset($data_sep['noSep']) ? $data_sep['noSep'] : '';
         $user = isset($data_sep['user']) ? $data_sep['user'] : '';
@@ -2237,9 +2237,7 @@ class NewVClaimController extends Controller
             $response = isset($result['response']) ? $result['response'] : null;
 
             if ($response) {
-                $arr_response = $this->getResult($response, $timestamp);
-
-                return $arr_response;
+                return $response;
             } else {
                 return $result;
             }
