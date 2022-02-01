@@ -1302,6 +1302,9 @@ class NewVClaimController extends Controller
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
 
+		Log::info('BPJS Insert SPRI API Request:');
+		Log::info($data_request_rk);
+
         $send_request = $this->sendRequest('POST', $data_request_rk, $url, $headers['headers']);
         $result = json_decode($send_request, true);
 

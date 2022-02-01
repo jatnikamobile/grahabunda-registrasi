@@ -873,6 +873,9 @@ class RegistrasiBpjsController extends Controller
         $insert_spri = $vclaim->insertSPRI($data_req);
         $status = isset($insert_spri['metaData']['code']) ? $insert_spri['metaData']['code'] : ($insert_spri == false ? 201 : 200);
 
+		Log::info('BPJS Insert SPRI API Response:');
+		Log::info($insert_spri);
+
         if ($status == 200) {
             $pengajuan_spri = new PengajuanSPRI();
             $pengajuan_spri->no_kartu = $no_kartu;
