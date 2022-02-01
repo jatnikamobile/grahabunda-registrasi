@@ -533,6 +533,7 @@ class MasterController extends Controller{
 		$flag_procedure = $request->input('flag_procedure');
 		$kode_penunjang = $request->input('kode_penunjang');
 		$assesment = $request->input('assesment');
+		$DocYgMerawat = $request->input('DocYgMerawat');
 
 		if ($type == 'spri') {
 			$register = Register::where('Regno', $Regno)->first();
@@ -544,7 +545,7 @@ class MasterController extends Controller{
 			Log::info($rencana_kontrol);
 	
 			$dokter = $request->input("dokter");
-			$dokter = FtDokter::where('KdDoc', $register->KdDoc)->first();
+			$dokter = FtDokter::where('KdDoc', $DocYgMerawat)->first();
 	
 			$poli = POLItpp::where('KDPoli', $tujuan)->first();
 	

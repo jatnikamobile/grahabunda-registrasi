@@ -2014,6 +2014,7 @@
                     noSurat: $('#NoSuratKontrol').val(),
                     kodeDPJP: $('#Dokter').val(),
                     noTelp: $('#Notelp').val(),
+                    DocYgMerawat: $('#DocYgMerawat').val()
                 },
                 beforeSend(){
                     loading.modal('show');
