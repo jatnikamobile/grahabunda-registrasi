@@ -127,7 +127,7 @@
                                     <td><a href="{{ route('reg-umum-daftar.print-slip', ['noRegno'=>$l->Regno]) }}" target="_blank" title="Print Slip"><i class="fa fa-print"></i></a>
                                         <a href="{{ route('reg-umum-daftar.edit', [$l->Regno]) }}" title="Edit Pasien"> <i class="fa fa-pencil green"></i>
                                         </a>
-                                        <a href="{{ route('reg-bpjs-daftar.form-edit', [$l->Regno]) }}" title="Pindah ke BPJS"><i class="fa fa-exchange orange"></i>
+                                        {{-- <a href="{{ route('reg-bpjs-daftar.form-edit', [$l->Regno]) }}" title="Pindah ke BPJS"><i class="fa fa-exchange orange"></i> --}}
                                         </a>
                                         <a href="{{ route('mst-psn.form-delete') }}"
                                             onclick="event.preventDefault(); document.getElementById('delete-form-{{$l->Regno}}').submit();" title="Hapus Pasien"> <i class="fa fa-trash red"></i>

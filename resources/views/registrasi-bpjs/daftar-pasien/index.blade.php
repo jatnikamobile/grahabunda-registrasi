@@ -173,7 +173,7 @@
                                             @endif
                                             <a href="{{ route('reg-bpjs-daftar.form-edit', [$l->Regno]) }}"> <i class="fa fa-pencil green"></i>
                                             </a>
-                                            <a href="{{ route('reg-umum-daftar.edit', [$l->Regno]) }}" title="Pindah ke Umum"> <i class="fa fa-exchange orange"></i>
+                                            {{-- <a href="{{ route('reg-umum-daftar.edit', [$l->Regno]) }}" title="Pindah ke Umum"> <i class="fa fa-exchange orange"></i> --}}
                                             </a>
                                             <form id="edit-form-{{$l->Regno}}" action="{{ route('reg-bpjs-daftar.form-edit') }}" method="POST" style="display: none;">
                                                 {{ method_field('PUT') }} {{ csrf_field() }}
