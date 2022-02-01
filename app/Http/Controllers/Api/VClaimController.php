@@ -167,7 +167,7 @@ class VClaimController extends Controller
 		$response = $vklaim_controller->dataHistoriPelayananPeserta($no_kartu, $tanggal_mulai, $tanggal_akhir);
 
 		Log::info('BPJS History Pelayanan Peserta API Response:');
-		Log::info(json_encode($response));
+		Log::info($response);
 
 		if (isset($response['histori'])) {
 			$response['metaData'] = [
