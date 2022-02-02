@@ -626,7 +626,7 @@ class MasterController extends Controller{
 					'asalRujukan' => $rencana_kontrol['sep']['provPerujuk']['asalRujukan'],
 					'tglRujukan' => $rencana_kontrol['sep']['provPerujuk']['tglRujukan'],
 					'noRujukan' => $rencana_kontrol['sep']['provPerujuk']['noRujukan'],
-					'ppkRujukan' => $rencana_kontrol['sep']['provPerujuk']['kdProviderPerujuk'],
+					'ppkRujukan' => $rencana_kontrol['provPerujuk']['kdProviderPerujuk'],
 					'catatan' => $catatan,
 					// 'diagAwal' => $rencana_kontrol['sep']['diagnosa'],
 					'diagAwal' => $diagAwal ?: ($register ? $register->KdIcd : null),
