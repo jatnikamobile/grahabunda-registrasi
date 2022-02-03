@@ -120,9 +120,12 @@ class RegistrasiBpjsController extends Controller
 
         Log::info("data BPJS Surat Kontrol: " . $bpjs_data);
 
+        $no_peserta = isset($bpjs_data['sep']['peserta']['noKartu']) ? $bpjs_data['sep']['peserta']['noKartu'] : null;
+        $peserta_bpjs = $bpjs_data ? $vclaim_controller->pesertaKartu($no_peserta, date('Y-m-d')) : null;
+        $medrec = $peserta_bpjs ? $peserta_bpjs['peserta']['mr']['noMR'] : null;
+
         if (isset($bpjs_data['noSuratKontrol'])) {
             $jenis_pelayanan = $bpjs_data['sep']['jnsPelayanan'];
-            $no_peserta = isset($bpjs_data['sep']['peserta']['noKartu']) ? $bpjs_data['sep']['peserta']['noKartu'] : null;
             if ($jenis_pelayanan == 'Rawat Inap') {
                 $register = Fppri::where('nosep', $bpjs_data['sep']['noSep'])->first();
                 $master_ps = $register ? MasterPS::where('Medrec', $register->Medrec)->first() : null;
@@ -131,10 +134,11 @@ class RegistrasiBpjsController extends Controller
                 $poli = POLItpp::where('KdBPJS', $bpjs_data['poliTujuan'])->first();
             } else {
                 $register = $no_peserta ? Register::where('NoPeserta', $no_peserta)->where('NoSep', $bpjs_data['sep']['noSep'])->orderBy('Regno', 'desc')->first() : null;
-                $master_ps = $register ? MasterPS::where('Medrec', $register->Medrec)->first() : null;
-                $kategori = $register ? TblKategoriPsn::where('KdKategori', $register->Kategori)->first() : null;
-                $dokter = $register ? FtDokter::where('KdDoc', $register->KdDoc)->first() : null;
-                $poli = $register ? POLItpp::where('KDPoli', $register->KdPoli)->first() : null;
+                $medrec = $medrec ? $medrec : ($register ? $register->Medrec : null);
+                $master_ps = $register ? MasterPS::where('Medrec', $medrec)->first() : null;
+                $kategori = $master_ps ? TblKategoriPsn::where('KdKategori', $master_ps->Kategori)->first() : null;
+                $dokter = $register ? FtDokter::where('KdDoc', $register->KdDoc)->first() : FtDokter::where('KdDPJP', $bpjs_data['kodeDokter'])->first();
+                $poli = $register ? POLItpp::where('KDPoli', $register->KdPoli)->first() : POLItpp::where('KdBPJS', $bpjs_data['poliTujuan'])->first();
             }
 
             $response_data['metaData'] = ['code' => 200];
@@ -148,7 +152,8 @@ class RegistrasiBpjsController extends Controller
                 'kategori' => $kategori,
                 'dokter' => $dokter,
                 'poli' => $poli,
-                'diag' => $jenis_pelayanan == 'Rawat Inap' ? $register->KdIcd : $register->KdICDBPJS
+                'diag' => $jenis_pelayanan == 'Rawat Inap' ? $register->KdIcd : $register->KdICDBPJS,
+                'peserta_bpjs' => $peserta_bpjs
             ];
 
             Log::info("data BPJS Surat Kontrol: " . json_encode($data));

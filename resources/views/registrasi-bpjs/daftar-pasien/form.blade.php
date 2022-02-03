@@ -1334,17 +1334,15 @@
                 return $.extend(params, { faskes: $("input[name=Faskes]:checked").val() });
             },
             processResults: function(data, params) {
-                return select2VClaimResponse(data, params, function(data, params) {
-                    return {
-                        results: data.faskes.map(function(item) {
-                            return $.extend(item, {
-                                id: item.kode,
-                                text: item.nama,
-                            });
-                        }),
-                        pagination: {more: false},
-                    };
-                });
+                return {
+                    results: data.faskes.map(function(item) {
+                        return $.extend(item, {
+                            id: item.kode,
+                            text: item.nama,
+                        });
+                    }),
+                    pagination: {more: false},
+                };
             }
         }
     }));
@@ -2458,21 +2456,31 @@
                     var kategori_data = response.data.kategori;
                     var dokter_data = response.data.dokter;
                     var poli_data = response.data.poli;
+                    var peserta_bpjs = response.data.peserta_bpjs;
 
-                    $('#Medrec').val(master_ps_data.Medrec);
-                    $('#Firstname').val(master_ps_data.Firstname.toUpperCase());
-                    $('#Notelp').val(master_ps_data.Phone);
-                    $('#Bod').val(master_ps_data.Bod.substring(0,10));
-                    $('#TglDaftar').val(master_ps_data.TglDaftar.substring(0,10));
-                    $('#NoIden').val(master_ps_data.NoIden);
-                    $('#Sex').val(master_ps_data.Sex);
-                    $('#UmurHari').val(master_ps_data.UmurHr);
-                    $('#UmurBln').val(master_ps_data.UmurBln);
-                    $('#UmurThn').val(master_ps_data.UmurThn);
+                    var medrec = master_ps_data ? master_ps_data.Medrec : (peserta_bpjs ? peserta_bpjs.peserta.mr.noMR : '')
+                    var firstname = peserta_bpjs ? peserta_bpjs.peserta.nama : ''
+                    var phone = peserta_bpjs ? peserta_bpjs.peserta.mr.noTelepon : ''
+                    var bod = peserta_bpjs ? peserta_bpjs.peserta.tglLahir : ''
+                    var tgl_daftar = peserta_bpjs ? peserta_bpjs.peserta.tglCetakKartu : ''
+                    var no_iden = peserta_bpjs ? peserta_bpjs.peserta.nik : ''
+                    var sex = peserta_bpjs ? peserta_bpjs.peserta.sex : ''
+                    var no_peserta = peserta_bpjs ? peserta_bpjs.peserta.noKartu : ''
+
+                    $('#Medrec').val(medrec);
+                    $('#Firstname').val(firstname.toUpperCase());
+                    $('#Notelp').val(phone);
+                    $('#Bod').val(bod.substring(0,10)).trigger('change');
+                    $('#TglDaftar').val(tgl_daftar.substring(0,10));
+                    $('#NoIden').val(no_iden);
+                    $('#Sex').val(sex);
+                    // $('#UmurHari').val(master_ps_data.UmurHr);
+                    // $('#UmurBln').val(master_ps_data.UmurBln);
+                    // $('#UmurThn').val(master_ps_data.UmurThn);
                     $('#NoRujuk').val(bpjs_data.sep.provPerujuk.noRujukan);
                     $('#RegRujuk').val(bpjs_data.sep.provPerujuk.tglRujukan.substring(0,10));
 
-                    var $kategori = $("<option selected></option>").val(kategori_data.KdKategori).text(kategori_data.NmKategori);
+                    var $kategori = $("<option selected></option>").val(28).text('BPJS KESEHATAN');
                     $('#Kategori').append($kategori).trigger('change');
 
                     var $dokter = $("<option selected></option>").val(dokter_data.KdDoc).text(dokter_data.NmDoc);
@@ -2487,18 +2495,18 @@
                     var $diagnosa = $("<option selected></option>").val(response.diag).text(bpjs_data.sep.diagnosa);
                     $('#Diagnosa').append($diagnosa).trigger('change');
 
-                    if (master_ps_data.KdSex != null) {
-                        $("input[name=KdSex][value=" + master_ps_data.KdSex.toUpperCase() + "]").attr('checked', 'checked');
+                    if (sex != null) {
+                        $("input[name=KdSex][value=" + sex.toUpperCase() + "]").attr('checked', 'checked');
                     }
 
                     $('#Kunjungan').val(response.kunjungan);
 
                     // Masukan buat update kategori
-                    $('#kat_NoRM').val(master_ps_data.Medrec);
-                    $('#kat_Firstname').val(master_ps_data.Firstname);
-                    $('#kat_NoPeserta').val(master_ps_data.AskesNo);
-                    $('#noKartu').val(master_ps_data.AskesNo);
-                    var $ka_kategori = $("<option selected></option>").val(kategori_data.Kategori).text(kategori_data.NmKategori);
+                    $('#kat_NoRM').val(medrec);
+                    $('#kat_Firstname').val(firstname);
+                    $('#kat_NoPeserta').val(no_peserta);
+                    $('#noKartu').val(no_peserta);
+                    var $ka_kategori = $("<option selected></option>").val(28).text('BPJS KESEHATAN');
                     $('#kat_Kategori').append($ka_kategori).trigger('change');
 
                     // var $groupUnit = $("<option selected></option>").val(register_data.GroupUnit).text(register_data.GroupUnit);
@@ -2508,8 +2516,8 @@
                     // $('#Unit').append($unit).trigger('change');
 
                     // Tambah Keyakinan
-                    $('#ke_NoRM').val(master_ps_data.Medrec);
-                    $('#ke_Firstname').val(master_ps_data.Firstname);
+                    $('#ke_NoRM').val(medrec);
+                    $('#ke_Firstname').val(firstname);
                     // $('input[name=pantang][value=' + response.phcek + ']').attr('checked', 'checked');
                     // $('#pantangNote').val(response.phnote);
                     // $('input[name=tindakan][value=' + response.ptcek + ']').attr('checked', 'checked');
