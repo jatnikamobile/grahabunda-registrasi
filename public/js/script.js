@@ -12,20 +12,20 @@ function cekStatusPasien(uri = null, medrec = null, no_kartu = null, nik = null)
                 if (response.data.status == 'success') {
                     if (response.data.closed == 'no') {
                         alert ('Registrasi sebelumnya belum closing. Kode Kunjungan: ' + response.data.history_kunjungan.I_Kunjungan)
-                        return false
+                        $('#status_pasien').val(0)
                     } else {
-                        return true
+                        $('#status_pasien').val(1)
                     }
                 }
             }).catch(error => {
                 if ('message' in error) {
                     alert (error.message)
                 }
-                return false
+                $('#status_pasien').val(0)
             })
         } else {
             $('#form_type').val('update')
-            return true
+            $('#status_pasien').val(1)
         }
     }
 }

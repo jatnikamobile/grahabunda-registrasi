@@ -1115,6 +1115,7 @@
     </div><!-- MODAL UPDATE KATEGORI -->
 
     <input type="hidden" id="form_type">
+    <input type="hidden" id="status_pasien">
 </section>
 @endsection
 @section('script')
@@ -2727,8 +2728,10 @@
 
         // cekStatusPasien function is in script.js, check status of previous reg, is closed or open
         let uri = "{{ route('api.api-db.check-status-pasien') }}"
-        let status = cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
-        if (status == true) {
+        cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
+
+        let status = $('#status_pasien').val();
+        if (status == 1) {
             let btn = $('#submit');
             let oldText = btn.html();
             // btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());

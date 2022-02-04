@@ -418,6 +418,7 @@
         </div>
     </div>
     <input type="hidden" id="form_type">
+    <input type="hidden" id="status_pasien">
 </section>
 @endsection
 @section('script')
@@ -1013,12 +1014,12 @@
 
                     $('#Firstname').val(response.data.Firstname.toUpperCase());
                     $('#NoIden').val(response.data.NoIden);
-                    $('#Bod').val(response.data.Bod.substring(0,10));
+                    $('#Bod').val(response.data.Bod.substring(0,10)).trigger('change');
                     $('#Sex').val(response.data.Sex);
                     
-                    $('#UmurThn').val(response.data.UmurThn);
-                    $('#UmurBln').val(response.data.UmurBln);
-                    $('#UmurHari').val(response.data.UmurHr);
+                    // $('#UmurThn').val(response.data.UmurThn);
+                    // $('#UmurBln').val(response.data.UmurBln);
+                    // $('#UmurHari').val(response.data.UmurHr);
 
                     var $kategori = $("<option selected></option>").val(response.data.Kategori).text(response.data.NmKategori);
                     $('#Kategori').append($kategori).trigger('change');
@@ -1032,11 +1033,27 @@
                     $('#AtasNama').val(response.data.Firstname.toUpperCase());
                     $('#NoPeserta').val(response.data.AskesNo);
 
-                    if (response.data.KdSex != null) {
-                        $("input[name=KdSex][value=" + response.data.KdSex.toUpperCase() + "]").attr('checked', 'checked');
-                    }else {
-                        if (response.register.KdSex != null) {
-                            $("input[name=KdSex][value=" + response.register.KdSex.toUpperCase() + "]").attr('checked', 'checked');
+                    if ('data' in response) {
+                        if ('KdSex' in response.data) {
+                            if (response.data.KdSex) {
+                                $("input[name=KdSex][value=" + response.data.KdSex.toUpperCase() + "]").attr('checked', 'checked');
+                            } else if ('Sex' in response.data) {
+                                if (response.data.Sex) {
+                                    $("input[name=KdSex][value=" + response.data.Sex.toUpperCase() + "]").attr('checked', 'checked');
+                                }
+                            }
+                        } else if ('Sex' in response.data) {
+                                if (response.data.Sex) {
+                                    $("input[name=KdSex][value=" + response.data.Sex.toUpperCase() + "]").attr('checked', 'checked');
+                                }
+                            }
+                    } else {
+                        if ('register' in response) {
+                            if ('KdSex' in response.register) {
+                                if (response.register.KdSex) {
+                                    $("input[name=KdSex][value=" + response.register.KdSex.toUpperCase() + "]").attr('checked', 'checked');
+                                }
+                            }
                         }
                     }
 
@@ -1114,12 +1131,13 @@
     $("#submit").on("click",function(ev){
         ev.preventDefault();
         let uri = "{{ route('api.api-db.check-status-pasien') }}"
-        let status = cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
+        cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
 
-        if (status == true) {
+        let status = $('#status_pasien').val();
+        if (status == 1) {
             let loading = $('.modal-loading');
             let btn = $('#submit');
-            let oldText = btn.html();
+            let oldText = 'Simpan';
             btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
             // btn.prop('disabled', true);
             // if ($('#Medrec').val() == '') {
@@ -1220,9 +1238,9 @@
                                     console.log(response);
                                     $('#Regno').val(response.data.Regno);
                                     $('#NoUrut').val(response.data.NomorUrut);
-                                    if (fam_tracing == null) {
-                                        push_print(response.data.Regno);
-                                    }
+                                    // if (fam_tracing == null) {
+                                    //     push_print(response.data.Regno);
+                                    // }
 
                                     if(response.data.Regno !== null){
                                         $("#printSlip").css("display","");
