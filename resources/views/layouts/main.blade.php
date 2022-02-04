@@ -47,6 +47,7 @@
     <!-- High Chart -->
     <link href="<?=asset('public/template/highchart/code/css/highcharts.css')?>" rel="stylesheet" />
     <script src="<?=asset('public/template/jquery.min.js')?>"></script>
+    <script src="<?=asset('public/js/axios.min.js')?>"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $.ajaxSetup({

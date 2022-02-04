@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\RsNet\AdmKunjungan;
+use App\Models\RsNet\TmPasien;
+use App\Models\RsNet\TmPasienKontraktor;
 
 class ApiController extends Controller
 {
@@ -155,5 +158,35 @@ class ApiController extends Controller
         $parse['result'] = $result;
 
         return $parse;
+    }
+
+    public function checkStatusPasien(Request $request)
+    {
+        $medrec = $request->medrec;
+        $no_kartu = $request->no_kartu;
+        $nik = $request->nik;
+
+        $closed = 'yes';
+        if ($medrec && $closed == 'yes') {
+            $history_kunjungan = AdmKunjungan::where('I_RekamMedis', $medrec)->whereIn('I_StatusKunjungan', [0, 1])->first();
+
+            $closed = $history_kunjungan ? 'no' : 'yes';
+        }
+
+        if ($no_kartu && $closed == 'yes') {
+            $tm_ps_kontraktor = TmPasienKontraktor::where('C_Asuransi', $no_kartu)->first();
+            $history_kunjungan = $tm_ps_kontraktor ? AdmKunjungan::where('I_RekamMedis', $tm_ps_kontraktor->I_RekamMedis)->whereIn('I_StatusKunjungan', [0, 1])->first() : null;
+
+            $closed = $history_kunjungan ? 'no' : 'yes';
+        }
+
+        if ($nik && $closed == 'yes') {
+            $pasien = TmPasien::where('I_NoIdentitas', $nik)->first();
+            $history_kunjungan = $pasien ? AdmKunjungan::where('I_RekamMedis', $pasien->I_RekamMedis)->whereIn('I_StatusKunjungan', [0, 1])->first() : null;
+
+            $closed = $history_kunjungan ? 'no' : 'yes';
+        }
+
+        return response()->json(['status' => 'success', 'closed' => $closed, 'history_kunjungan' => $history_kunjungan]);
     }
 }

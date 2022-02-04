@@ -122,8 +122,6 @@ Route::prefix('vclaim')->name('vclaim')->group(function() {
 });
 
 Route::group(['prefix' => 'api-db'], function () {
-    Route::post('register-kunjungan', ['as' => 'api.api-db.register-kunjungan', 'uses' => 'Api\ApiController@storeKunjungan']);
-    Route::post('register-rujukan', ['as' => 'api.api-db.register-rujukan', 'uses' => 'Api\ApiController@storeRujukan']);
-    Route::post('register-pasien', ['as' => 'api.api-db.register-pasien', 'uses' => 'Api\ApiController@storePasien']);
+    Route::get('check-status-pasien', ['as' => 'api.api-db.check-status-pasien', 'uses' => 'Api\ApiController@checkStatusPasien']);
 });
 
