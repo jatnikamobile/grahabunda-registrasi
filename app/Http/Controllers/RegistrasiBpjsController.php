@@ -269,6 +269,7 @@ class RegistrasiBpjsController extends Controller
                     $create_rujukan = $rs_net_rujukan_controller->store($data_rujukan);
     
                     $data_kunjungan = [
+                        'form_type' => $request->form_type,
                         'rujukan_dari' => $request->rujukan_dari,
                         'poli' => $request->KdPoli,
                         'I_RekamMedis' => $request->Medrec,

@@ -1147,6 +1147,13 @@
 
         polirujukan = 'UGD';
         $('#DokterPengirim').prop('readonly', false);
+
+        let regno = $('#Regno').val()
+        if (!regno) {
+            $('#form_type').val('insert')
+        } else {
+            $('#form_type').val('update')
+        }
     });
     $(".select2").select2();
     // =====================================
@@ -2873,7 +2880,8 @@
                                                         nokontrol: $('#NoSuratKontrol').val(),
                                                         idregold: $('[name=regold]').val(),
                                                         catatan: $('#catatan').val(),
-                                                        kodeoPpk: $('#kodeoPpk').val()
+                                                        kodeoPpk: $('#kodeoPpk').val(),
+                                                        form_type: $('#form_type').val()
                                                     },
                                                     // error: function(response){
                                                     //     alert('Gagal menambahkan/server down, Silahkan coba lagi');
@@ -2986,7 +2994,8 @@
                                                 nokontrol: $('#NoSuratKontrol').val(),
                                                 idregold: $('[name=regold]').val(),
                                                 catatan: $('#catatan').val(),
-                                                kodeoPpk: $('#kodeoPpk').val()
+                                                kodeoPpk: $('#kodeoPpk').val(),
+                                                form_type: $('#form_type').val()
                                             },error: function(response){
                                                 alert('Gagal menambahkan/server down, Silahkan coba lagi');
                                                 loading.modal('hide');

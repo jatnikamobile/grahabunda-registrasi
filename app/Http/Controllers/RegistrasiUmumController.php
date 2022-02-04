@@ -110,6 +110,7 @@ class RegistrasiUmumController extends Controller
                 $medrec = $request->input('Medrec');
                 $regdate = $request->input('Regdate');
                 $kdpoli = $request->input('KdPoli');
+
                 $register = new Register();
                 $data = $register->get_register($medrec,$regdate,$kdpoli);
                 // if($data && $request->input("Regno") == ''){
@@ -130,6 +131,7 @@ class RegistrasiUmumController extends Controller
 
                 try {
                     $data_kunjungan = [
+                        'form_type' => $request->form_type,
                         'rujukan_dari' => $request->rujukan_dari,
                         'poli' => $request->KdPoli,
                         'I_RekamMedis' => $request->Medrec,

@@ -49,6 +49,7 @@ class RsNetKunjunganController extends Controller
             DB::beginTransaction();
             DB::connection('sqlsrv_kepri')->beginTransaction();
 
+            $form_type = isset($data_kunjungan['form_type']) ? $data_kunjungan['form_type'] : null;
             $rujukan_dari = isset($data_kunjungan['rujukan_dari']) ? $data_kunjungan['rujukan_dari'] : null;
             $I_RekamMedis = isset($data_kunjungan['I_RekamMedis']) ? $data_kunjungan['I_RekamMedis'] : null;
             $I_Bagian = isset($data_kunjungan['I_Bagian']) ? $data_kunjungan['I_Bagian'] : null;
@@ -132,8 +133,122 @@ class RsNetKunjunganController extends Controller
                 $bagian = $I_Bagian ? $I_Bagian : ($tm_unit ? $tm_unit->I_Bagian : 0);
 
                 $exists = true;
-                $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_Kontraktor', $I_Kontraktor)->first();
-                if (!$kunjungan) {
+
+                if ($form_type == 'update') {
+                    $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_Kontraktor', $I_Kontraktor)->first();
+                    if (!$kunjungan) {
+                        $exists = false;
+                        $i_kunjungan = null;
+                        $kunjungan = new AdmKunjungan();
+                        $kunjungan->I_Kunjungan = $kunjungan->generateCode($I_Unit, $D_Masuk);
+                        $kunjungan->I_RekamMedis = $I_RekamMedis;
+                        $kunjungan->I_Bagian = $bagian;
+                        $kunjungan->I_Unit = $I_Unit;
+                        $kunjungan->I_UrutMasuk = $I_UrutMasuk;
+                        $kunjungan->D_Masuk = $D_Masuk;
+                        $kunjungan->D_Keluar = $D_Keluar;
+                        $kunjungan->C_Pegawai = $nip_dokter;
+                        $kunjungan->I_Penerimaan = $rujukan_dari;
+                        $kunjungan->I_Rujukan = $I_Rujukan;
+                        $kunjungan->N_DokterPengirim = $N_DokterPengirim;
+                        $kunjungan->N_Diagnosa = $N_Diagnosa;
+                        $kunjungan->N_Tindakan = $N_Tindakan;
+                        $kunjungan->N_Terapi = $N_Terapi;
+                        $kunjungan->I_Kontraktor = $I_Kontraktor;
+                        $kunjungan->N_PenanggungJwb = $N_PenanggungJwb;
+                        $kunjungan->Telp_PenanggungJwb = $Telp_PenanggungJwb;
+                        $kunjungan->A_PenanggungJwb = $A_PenanggungJwb;
+                        $kunjungan->I_StatusBaru = $I_StatusBaru;
+                        $kunjungan->I_Kontrol = $I_Kontrol;
+                        $kunjungan->I_StatusKunjungan = $I_StatusKunjungan;
+                        $kunjungan->C_Shift = $C_Shift;
+                        $kunjungan->I_Entry = $I_Entry;
+                        $kunjungan->D_Entry = $D_Entry;
+                        $kunjungan->I_StatusPasien = $I_StatusPasien;
+                        $kunjungan->N_PasienLuar = $N_PasienLuar;
+                        $kunjungan->A_PasienLuar = $A_PasienLuar;
+                        $kunjungan->JK_PasienLuar = $JK_PasienLuar;
+                        $kunjungan->Umur_tahun = $Umur_tahun;
+                        $kunjungan->Umur_bulan = $Umur_bulan;
+                        $kunjungan->Umur_hari = $Umur_hari;
+                        $kunjungan->I_KunjunganAsal = $I_KunjunganAsal;
+                        $kunjungan->I_IjinPulang = $I_IjinPulang;
+                        $kunjungan->IsBayi = $IsBayi;
+                        $kunjungan->IsOpenMedrek = $IsOpenMedrek;
+                        $kunjungan->I_StatusObservasi = $I_StatusObservasi;
+                        $kunjungan->I_MasukUlang = $I_MasukUlang;
+                        $kunjungan->D_Masuk2 = $D_Masuk2;
+                        $kunjungan->D_Keluar2 = $D_Keluar2;
+                        $kunjungan->I_Urut = $I_Urut;
+                        $kunjungan->I_StatusPenanganan = $I_StatusPenanganan;
+                        $kunjungan->I_SKP = $I_SKP;
+                        $kunjungan->catatan = $catatan;
+                        $kunjungan->KD_RujukanSEP = $KD_RujukanSEP;
+                        $kunjungan->tgl_lahirPLuar = $tgl_lahirPLuar;
+                        $kunjungan->tempatLahirPLuar = $tempatLahirPLuar;
+                        $kunjungan->Pulang = $Pulang;
+                        $kunjungan->I_EntryUpdate = $I_EntryUpdate;
+                        $kunjungan->n_AsalRujukan = $n_AsalRujukan;
+                    } else {
+                        if ($I_Unit == 30) {
+                            $cek_kunjungan_igd = AdmKunjungan::where('I_Unit', 30)->where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->first();
+    
+                            $exists = $cek_kunjungan_igd ? true : false;
+                            $kunjungan = $exists ? $kunjungan : new AdmKunjungan();
+                        }
+                        $i_kunjungan = $kunjungan->I_Kunjungan;
+                        $upd_kunjungan = new AdmKunjungan();
+                        $kunjungan->I_Kunjungan = $I_Unit == $kunjungan->I_Unit ?  $kunjungan->I_Kunjungan :$upd_kunjungan->generateCode($I_Unit, $D_Masuk);
+                        $kunjungan->I_RekamMedis = $I_RekamMedis;
+                        $kunjungan->I_Bagian = $bagian ?: $kunjungan->I_Bagian;
+                        $kunjungan->I_Unit = $I_Unit ?: $kunjungan->I_Unit;
+                        $kunjungan->I_UrutMasuk = $I_UrutMasuk ?: $kunjungan->I_UrutMasuk;
+                        $kunjungan->D_Masuk = $D_Masuk ?: $kunjungan->D_Masuk;
+                        $kunjungan->D_Keluar = $D_Keluar ?: $kunjungan->D_Keluar;
+                        $kunjungan->C_Pegawai = $nip_dokter ?: $kunjungan->C_Pegawai;
+                        $kunjungan->I_Penerimaan = $rujukan_dari ?: $kunjungan->I_Penerimaan;
+                        $kunjungan->I_Rujukan = $I_Rujukan ?: $kunjungan->I_Rujukan;
+                        $kunjungan->N_DokterPengirim = $N_DokterPengirim ?: $kunjungan->N_DokterPengirim;
+                        $kunjungan->N_Diagnosa = $N_Diagnosa ?: $kunjungan->N_Diagnosa;
+                        $kunjungan->N_Tindakan = $N_Tindakan ?: $kunjungan->N_Tindakan;
+                        $kunjungan->N_Terapi = $N_Terapi ?: $kunjungan->N_Terapi;
+                        $kunjungan->I_Kontraktor = $I_Kontraktor ?: $kunjungan->I_Kontraktor;
+                        $kunjungan->N_PenanggungJwb = $N_PenanggungJwb ?: $kunjungan->N_PenanggungJwb;
+                        $kunjungan->Telp_PenanggungJwb = $Telp_PenanggungJwb ?: $kunjungan->Telp_PenanggungJwb;
+                        $kunjungan->A_PenanggungJwb = $A_PenanggungJwb ?: $kunjungan->A_PenanggungJwb;
+                        $kunjungan->I_StatusBaru = $I_StatusBaru ?: $kunjungan->I_StatusBaru;
+                        $kunjungan->I_Kontrol = $I_Kontrol ?: $kunjungan->I_Kontrol;
+                        $kunjungan->I_StatusKunjungan = $I_StatusKunjungan ?: $kunjungan->I_StatusKunjungan;
+                        $kunjungan->C_Shift = $C_Shift ?: $kunjungan->C_Shift;
+                        $kunjungan->I_Entry = $I_Entry ?: $kunjungan->I_Entry;
+                        $kunjungan->D_Entry = $D_Entry ?: $kunjungan->D_Entry;
+                        $kunjungan->I_StatusPasien = $I_StatusPasien ?: $kunjungan->I_StatusPasien;
+                        $kunjungan->N_PasienLuar = $N_PasienLuar ?: $kunjungan->N_PasienLuar;
+                        $kunjungan->A_PasienLuar = $A_PasienLuar ?: $kunjungan->A_PasienLuar;
+                        $kunjungan->JK_PasienLuar = $JK_PasienLuar ?: $kunjungan->JK_PasienLuar;
+                        $kunjungan->Umur_tahun = $Umur_tahun ?: $kunjungan->Umur_tahun;
+                        $kunjungan->Umur_bulan = $Umur_bulan ?: $kunjungan->Umur_bulan;
+                        $kunjungan->Umur_hari = $Umur_hari ?: $kunjungan->Umur_hari;
+                        $kunjungan->I_KunjunganAsal = $I_KunjunganAsal ?: $kunjungan->I_KunjunganAsal;
+                        $kunjungan->I_IjinPulang = $I_IjinPulang ?: $kunjungan->I_IjinPulang;
+                        $kunjungan->IsBayi = $IsBayi ?: $kunjungan->IsBayi;
+                        $kunjungan->IsOpenMedrek = $IsOpenMedrek ?: $kunjungan->IsOpenMedrek;
+                        $kunjungan->I_StatusObservasi = $I_StatusObservasi ?: $kunjungan->I_StatusObservasi;
+                        $kunjungan->I_MasukUlang = $I_MasukUlang ?: $kunjungan->I_MasukUlang;
+                        $kunjungan->D_Masuk2 = $D_Masuk2 ?: $kunjungan->D_Masuk2;
+                        $kunjungan->D_Keluar2 = $D_Keluar2 ?: $kunjungan->D_Keluar2;
+                        $kunjungan->I_Urut = $I_Urut ?: $kunjungan->I_Urut;
+                        $kunjungan->I_StatusPenanganan = $I_StatusPenanganan ?: $kunjungan->I_StatusPenanganan;
+                        $kunjungan->I_SKP = $I_SKP ?: $kunjungan->I_SKP;
+                        $kunjungan->catatan = $catatan ?: $kunjungan->catatan;
+                        $kunjungan->KD_RujukanSEP = $KD_RujukanSEP ?: $kunjungan->KD_RujukanSEP;
+                        $kunjungan->tgl_lahirPLuar = $tgl_lahirPLuar ?: $kunjungan->tgl_lahirPLuar;
+                        $kunjungan->tempatLahirPLuar = $tempatLahirPLuar ?: $kunjungan->tempatLahirPLuar;
+                        $kunjungan->Pulang = $Pulang ?: $kunjungan->Pulang;
+                        $kunjungan->I_EntryUpdate = $I_EntryUpdate ?: $kunjungan->I_EntryUpdate;
+                        $kunjungan->n_AsalRujukan = $n_AsalRujukan ?: $kunjungan->n_AsalRujukan;
+                    }
+                } else {
                     $exists = false;
                     $i_kunjungan = null;
                     $kunjungan = new AdmKunjungan();
@@ -186,64 +301,6 @@ class RsNetKunjunganController extends Controller
                     $kunjungan->Pulang = $Pulang;
                     $kunjungan->I_EntryUpdate = $I_EntryUpdate;
                     $kunjungan->n_AsalRujukan = $n_AsalRujukan;
-                } else {
-                    if ($I_Unit == 30) {
-                        $cek_kunjungan_igd = AdmKunjungan::where('I_Unit', 30)->where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->first();
-
-                        $exists = $cek_kunjungan_igd ? true : false;
-                        $kunjungan = $exists ? $kunjungan : new AdmKunjungan();
-                    }
-                    $i_kunjungan = $kunjungan->I_Kunjungan;
-                    $upd_kunjungan = new AdmKunjungan();
-                    $kunjungan->I_Kunjungan = $I_Unit == $kunjungan->I_Unit ?  $kunjungan->I_Kunjungan :$upd_kunjungan->generateCode($I_Unit, $D_Masuk);
-                    $kunjungan->I_RekamMedis = $I_RekamMedis;
-                    $kunjungan->I_Bagian = $bagian ?: $kunjungan->I_Bagian;
-                    $kunjungan->I_Unit = $I_Unit ?: $kunjungan->I_Unit;
-                    $kunjungan->I_UrutMasuk = $I_UrutMasuk ?: $kunjungan->I_UrutMasuk;
-                    $kunjungan->D_Masuk = $D_Masuk ?: $kunjungan->D_Masuk;
-                    $kunjungan->D_Keluar = $D_Keluar ?: $kunjungan->D_Keluar;
-                    $kunjungan->C_Pegawai = $nip_dokter ?: $kunjungan->C_Pegawai;
-                    $kunjungan->I_Penerimaan = $rujukan_dari ?: $kunjungan->I_Penerimaan;
-                    $kunjungan->I_Rujukan = $I_Rujukan ?: $kunjungan->I_Rujukan;
-                    $kunjungan->N_DokterPengirim = $N_DokterPengirim ?: $kunjungan->N_DokterPengirim;
-                    $kunjungan->N_Diagnosa = $N_Diagnosa ?: $kunjungan->N_Diagnosa;
-                    $kunjungan->N_Tindakan = $N_Tindakan ?: $kunjungan->N_Tindakan;
-                    $kunjungan->N_Terapi = $N_Terapi ?: $kunjungan->N_Terapi;
-                    $kunjungan->I_Kontraktor = $I_Kontraktor ?: $kunjungan->I_Kontraktor;
-                    $kunjungan->N_PenanggungJwb = $N_PenanggungJwb ?: $kunjungan->N_PenanggungJwb;
-                    $kunjungan->Telp_PenanggungJwb = $Telp_PenanggungJwb ?: $kunjungan->Telp_PenanggungJwb;
-                    $kunjungan->A_PenanggungJwb = $A_PenanggungJwb ?: $kunjungan->A_PenanggungJwb;
-                    $kunjungan->I_StatusBaru = $I_StatusBaru ?: $kunjungan->I_StatusBaru;
-                    $kunjungan->I_Kontrol = $I_Kontrol ?: $kunjungan->I_Kontrol;
-                    $kunjungan->I_StatusKunjungan = $I_StatusKunjungan ?: $kunjungan->I_StatusKunjungan;
-                    $kunjungan->C_Shift = $C_Shift ?: $kunjungan->C_Shift;
-                    $kunjungan->I_Entry = $I_Entry ?: $kunjungan->I_Entry;
-                    $kunjungan->D_Entry = $D_Entry ?: $kunjungan->D_Entry;
-                    $kunjungan->I_StatusPasien = $I_StatusPasien ?: $kunjungan->I_StatusPasien;
-                    $kunjungan->N_PasienLuar = $N_PasienLuar ?: $kunjungan->N_PasienLuar;
-                    $kunjungan->A_PasienLuar = $A_PasienLuar ?: $kunjungan->A_PasienLuar;
-                    $kunjungan->JK_PasienLuar = $JK_PasienLuar ?: $kunjungan->JK_PasienLuar;
-                    $kunjungan->Umur_tahun = $Umur_tahun ?: $kunjungan->Umur_tahun;
-                    $kunjungan->Umur_bulan = $Umur_bulan ?: $kunjungan->Umur_bulan;
-                    $kunjungan->Umur_hari = $Umur_hari ?: $kunjungan->Umur_hari;
-                    $kunjungan->I_KunjunganAsal = $I_KunjunganAsal ?: $kunjungan->I_KunjunganAsal;
-                    $kunjungan->I_IjinPulang = $I_IjinPulang ?: $kunjungan->I_IjinPulang;
-                    $kunjungan->IsBayi = $IsBayi ?: $kunjungan->IsBayi;
-                    $kunjungan->IsOpenMedrek = $IsOpenMedrek ?: $kunjungan->IsOpenMedrek;
-                    $kunjungan->I_StatusObservasi = $I_StatusObservasi ?: $kunjungan->I_StatusObservasi;
-                    $kunjungan->I_MasukUlang = $I_MasukUlang ?: $kunjungan->I_MasukUlang;
-                    $kunjungan->D_Masuk2 = $D_Masuk2 ?: $kunjungan->D_Masuk2;
-                    $kunjungan->D_Keluar2 = $D_Keluar2 ?: $kunjungan->D_Keluar2;
-                    $kunjungan->I_Urut = $I_Urut ?: $kunjungan->I_Urut;
-                    $kunjungan->I_StatusPenanganan = $I_StatusPenanganan ?: $kunjungan->I_StatusPenanganan;
-                    $kunjungan->I_SKP = $I_SKP ?: $kunjungan->I_SKP;
-                    $kunjungan->catatan = $catatan ?: $kunjungan->catatan;
-                    $kunjungan->KD_RujukanSEP = $KD_RujukanSEP ?: $kunjungan->KD_RujukanSEP;
-                    $kunjungan->tgl_lahirPLuar = $tgl_lahirPLuar ?: $kunjungan->tgl_lahirPLuar;
-                    $kunjungan->tempatLahirPLuar = $tempatLahirPLuar ?: $kunjungan->tempatLahirPLuar;
-                    $kunjungan->Pulang = $Pulang ?: $kunjungan->Pulang;
-                    $kunjungan->I_EntryUpdate = $I_EntryUpdate ?: $kunjungan->I_EntryUpdate;
-                    $kunjungan->n_AsalRujukan = $n_AsalRujukan ?: $kunjungan->n_AsalRujukan;
                 }
                 $kunjungan->save();
 
