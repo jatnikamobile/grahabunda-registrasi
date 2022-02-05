@@ -17,6 +17,7 @@ use App\Models\TBLKabupaten;
 use App\Models\TBLKelurahan;
 use App\Models\TBLPendidikan;
 use App\Models\TBLPekerjaan;
+use App\Models\TBLSuku;
 
 class MasterPasienController extends Controller
 {
@@ -77,6 +78,7 @@ class MasterPasienController extends Controller
         $kerja = TBLPekerjaan::where('NmKerja', $request->Pekerjaan)->first();
         $kota = TBLKabupaten::where('NmKabupaten', $request->NmKabupaten)->first();
         $pekerjaan = TBLPekerjaan::where('NmKerja', $request->Pekerjaan)->first();
+        $suku = TBLSuku::where('NmSuku', $request->Suku)->first();
         $GolDarah = $request->GolDarah;
         $RHDarah = $request->RHDarah;
         $golongan_darah = $GolDarah . $RHDarah;
@@ -119,6 +121,7 @@ class MasterPasienController extends Controller
         }
 
         $data_pasien = [
+            'form_type' => $request->form_type,
             'I_RekamMedis' => $request->Medrec,
             'N_Pasien' => $request->Firstname,
             'N_Keluarga' => $request->NamaAyah,
@@ -130,6 +133,7 @@ class MasterPasienController extends Controller
             'I_Telepon' => $request->Phone,
             'I_Agama' => $agama ? $agama->KdAgama : null,
             'C_Sex' => $request->KdSex,
+            'I_SukuBangsa' => $suku ? $suku->KdSuku : null,
             // 'C_WargaNegara' => $request->WargaNegara,
             // 'C_StatusKawin' => $request->Perkawinan,
             'I_Pendidikan' => $kode_pendidikan,

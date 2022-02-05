@@ -50,6 +50,7 @@ class RsNetPasienController extends Controller
             DB::beginTransaction();
             DB::connection('sqlsrv_kepri')->beginTransaction();
 
+            $form_type = isset($data_pasien['form_type']) ? $data_pasien['form_type'] : null;
             $I_RekamMedis = isset($data_pasien['I_RekamMedis']) ? $data_pasien['I_RekamMedis'] : null;
             $N_Pasien = isset($data_pasien['N_Pasien']) ? $data_pasien['N_Pasien'] : null;
             $N_Keluarga = isset($data_pasien['N_Keluarga']) ? $data_pasien['N_Keluarga'] : null;
@@ -59,7 +60,7 @@ class RsNetPasienController extends Controller
             $I_Telepon = isset($data_pasien['I_Telepon']) ? $data_pasien['I_Telepon'] : null;
             $I_Kelurahan = isset($data_pasien['I_Kelurahan']) ? $data_pasien['I_Kelurahan'] : null;
             $Kota = isset($data_pasien['Kota']) ? $data_pasien['Kota'] : null;
-            $I_Agama = isset($data_pasien['I_Agama']) ? $data_pasien['I_Agama'] : null;
+            $I_Agama = $data_pasien['I_Agama'];
             $C_Sex = isset($data_pasien['C_Sex']) && $data_pasien['C_Sex'] == 'L' ? 1 : 0;
             $C_WargaNegara = isset($data_pasien['C_WargaNegara']) == 'WNI' ? 0 : 1;
             $I_Pendidikan = isset($data_pasien['I_Pendidikan']) ? $data_pasien['I_Pendidikan'] : null;
@@ -86,11 +87,7 @@ class RsNetPasienController extends Controller
             $kategori = isset($data_pasien['kategori']) ? $data_pasien['kategori'] : null;
 
             $exists = true;
-            $pasien = TmPasien::where('I_RekamMedis', $I_RekamMedis)->first();
-            // if (!$pasien) {
-            //     $pasien = TmPasien::where('I_NoIdentitas', $I_NoIdentitas)->first();
-            // }
-            if (!$pasien) {
+            if ($form_type == 'insert') {
                 $exists = false;
                 $pasien = new TmPasien();
                 $pasien->I_RekamMedis = $new_medrec;
@@ -121,6 +118,7 @@ class RsNetPasienController extends Controller
                 $pasien->D_Entry = $D_Entry;
                 $pasien->IsCetak = $IsCetak;
             } else {
+                $pasien = TmPasien::where('I_RekamMedis', $I_RekamMedis)->first();
                 $pasien->N_Pasien = $N_Pasien ?: $pasien->N_Pasien;
                 $pasien->N_Keluarga = $N_Keluarga ?: $pasien->N_Keluarga;
                 $pasien->D_Lahir = $D_Lahir ?: $pasien->D_Lahir;

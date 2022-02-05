@@ -579,12 +579,16 @@
 			</div>
 		</div>
 	</div>
+	<input type="hidden" name="form_type" id="form_type">
 </section>
 @endsection
 @section('script')
 <script>
 	$(document).ready(function(){
 		$('#sidebar').addClass('menu-min');
+
+		let form_type = $('#Medrec').val() ? 'update' : 'insert'
+		$('#form_type').val(form_type)
 	});
 	$(".select2").select2();
 	// ====================================
@@ -794,6 +798,7 @@
 					AlamatPJ: $('[name=AlamatPJ]').val(),
 					kelas_bpjs: $('[name=kelas_bpjs]').val(),
 					jenis_peserta: $('[name=jenis_peserta]').val(),
+					form_type: $('[name=form_type]').val(),
                 },beforeSend(){
 	                loading.modal('show');
 	            },error: function(response){
