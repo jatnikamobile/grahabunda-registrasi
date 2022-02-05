@@ -46,7 +46,7 @@
     }
 </style>
 <div class="top-header">
-    DINAS KESEHATAN ANGKATAN UDARA<br>
+    DINAS KESEHATAN REPUBLIK INDONESIA<br>
     RSUD Raja Ahmad Tabib
 </div>
 <div class="Medrec">
