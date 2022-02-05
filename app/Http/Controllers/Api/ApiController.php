@@ -168,21 +168,21 @@ class ApiController extends Controller
 
         $closed = 'yes';
         if ($medrec && $closed == 'yes') {
-            $history_kunjungan = AdmKunjungan::where('I_RekamMedis', $medrec)->whereIn('I_StatusKunjungan', [0, 1])->first();
+            $history_kunjungan = AdmKunjungan::where('I_RekamMedis', $medrec)->whereIn('I_StatusKunjungan', [0, 1])->whereIn('I_Bagian', [1, 2, 3])->first();
 
             $closed = $history_kunjungan ? 'no' : 'yes';
         }
 
         if ($no_kartu && $closed == 'yes') {
             $tm_ps_kontraktor = TmPasienKontraktor::where('C_Asuransi', $no_kartu)->first();
-            $history_kunjungan = $tm_ps_kontraktor ? AdmKunjungan::where('I_RekamMedis', $tm_ps_kontraktor->I_RekamMedis)->whereIn('I_StatusKunjungan', [0, 1])->first() : null;
+            $history_kunjungan = $tm_ps_kontraktor ? AdmKunjungan::where('I_RekamMedis', $tm_ps_kontraktor->I_RekamMedis)->whereIn('I_StatusKunjungan', [0, 1])->whereIn('I_Bagian', [1, 2, 3])->first() : null;
 
             $closed = $history_kunjungan ? 'no' : 'yes';
         }
 
         if ($nik && $closed == 'yes') {
             $pasien = TmPasien::where('I_NoIdentitas', $nik)->first();
-            $history_kunjungan = $pasien ? AdmKunjungan::where('I_RekamMedis', $pasien->I_RekamMedis)->whereIn('I_StatusKunjungan', [0, 1])->first() : null;
+            $history_kunjungan = $pasien ? AdmKunjungan::where('I_RekamMedis', $pasien->I_RekamMedis)->whereIn('I_StatusKunjungan', [0, 1])->whereIn('I_Bagian', [1, 2, 3])->first() : null;
 
             $closed = $history_kunjungan ? 'no' : 'yes';
         }
