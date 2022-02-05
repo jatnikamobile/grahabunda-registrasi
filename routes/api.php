@@ -123,5 +123,6 @@ Route::prefix('vclaim')->name('vclaim')->group(function() {
 
 Route::group(['prefix' => 'api-db'], function () {
     Route::get('check-status-pasien', ['as' => 'api.api-db.check-status-pasien', 'uses' => 'Api\ApiController@checkStatusPasien']);
+    Route::get('sync-pasien', ['as' => 'api.api-db.sync-pasien', 'uses' => 'Api\ApiController@syncPasien']);
 });
 

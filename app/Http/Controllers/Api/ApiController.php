@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\MasterPS;
 use App\Models\RsNet\AdmKunjungan;
 use App\Models\RsNet\TmPasien;
 use App\Models\RsNet\TmPasienKontraktor;
@@ -188,5 +189,127 @@ class ApiController extends Controller
         }
 
         return response()->json(['status' => 'success', 'closed' => $closed, 'history_kunjungan' => $history_kunjungan]);
+    }
+
+    public function syncPasien(Request $request) {
+        $action = $request->action;
+
+        switch ($action) {
+            case 'sync-data':
+                return $this->syncData($request);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+
+    private function syncData($request)
+    {
+        $date_from = $request->date_from;
+        $date_to = $request->date_to;
+
+        $data_pasien = TmPasien::whereBetween('D_Entry', [$date_from, $date_to])->get();
+
+        if (count($data_pasien) > 0) {
+            $arr_pasien = [];
+            foreach ($data_pasien as $pasien) {
+                $import_pasien = $this->importPasien($pasien);
+
+                $arr_pasien[] = [
+                    'medrec' => $pasien->I_RekamMedis,
+                    'nama' => $pasien->N_Pasien,
+                    'tanggal' => date('Y-m-d', strtotime($pasien->D_Entry)),
+                    'status' => $import_pasien['status'] == true ? $import_pasien['message'] : 'failed',
+                    'message' => $import_pasien['message']
+                ];
+            }
+
+            return response()->json(['status' => 'success', 'arr_pasien' => $arr_pasien]);
+        }
+    }
+
+    private function importPasien($data_pasien)
+    {
+        $pendidikan = $data_pasien->pendidikan;
+        try {
+            $interval = date_diff(date_create(), date_create($data_pasien->D_Lahir));
+            $year_age =$interval->format("%Y");
+            $year_month =$interval->format("%M");
+            $year_day =$interval->format("%d");
+
+            $gol_darah = $data_pasien->golongan_darah ? $data_pasien->golongan_darah->N_GolonganDarah : null;
+            if (strpos($gol_darah, '+')) {
+                $gd = str_replace('+', '', $gol_darah);
+                $rhd = '+';
+            } elseif (strpos($gol_darah, '-')) {
+                $gd = str_replace('-', '', $gol_darah);
+                $rhd = '-';
+            } else {
+                $gd = $gol_darah;
+                $rhd = null;
+            }
+
+            $no_kartu = $data_pasien->pasien_kontraktor ? $data_pasien->pasien_kontraktor->C_Asuransi : null;
+            $kategori = $data_pasien->pasien_kontraktor ? $data_pasien->pasien_kontraktor->I_Kontraktor : null;
+
+            $master_ps = MasterPS::where('Medrec', $data_pasien->I_RekamMedis)->first();
+            $agama = $data_pasien->agama ? $data_pasien->agama->N_Agama : null;
+
+            $keluarga = $data_pasien->pasien_keluarga;
+            $hub_keluarga = $keluarga ? $keluarga->hub_keluarga : null;
+
+            if (!$master_ps) {
+                $master_ps = new MasterPS();
+                $master_ps->Medrec = $data_pasien->I_RekamMedis;
+                $master_ps->Firstname = $data_pasien->N_Pasien;
+                $master_ps->Pod = $data_pasien->A_Lahir;
+                $master_ps->Bod = $data_pasien->D_Lahir;
+                $master_ps->UmurThn = $year_age;
+                $master_ps->UmurBln = $year_month;
+                $master_ps->UmurHr = $year_day;
+                $master_ps->KdSex = $data_pasien->C_Sex == 0 ? 'P' : 'L';
+                $master_ps->GolDarah = $gd;
+                $master_ps->RHDarah = $rhd;
+                $master_ps->WargaNegara = $data_pasien->C_WargaNegara;
+                $master_ps->NoIden = $data_pasien->I_NoIdentitas;
+                $master_ps->Perkawinan = $data_pasien->C_StatusKawin;
+                $master_ps->Agama = $agama ? $agama : null;
+                $master_ps->Pendidikan = $pendidikan ? $pendidikan->N_Pendidikan : null;
+                $master_ps->NamaAyah = $hub_keluarga ? ($hub_keluarga->I_HUBKELUARGA == 3 ? $keluarga->N_HubKel : null) : null;
+                $master_ps->NamaIbu = $hub_keluarga ? ($hub_keluarga->I_HUBKELUARGA == 4 ? $keluarga->N_HubKel : null) : null;
+                $master_ps->AskesNo = $no_kartu;
+                $master_ps->TglDaftar = $data_pasien->D_Entry;
+                $master_ps->Address = $data_pasien->A_Rumah;
+                $master_ps->City = $data_pasien->Kota;
+                $master_ps->Kelurahan = $data_pasien->I_Kelurahan;
+                $master_ps->KdPos = $data_pasien->C_KodePos;
+                $master_ps->Phone = $data_pasien->I_Telepon;
+                $master_ps->Kategori = $kategori;
+                $master_ps->Pekerjaan = $data_pasien->I_Pekerjaan;
+                $master_ps->NamaPJ = $keluarga ? $keluarga->N_HubKel : null;
+                $master_ps->HubunganPJ = $hub_keluarga ? $hub_keluarga->N_HUBKELUARGA : null;
+                $master_ps->PekerjaanPJ = $keluarga ? $keluarga->I_Pekerjaan_HubKel : null;
+                $master_ps->PhonePJ = $keluarga ? $keluarga->Telp_HubKel : null;
+                $master_ps->AlamatPJ = $keluarga ? $keluarga->A_HubKel : null;
+                $master_ps->save();
+
+                return [
+                    'status' => true,
+                    'message' => 'success'
+                ];
+            } else {
+                return [
+                    'status' => true,
+                    'message' => 'already exists'
+                ];
+            }
+        } catch (\Throwable $th) {
+            return [
+                'status' => false,
+                'message' => $th->getMessage()
+            ];
+        }
     }
 }

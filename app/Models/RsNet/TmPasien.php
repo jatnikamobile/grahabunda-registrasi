@@ -70,11 +70,26 @@ class TmPasien extends Model
 
     public function golongan_darah()
     {
-        return $this->belongsTo('App\Models\RsNet\TmGolonganDarah', 'I_GolonganDarah', 'I_GolDarah');
+        return $this->belongsTo('App\Models\RsNet\TmGolonganDarah', 'I_GolDarah', 'I_GolonganDarah');
     }
 
     public function agama()
     {
         return $this->belongsTo('App\Models\RsNet\TmAgama', 'I_Agama', 'I_Agama');
+    }
+
+    public function pendidikan()
+    {
+        return $this->belongsTo('App\Models\RsNet\TmPendidikan', 'I_Pendidikan', 'I_Pendidikan');
+    }
+
+    public function pasien_kontraktor()
+    {
+        return $this->belongsTo('App\Models\RsNet\TmPasienKontraktor', 'I_RekamMedis', 'I_RekamMedis');
+    }
+
+    public function pasien_keluarga()
+    {
+        return $this->belongsTo('App\Models\RsNet\TmPasienHubKeluarga', 'I_RekamMedis', 'I_RekamMedis');
     }
 }

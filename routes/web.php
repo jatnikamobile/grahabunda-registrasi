@@ -33,6 +33,7 @@ Route::group(['prefix'=>'MasterPasien'],function(){
     Route::get('/Edit/{medrec?}', ['as' => 'mst-psn.form-edit', 'uses' => 'MasterPasienController@form']);
     Route::post('/Post', ['as' => 'mst-psn.form-post', 'uses' => 'MasterPasienController@post']);
     Route::delete('/Delete', ['as' => 'mst-psn.form-delete', 'uses' => 'MasterPasienController@delete']);
+    Route::get('/sync', ['as' => 'mst-psn.sync', 'uses' => 'MasterPasienController@sync']);
     Route::get('/Print',['as' => 'mst-psn.print', 'uses' => 'MasterPasienController@print_pasien']);
     Route::get('/Print-Kartu',['as' => 'mst-psn.print-kartu', 'uses' => 'MasterPasienController@print_kartu_pasien']);
     Route::get('/Print-Kartu2',['as' => 'mst-psn.print-kartu2', 'uses' => 'MasterPasienController@print_kartu_pasien2']);

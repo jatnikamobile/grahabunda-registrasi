@@ -9,6 +9,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <a href="{{route('mst-psn.form')}}" class="btn btn-success btn-sm">Tambah Data <i class="fa fa-plus"></i></a>
+                <a href="{{route('mst-psn.sync')}}" class="btn btn-primary btn-sm">Sync Data <i class="fa fa-database"></i></a>
             </div>
             <div class="panel-body">
                 @if (session('status'))

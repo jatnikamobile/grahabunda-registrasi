@@ -365,4 +365,11 @@ class MasterPasienController extends Controller
         $pdf->setPaper(array(0, 0, $parse['width'], $parse['height']));
         return base64_encode($pdf->stream($medrec.date('d-m-Y').'.pdf'));
     }
+
+    public function sync()
+    {
+        $date_from  = date('Y-m-d');
+        $date_to  = date('Y-m-d');
+        return view('master-pasien.sync', compact('date_from', 'date_to'));
+    }
 }
