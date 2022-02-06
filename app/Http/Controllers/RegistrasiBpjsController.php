@@ -143,6 +143,8 @@ class RegistrasiBpjsController extends Controller
 
             $response_data['metaData'] = ['code' => 200];
             $response_data['response'] = $bpjs_data;
+            
+			$registers = $medrec ? Register::where('Medrec', $medrec->Medrec)->get() : [];
 
             $data = [
                 'data' => $data,
@@ -153,7 +155,8 @@ class RegistrasiBpjsController extends Controller
                 'dokter' => $dokter,
                 'poli' => $poli,
                 'diag' => $jenis_pelayanan == 'Rawat Inap' ? $register->KdIcd : $register->KdICDBPJS,
-                'peserta_bpjs' => $peserta_bpjs
+                'peserta_bpjs' => $peserta_bpjs,
+                'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru',
             ];
 
             Log::info("data BPJS Surat Kontrol: " . json_encode($data));
