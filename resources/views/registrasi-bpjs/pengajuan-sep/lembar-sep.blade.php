@@ -208,5 +208,5 @@
 <h5>CETAKAN KE : <?= $data['Nomor'] == '' ? '1' : $data['Nomor']  ?> / <?= date("H:i j F Y") ?></h5>
 
 <script>
-	window.print()
+	// window.print()
 </script>
