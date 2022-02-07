@@ -85,6 +85,7 @@ class RegistrasiBpjsController extends Controller
             $register = new Register();
             $data = $register->get_one($regno);
             $parse['edit'] = $data;
+            // dd($data);
         }
         // dd($parse);
         return view('registrasi-bpjs.daftar-pasien.form',$parse);
@@ -133,7 +134,7 @@ class RegistrasiBpjsController extends Controller
                 $dokter = FtDokter::where('KdDPJP', $bpjs_data['kodeDokter'])->first();
                 $poli = POLItpp::where('KdBPJS', $bpjs_data['poliTujuan'])->first();
             } else {
-                $register = $no_peserta ? Register::where('NoPeserta', $no_peserta)->where('NoSep', $bpjs_data['sep']['noSep'])->orderBy('Regno', 'desc')->first() : null;
+                $register = $no_peserta ? Register::where('NoSep', $bpjs_data['sep']['noSep'])->orderBy('Regno', 'desc')->first() : null;
                 $medrec = $medrec ? $medrec : ($register ? $register->Medrec : null);
                 $master_ps = $register ? MasterPS::where('Medrec', $medrec)->first() : null;
                 $kategori = $master_ps ? TblKategoriPsn::where('KdKategori', $master_ps->Kategori)->first() : null;

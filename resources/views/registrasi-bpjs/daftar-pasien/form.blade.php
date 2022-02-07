@@ -2525,8 +2525,12 @@
 
                     $('#jatah_kelas').val(bpjs_data.sep.peserta.hakKelas);
 
-                    var $diagnosa = $("<option selected></option>").val(response.diag).text(bpjs_data.sep.diagnosa);
-                    $('#Diagnosa').append($diagnosa).trigger('change');
+                    if ('data' in response) {
+                        if ('register' in response.data) {
+                            var $diagnosa = $("<option selected></option>").val(response.data.register.KdICD).text(bpjs_data.sep.diagnosa);
+                            $('#Diagnosa').append($diagnosa).trigger('change');
+                        }
+                    }
 
                     if (sex != null) {
                         $("input[name=KdSex][value=" + sex.toUpperCase() + "]").attr('checked', 'checked');
