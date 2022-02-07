@@ -35,10 +35,10 @@ class VClaimController extends Controller
 
 	public function faskes(Request $request)
 	{
-		$term = $request->term;
+		$term = $request->term ? str_replace(' ', '+', $request->term) : '';
 		$faskes = $request->faskes;
 		$vclaim = new NewVClaimController();
-		$faskes =$vclaim->referensiFasilitasKesehatan($term, $faskes);
+		$faskes = $vclaim->referensiFasilitasKesehatan($term, $faskes);
 		return response()->json($faskes);
 	}
 

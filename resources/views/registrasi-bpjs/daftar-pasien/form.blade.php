@@ -70,11 +70,11 @@
                                 <span class="lbl">&nbsp; Non Rujukan</span>
                             </label>
                             <label>
-                                <input name="StatusRujuk" type="radio" class="ace" value="1"/>
+                                <input name="StatusRujuk" type="radio" class="ace" value="1" onchange="changeStatusRujuk(1)"/>
                                 <span class="lbl">&nbsp; Faskes 1</span>
                             </label>
                             <label>
-                                <input name="StatusRujuk" type="radio" class="ace" value="2"/>
+                                <input name="StatusRujuk" type="radio" class="ace" value="2" onchange="changeStatusRujuk(2)"/>
                                 <span class="lbl">&nbsp; Faskes 2(Rumah Sakit)</span>
                             </label>
                         </div>
@@ -409,11 +409,11 @@
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
                         <div class="radio">
                             <label>
-                                <input name="Faskes" type="radio" class="ace" value="1" {{ isset($edit->AsalRujuk) && strtolower(strtoupper($edit->AsalRujuk)) == '1' ? 'checked' : 'checked' }} />
+                                <input name="Faskes" type="radio" class="ace" value="1" {{ isset($edit->AsalRujuk) && strtolower(strtoupper($edit->AsalRujuk)) == '1' ? 'checked' : 'checked' }} onchange="changeStatusRujuk(1)"/>
                                 <span class="lbl">&nbsp; Faskes 1</span>
                             </label>
                             <label>
-                                <input name="Faskes" type="radio" class="ace" value="2" {{ isset($edit->AsalRujuk) && strtolower(strtoupper($edit->AsalRujuk)) == '2' ? 'checked' : '' }}/>
+                                <input name="Faskes" type="radio" class="ace" value="2" {{ isset($edit->AsalRujuk) && strtolower(strtoupper($edit->AsalRujuk)) == '2' ? 'checked' : '' }} onchange="changeStatusRujuk(2)"/>
                                 <span class="lbl">&nbsp; Faskes 2</span>
                             </label>
                         </div>
@@ -1176,6 +1176,16 @@
     //         push_print(c.regno);
     //     });
     // });
+
+    function changeStatusRujuk(statusRujuk) {
+        if (statusRujuk == 1) {
+            $('input:radio[name=StatusRujuk][value=1]').click();
+            $('input:radio[name=Faskes][value=1]').click();
+        } else {
+            $('input:radio[name=StatusRujuk][value=2]').click();
+            $('input:radio[name=Faskes][value=2]').click();
+        }
+    }
 
     function load_unit(id_group_unit=''){
         $.ajax({
