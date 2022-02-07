@@ -736,7 +736,8 @@ class RegistrasiBpjsController extends Controller
         $register = new Register();
         $data = $register->print_sep($regno);
         $parse = array(
-            'data' => $data
+            'data' => $data,
+            'reff' => 'list'
         );
         // dd($parse);
         return view('registrasi-bpjs.pengajuan-sep.lembar-sep', $parse);

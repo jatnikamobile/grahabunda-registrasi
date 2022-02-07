@@ -207,6 +207,11 @@
 * SEP bukan sebagai bukti jaminan peserta</p>
 <h5>CETAKAN KE : <?= $data['Nomor'] == '' ? '1' : $data['Nomor']  ?> / <?= date("H:i j F Y") ?></h5>
 
+<input type="hidden" name="reff" id="reff" value="{{ isset($reff) ? $reff : '' }}">
 <script>
-	// window.print()
+	let reff = document.getElementById('reff').value
+
+	if (reff == 'list') {
+		window.print()
+	}
 </script>

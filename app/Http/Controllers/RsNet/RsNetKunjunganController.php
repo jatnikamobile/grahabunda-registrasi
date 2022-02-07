@@ -135,7 +135,7 @@ class RsNetKunjunganController extends Controller
                 $exists = true;
 
                 if ($form_type == 'update') {
-                    $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_Kontraktor', $I_Kontraktor)->first();
+                    $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->first();
                     if (!$kunjungan) {
                         $exists = false;
                         $i_kunjungan = null;

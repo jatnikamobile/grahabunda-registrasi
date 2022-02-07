@@ -1072,23 +1072,23 @@
                             <label class="col-sm-3 control-label no-padding-right">Kategori Pasien</label>
                             <div class="input-group col-sm-3">
                                 <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                <select type="text" name="kat_Kategori" id="kat_Kategori" style="width:100%;" class="form-control select2 input-sm col-xs-6 col-sm-6">
+                                <select type="text" name="kat_Kategori" id="kat_Kategori" style="width:100%;" class="form-control input-sm col-xs-6 col-sm-6">
                                     <option value="">-= Kategori Pasien =-</option>
                                 </select>
                                 <input type="hidden" name="kat_nmKategori" id="kat_nmKategori">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group hide">
                             <!-- Group Unit -->
                             <label class="col-sm-3 control-label no-padding-right">Group Unit</label>
                             <div class="input-group col-sm-3">
                                 <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                <select type="text" name="GroupUnit" id="GroupUnit" style="width:100%;" class="form-control select2 input-sm col-xs-6 col-sm-6">
+                                <select type="text" name="GroupUnit" id="GroupUnit" style="width:100%;" class="form-control input-sm col-xs-6 col-sm-6">
                                     <option value="">-= GroupUnit =-</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group hide">
                             <!-- Input Unit -->
                             <label class="col-sm-3 control-label no-padding-right">Unit</label>
                             <div class="input-group col-sm-9">
@@ -1585,6 +1585,7 @@
     });
 
     $('#kat_Kategori').select2({
+        dropdownParent: $('.modal'),
         ajax: {
             // api/get_ppk
             url:"{{route('api.select2.kategori-pasien')}}",
@@ -1766,6 +1767,7 @@
     });
 
     $('#GroupUnit').select2({
+        dropdownParent: $('.modal'),
         ajax: {
             // api/get_ppk
             url:"{{route('api.select2.group-unit')}}",
