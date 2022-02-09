@@ -1160,7 +1160,7 @@
     // =====================================
     $("#GroupUnit").on("change",function(){
         // console.log();
-        load_unit(this.value);
+        // load_unit(this.value);
     });
         
     // $("#send_data").on("click",function(){
@@ -1187,25 +1187,25 @@
         }
     }
 
-    function load_unit(id_group_unit=''){
-        $.ajax({
-            type:'POST',
-            // Master_pasien/load_unit
-            url:"{{route('reg-bpjs-daftar')}}",
-            data:{id_group_unit:id_group_unit},
-            dataType:"JSON",
-            beforeSend:function(){
-                $("#optUnit").html("Memuat ...");
-            },
-            success:function(resp){
-                if(resp != ''){
-                    $("#optUnit").html(resp);
-                }else{
-                    $("#optUnit").empty();
-                }
-            }
-        });
-    }
+    // function load_unit(id_group_unit=''){
+    //     $.ajax({
+    //         type:'POST',
+    //         // Master_pasien/load_unit
+    //         url:"{{route('reg-bpjs-daftar')}}",
+    //         data:{id_group_unit:id_group_unit},
+    //         dataType:"JSON",
+    //         beforeSend:function(){
+    //             $("#optUnit").html("Memuat ...");
+    //         },
+    //         success:function(resp){
+    //             if(resp != ''){
+    //                 $("#optUnit").html(resp);
+    //             }else{
+    //                 $("#optUnit").empty();
+    //             }
+    //         }
+    //     });
+    // }
 
     const baseSelect2 = {
         ajax: {dataType: 'json'},
@@ -2527,8 +2527,10 @@
 
                     if ('data' in response) {
                         if ('register' in response.data) {
-                            var $diagnosa = $("<option selected></option>").val(response.data.register.KdICD).text(bpjs_data.sep.diagnosa);
-                            $('#Diagnosa').append($diagnosa).trigger('change');
+                            if (response.data.register) {
+                                var $diagnosa = $("<option selected></option>").val(response.data.register.KdICD).text(bpjs_data.sep.diagnosa);
+                                $('#Diagnosa').append($diagnosa).trigger('change');
+                            }
                         }
                     }
 
