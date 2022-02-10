@@ -125,6 +125,13 @@ class RegistrasiBpjsController extends Controller
         $peserta_bpjs = $bpjs_data ? $vclaim_controller->pesertaKartu($no_peserta, date('Y-m-d')) : null;
         $medrec = $peserta_bpjs ? $peserta_bpjs['peserta']['mr']['noMR'] : null;
 
+        $diagnosa = isset($bpjs_data['sep']['diagnosa']) ? $bpjs_data['sep']['diagnosa'] : null;
+        $arr_diags = $diagnosa ? explode('-', $diagnosa) : [];
+        $arr_diags = count($arr_diags) > 0 ? [
+            'code' => trim($arr_diags[0]),
+            'diagnosa' => trim($arr_diags[1]),
+        ] : [];
+
         if (isset($bpjs_data['noSuratKontrol'])) {
             $jenis_pelayanan = $bpjs_data['sep']['jnsPelayanan'];
             if ($jenis_pelayanan == 'Rawat Inap') {
@@ -156,6 +163,7 @@ class RegistrasiBpjsController extends Controller
                 'dokter' => $dokter,
                 'poli' => $poli,
                 'diag' => $jenis_pelayanan == 'Rawat Inap' ? $register->KdIcd : $register->KdICDBPJS,
+                'arr_diags' => $arr_diags,
                 'peserta_bpjs' => $peserta_bpjs,
                 'kunjungan' => count($registers) > 0 ? 'Lama' : 'Baru',
             ];

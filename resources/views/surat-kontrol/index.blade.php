@@ -98,16 +98,16 @@
                                    <!--  <a href="{{ route('mst-psn.print', ['Medrec' => $l->Medrec]) }}" target="_blank" title="Print Detail"><i class="fa fa-eye"></i></a> -->
                                     <!-- Edit Form -->
                                     @if ($inst == 3) 
-                                        <a href="{{ route('srt-knsl.form', [substr($l->NoSurat,0,6)]) }}" title="Daftarkan Pasien"> <i class="fa fa-reply green"></i>
+                                        <a href="{{ route('srt-knsl.form', [substr($l->no_surat_kontrol_bpjs,0,6)]) }}" title="Daftarkan Pasien"> <i class="fa fa-reply green"></i>
                                         </a>
                                     @elseif ($inst == 4) 
-                                        <a href="{{ route('radiologi.form', [$l->NoSurat,$l->Medrec] ) }}" title="Daftarkan Pasien"> <i class="fa fa-reply green"></i>
+                                        <a href="{{ route('radiologi.form', [$l->no_surat_kontrol_bpjs,$l->Medrec] ) }}" title="Daftarkan Pasien"> <i class="fa fa-reply green"></i>
                                         </a>
                                     @elseif ($inst == 5) 
-                                        <a href="{{ route('laboratorium.form', [$l->NoSurat,$l->Medrec] ) }}" title="Daftarkan Pasien"> <i class="fa fa-reply green"></i>
+                                        <a href="{{ route('laboratorium.form', [$l->no_surat_kontrol_bpjs,$l->Medrec] ) }}" title="Daftarkan Pasien"> <i class="fa fa-reply green"></i>
                                         </a>
                                     @else
-                                        <a href="{{ route('srt-kntrl.form', [$l->NoSurat]) }}" title="Daftarkan Pasien"> <i class="fa fa-reply green"></i>
+                                        <a href="{{ route('srt-kntrl.form', [$l->no_surat_kontrol_bpjs]) }}" title="Daftarkan Pasien"> <i class="fa fa-reply green"></i>
                                         </a>
                                     @endif
                                     <!-- Edit Form -->

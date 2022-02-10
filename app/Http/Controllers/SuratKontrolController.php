@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kepri\Master\TmKelompokRujukan;
 use PDF;
 use Auth;
 use Illuminate\Http\Request;
@@ -69,6 +70,7 @@ class SuratKontrolController extends Controller
         $parse['prov'] = [];
         $parse['dokter'] = [];
         $parse['nosurat'] = $nosurat;
+        $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
         return view('surat-kontrol.daftar-pasien.form',$parse);
     }
 

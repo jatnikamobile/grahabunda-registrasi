@@ -2526,10 +2526,10 @@
                     $('#jatah_kelas').val(bpjs_data.sep.peserta.hakKelas);
 
                     if ('data' in response) {
-                        if ('register' in response.data) {
-                            if (response.data.register) {
-                                var $diagnosa = $("<option selected></option>").val(response.data.register.KdICD).text(bpjs_data.sep.diagnosa);
-                                $('#Diagnosa').append($diagnosa).trigger('change');
+                        if ('arr_diags' in response.data) {
+                            if (response.data.arr_diags) {
+                                var diagnosa = $("<option selected></option>").val(response.data.arr_diags.code).text(response.data.arr_diags.diagnosa);
+                                $('#Diagnosa').append(diagnosa).trigger('change');
                             }
                         }
                     }

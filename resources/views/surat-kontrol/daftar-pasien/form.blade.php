@@ -8,10 +8,10 @@
 <script src="<?=asset('public/js/ws-client.js')?>"></script>
 <script>
   // init web shocket
-  let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {
-    // if(data.type == 'broadcast') { console.log(data);}
-  });
-  ws.init();
+//   let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {
+//     // if(data.type == 'broadcast') { console.log(data);}
+//   });
+//   ws.init();
   
   // send data web shocket
   function push_print(regno) {
@@ -130,6 +130,22 @@
                     </div>
                 </div>
                 </form>
+                <!-- Asal Rujukan -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label no-padding-right">Rujukan Dari</label>
+                    <div class="input-group col-md-9">
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                        <select type="text" name="rujukan_dari" id="rujukan_dari" style="width:100%;" class="form-control">
+                            <option value="">-= Rujukan Dari =-</option>
+                            @foreach ($kelompok_rujukan as $kr)
+                                <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : ($kr->I_KelompokRujukan == 99 ? 'selected' : '')}}>{{ $kr->N_KelompokRujukan }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback text-danger hide" id="rujukan-dari-validation">
+                            Pilih asal rujukan pasien!
+                        </div>
+                    </div>
+                </div>
                 <!-- No Rujukan -->
                 <form method="get" id="search_noRujukan">
                 <div class="form-group">
@@ -669,6 +685,80 @@
             </div>
         </div>
     </div><!-- MODAL CARI PASIEN -->
+    <!-- MODAL TUJUAN KUNJUNGAN -->
+    <div class="modal fade bd-example-modal-lg-tujuan-kunjungan"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h5 class="modal-title" id="exampleModalLabel">Pilih Tujuan Kunjungan</h5>
+                    </div><hr>
+                    <form method="get" id="bd-example-modal-lg-tujuan-kunjungan">
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right">Tujuan Kunjungan</label>
+                            <div class="input-group col-sm-7">
+                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                                <select type="text" name="tujuan_kunjungan" id="tujuan_kunjungan" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                                    <option value="">-= Tujuan Kunjungan =-</option>
+                                    <option value="0">Normal</option>
+                                    <option value="1">Prosedur</option>
+                                    <option value="2">Konsul Dokter</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right">Flag Procedure</label>
+                            <div class="input-group col-sm-7">
+                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                                <select type="text" name="flag_procedure" id="flag_procedure" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                                    <option value="">-= Flag Procedure =-</option>
+                                    <option value="0">Prosedur Tidak Berkelanjutan</option>
+                                    <option value="1">Prosedur dan Terapi Berkelanjutan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right">Kode Penunjang</label>
+                            <div class="input-group col-sm-7">
+                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                                <select type="text" name="kode_penunjang" id="kode_penunjang" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                                    <option value="">-= Kode Penunjang =-</option>
+                                    <option value="1">Radioterapi</option>
+                                    <option value="2">Kemoterapi</option>
+                                    <option value="3">Rehabilitasi Medik</option>
+                                    <option value="4">Rehabilitasi Psikososial</option>
+                                    <option value="5">Transfusi Darah</option>
+                                    <option value="6">Pelayanan Gigi</option>
+                                    <option value="7">Laboratorium</option>
+                                    <option value="8">USG</option>
+                                    <option value="9">Farmasi</option>
+                                    <option value="10">Lain-Lain</option>
+                                    <option value="11">MRI</option>
+                                    <option value="12">HEMODIALISA</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right">Assesment</label>
+                            <div class="input-group col-sm-7">
+                                <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                                <select type="text" name="assesment" id="assesment" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                                    <option value="">-= Assesment =-</option>
+                                    <option value="1">Poli spesialis tidak tersedia pada hari sebelumnya</option>
+                                    <option value="2">Jam Poli telah berakhir pada hari sebelumnya</option>
+                                    <option value="3">Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya</option>
+                                    <option value="4">Atas Instruksi RS</option>
+                                    <option value="5">Tujuan Kontrol</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pull-right"><a href="javascript:void(0)" class="btn btn-info btn-sm" id="go_create_sep">OK</a></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- MODAL TUJUAN KUNJUNGAN -->
     <!-- HISTORI PASIEN -->
     <div class="modal fade bd-example-modal-lg-histori" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -2311,62 +2401,93 @@
                 nosurat: $('#NoSuratKontrol').val(),
             },
             success:function(response){
-                console.log(response);
-                $('#Medrec').val(response.Medrec);
-                $('#Firstname').val(response.Firstname.toUpperCase());
-                $('#Notelp').val(response.Phone);
-                $('#Bod').val(response.Bod.substring(0,10));
-                $('#TglDaftar').val(response.TglDaftar.substring(0,10));
-                $('#NoIden').val(response.NoIden);
-                $('#Sex').val(response.Sex);
-                $('#UmurHari').val(response.UmurHr);
-                $('#UmurBln').val(response.UmurBln);
-                $('#UmurThn').val(response.UmurThn);
-                $('#NoRujuk').val(response.NoRujukan);
-                $('#RegRujuk').val(response.TanggalRujukan.substring(0,10));
+                if (response.status == 'success') {
+                    var data = response.data;
+                    var bpjs_data = response.data.bpjs_data.response;
+                    var register_data = response.data.register;
+                    var master_ps_data = response.data.master_ps;
+                    var kategori_data = response.data.kategori;
+                    var dokter_data = response.data.dokter;
+                    var poli_data = response.data.poli;
+                    var peserta_bpjs = response.data.peserta_bpjs;
 
-                var $kategori = $("<option selected></option>").val(response.Kategori).text(response.NmKategori);
-                $('#Kategori').append($kategori).trigger('change');
+                    var medrec = master_ps_data ? master_ps_data.Medrec : (peserta_bpjs ? peserta_bpjs.peserta.mr.noMR : '')
+                    var firstname = peserta_bpjs ? peserta_bpjs.peserta.nama : ''
+                    var phone = peserta_bpjs ? peserta_bpjs.peserta.mr.noTelepon : ''
+                    var bod = peserta_bpjs ? peserta_bpjs.peserta.tglLahir : ''
+                    var tgl_daftar = peserta_bpjs ? peserta_bpjs.peserta.tglCetakKartu : ''
+                    var no_iden = peserta_bpjs ? peserta_bpjs.peserta.nik : ''
+                    var sex = peserta_bpjs ? peserta_bpjs.peserta.sex : ''
+                    var no_peserta = peserta_bpjs ? peserta_bpjs.peserta.noKartu : ''
 
-                var $dokter = $("<option selected></option>").val(response.KdDoc).text(response.NmDoc);
-                $('#Dokter').append($dokter).trigger('change');
+                    $('#Medrec').val(medrec);
+                    $('#Firstname').val(firstname.toUpperCase());
+                    $('#Notelp').val(phone);
+                    $('#Bod').val(bod.substring(0,10)).trigger('change');
+                    $('#TglDaftar').val(tgl_daftar.substring(0,10));
+                    $('#NoIden').val(no_iden);
+                    $('#Sex').val(sex);
+                    // $('#UmurHari').val(response.UmurHr);
+                    // $('#UmurBln').val(response.UmurBln);
+                    // $('#UmurThn').val(response.UmurThn);
+                    $('#NoRujuk').val(bpjs_data.sep.provPerujuk.noRujukan);
+                    $('#RegRujuk').val(bpjs_data.sep.provPerujuk.tglRujukan.substring(0,10));
 
-                var $poli = $("<option selected></option>").val(response.KdPoli).text(response.NMPoli);
-                $('#poli').append($poli).trigger('change');
-                // setKodePoli(response.KdPoli, response.KdPoliBpjs);
+                    var $kategori = $("<option selected></option>").val(28).text('BPJS KESEHATAN');
+                    $('#Kategori').append($kategori).trigger('change');
 
-                if (response.KdSex != null) {
-                    $("input[name=KdSex][value=" + response.KdSex.toUpperCase() + "]").attr('checked', 'checked');
+                    var $dokter = $("<option selected></option>").val(dokter_data.KdDoc).text(dokter_data.NmDoc);
+                    $('#Dokter').append($dokter).trigger('change');
+
+                    var $poli = $("<option selected></option>").val(poli_data.KDPoli).text(poli_data.NMPoli);
+                    $('#poli').append($poli).trigger('change');
+                    // setKodePoli(response.KdPoli, response.KdPoliBpjs);
+
+                    $('#jatah_kelas').val(bpjs_data.sep.peserta.hakKelas);
+
+                    if ('data' in response) {
+                        if ('arr_diags' in response.data) {
+                            if (response.data.arr_diags) {
+                                var diagnosa = $("<option selected></option>").val(response.data.arr_diags.code).text(response.data.arr_diags.diagnosa);
+                                $('#Diagnosa').append(diagnosa).trigger('change');
+                            }
+                        }
+                    }
+
+                    if (sex != null) {
+                        $("input[name=KdSex][value=" + sex.toUpperCase() + "]").attr('checked', 'checked');
+                    }
+
+                    $('#Kunjungan').val(response.kunjungan);
+
+                    // Masukan buat update kategori
+                    $('#kat_NoRM').val(medrec);
+                    $('#kat_Firstname').val(firstname);
+                    $('#kat_NoPeserta').val(no_peserta);
+                    $('#noKartu').val(no_peserta);
+                    var $ka_kategori = $("<option selected></option>").val(28).text('BPJS KESEHATAN');
+                    $('#kat_Kategori').append($ka_kategori).trigger('change');
+
+                    // var $groupUnit = $("<option selected></option>").val(response.GroupUnit).text(response.GroupUnit);
+                    // $('#GroupUnit').append($groupUnit).trigger('change');
+
+                    var $unit = $("<option selected></option>").val(response.NmUnit).text(response.NmUnit);
+                    $('#Unit').append($unit).trigger('change');
+
+                    // Tambah Keyakinan
+                    $('#ke_NoRM').val(medrec);
+                    $('#ke_Firstname').val(firstname);
+                    // $('input[name=pantang][value=' + response.phcek + ']').attr('checked', 'checked');
+                    // $('#pantangNote').val(response.phnote);
+                    // $('input[name=tindakan][value=' + response.ptcek + ']').attr('checked', 'checked');
+                    // $('#tindakanNote').val(response.ptnote);
+                    // $('input[name=makan][value=' + response.pmcek + ']').attr('checked', 'checked');
+                    // $('#makanNote').val(response.pmnote);
+                    // $('input[name=pantangPerawatan][value=' + response.ppcek + ']').attr('checked', 'checked');
+                    // $('#pantangPerawatanNote').val(response.ppnote);
+                    // $('#lain').val(response.lain);
+                    loading.modal('hide');
                 }
-
-                $('#Kunjungan').val('Lama');
-
-                // Masukan buat update kategori
-                $('#kat_NoRM').val(response.Medrec);
-                $('#kat_Firstname').val(response.Firstname);
-                $('#kat_NoPeserta').val(response.AskesNo);
-                var $ka_kategori = $("<option selected></option>").val(response.Kategori).text(response.NmKategori);
-                $('#kat_Kategori').append($ka_kategori).trigger('change');
-
-                // var $groupUnit = $("<option selected></option>").val(response.GroupUnit).text(response.GroupUnit);
-                // $('#GroupUnit').append($groupUnit).trigger('change');
-
-                var $unit = $("<option selected></option>").val(response.NmUnit).text(response.NmUnit);
-                $('#Unit').append($unit).trigger('change');
-
-                // Tambah Keyakinan
-                $('#ke_NoRM').val(response.Medrec);
-                $('#ke_Firstname').val(response.Firstname);
-                $('input[name=pantang][value=' + response.phcek + ']').attr('checked', 'checked');
-                $('#pantangNote').val(response.phnote);
-                $('input[name=tindakan][value=' + response.ptcek + ']').attr('checked', 'checked');
-                $('#tindakanNote').val(response.ptnote);
-                $('input[name=makan][value=' + response.pmcek + ']').attr('checked', 'checked');
-                $('#makanNote').val(response.pmnote);
-                $('input[name=pantangPerawatan][value=' + response.ppcek + ']').attr('checked', 'checked');
-                $('#pantangPerawatanNote').val(response.ppnote);
-                $('#lain').val(response.lain);
-                loading.modal('hide');
             }
         })
         loading.modal('hide');
@@ -2840,77 +2961,88 @@
         loading.modal('hide');
     });
 
-    $('#createsep').on("click", function(){
-        let btn = $('#createsep');
-        let oldText = btn.html();
-        btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
-        btn.prop('disabled', true);
-        let loading = $('.modal-loading');
-        let nosurat = $('#NoSuratKontrol').val();
-        loading.modal('show');
-        if ($('#Medrec').val() == '') {
-            alert('No Rekam Medis Kosong');
-        } else if ($('#noKartu').val() == '') {
-            alert('No Kartu Kosong');
-        } else if(($('input[name=KdSex]:checked').length) <= 0 ) {
-            alert('Silahkan pilih jenis kelamin');
-        } else if($('#jatah_kelas').val() == '') {
-            alert('Silahkan pilih jatah kelas');
-        } else if($('#Notelp').val() == '') {
-            alert('No Telepon kosong');
-        } else {
-            $.ajax({
-                url:"{{ route('api.sep_post') }}",
-                type:"post",
-                dataType:"json",
-                data:{
-                    noMR: $('#Medrec').val(),
-                    noKartu: $('#noKartu').val(),
-                    tglSep: $('#Regdate').val(),
-                    ppkPelayanan: $('#Ppk').val(),
-                    jnsPelayanan: $('#pengobatan').val(),
-                    klsRawat: $('#jatah_kelas').val(),
-                    asalRujukan: $('[name=Faskes]:checked').val(),
-                    tglRujukan: $('#RegRujuk').val(),
-                    noRujukan: $('#NoRujuk').val(),
-                    ppkRujukan: $('#Ppk').val(),
-                    catatan: $('#catatan').val(),
-                    diagAwal: $('#Diagnosa').val(),
-                    tujuan: $('[name=KdPoli]').val(),
-                    eksekutif: $('#eksekutif').val(),
-                    cob: $('[name=Cob]').val(),
-                    katarak: $('[name=Katarak]').val(),
-                    lakaLantas: $('[name=KasKe]:checked').val(),
-                    penjamin: $('[name=Penjamin]').val(),
-                    tglKejadian: $('#RegdKej').val(),
-                    keterangan: $('#Keterangan').val(),
-                    suplesi: $('[name=Suplesi]').val(),
-                    noSepSuplesi: $('#NoSepSup').val(),
-                    kdPropinsi: $('#Provinsi').val(),
-                    kdKabupaten: $('#Kabupaten').val(),
-                    kdKecamatan: $('#Kecamatan').val(),
-                    noSurat: nosurat.substring(0, 6),
-                    kodeDPJP: $('#DokterPengirim').val(),
-                    noTelp: $('#Notelp').val(),
-                },
-                success:function(response)
-                {
-                    loading.modal('hide');
-                    if(response.metaData.code != '200'){
-                        $('#NotifSep').val(response.metaData.message);
-                        alert(response.metaData.message);
-                    }else{
-                        alert(response.metaData.message);
-                        $('#NoSep').val(response.data.sep.noSep);
-                        $('#NotifSep').val(response.metaData.message);
-                    }
+$('#createsep').on('click', function () {
+    $('.bd-example-modal-lg-tujuan-kunjungan').modal();
+});
+
+$('#go_create_sep').on("click", function(){
+    let btn = $('#go_create_sep');
+    let oldText = btn.html();
+    btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
+    btn.prop('disabled', true);
+    let loading = $('.modal-loading');
+    let nosurat = $('#NoSuratKontrol').val();
+    loading.modal('show');
+    if ($('#Medrec').val() == '') {
+        alert('No Rekam Medis Kosong');
+    } else if ($('#noKartu').val() == '') {
+        alert('No Kartu Kosong');
+    } else if(($('input[name=KdSex]:checked').length) <= 0 ) {
+        alert('Silahkan pilih jenis kelamin');
+    } else if($('#jatah_kelas').val() == '') {
+        alert('Silahkan pilih jatah kelas');
+    } else if($('#Notelp').val() == '') {
+        alert('No Telepon kosong');
+    } else {
+        $.ajax({
+            url:"{{ route('api.sep_post') }}",
+            type:"post",
+            dataType:"json",
+            data:{
+                StatusRujuk: $('input[name=StatusRujuk]:checked').val(),
+                noMR: $('#Medrec').val(),
+                noKartu: $('#noKartu').val(),
+                tglSep: $('#Regdate').val(),
+                ppkPelayanan: $('#Ppk').val(),
+                jnsPelayanan: $('#pengobatan').val(),
+                klsRawat: $('#jatah_kelas').val(),
+                asalRujukan: $('[name=Faskes]:checked').val(),
+                tglRujukan: $('#RegRujuk').val(),
+                noRujukan: $('#NoRujuk').val(),
+                ppkRujukan: $('#Ppk').val(),
+                catatan: $('#catatan').val(),
+                diagAwal: $('#Diagnosa').val(),
+                tujuan: $('[name=KdPoli]').val(),
+                eksekutif: $('#eksekutif').val(),
+                cob: $('[name=Cob]').val(),
+                katarak: $('[name=Katarak]').val(),
+                lakaLantas: $('[name=KasKe]:checked').val(),
+                penjamin: $('[name=Penjamin]').val(),
+                tglKejadian: $('#RegdKej').val(),
+                keterangan: $('#Keterangan').val(),
+                suplesi: $('[name=Suplesi]').val(),
+                noSepSuplesi: $('#NoSepSup').val(),
+                kdPropinsi: $('#Provinsi').val(),
+                kdKabupaten: $('#Kabupaten').val(),
+                kdKecamatan: $('#Kecamatan').val(),
+                noSurat: nosurat,
+                kodeDPJP: $('#DokterPengirim').val(),
+                noTelp: $('#Notelp').val(),
+                dokter: $('#Dokter').val(),
+                tujuan_kunjungan: $('#tujuan_kunjungan').val(),
+                flag_procedure: $('#flag_procedure').val(),
+                kode_penunjang: $('#kode_penunjang').val(),
+                assesment: $('#assesment').val()
+            },
+            success:function(response)
+            {
+                loading.modal('hide');
+                if(response.metaData.code != '200'){
+                    $('#NotifSep').val(response.metaData.message);
+                    alert(response.metaData.message);
+                }else{
+                    alert(response.metaData.message);
+                    $('#NoSep').val(response.data.sep.noSep);
+                    $('#NotifSep').val(response.metaData.message);
+                    $("#submit").click();
                 }
-            });
-        }
-        loading.modal('hide');
-        btn.prop('disabled', false);
-        btn.html(oldText);
-    });
+            }
+        });
+    }
+    loading.modal('hide');
+    btn.prop('disabled', false);
+    btn.html(oldText);
+});
 
     $('#kat_Kategori').on("change",function(){
         text = $("#kat_Kategori option:selected").text();
