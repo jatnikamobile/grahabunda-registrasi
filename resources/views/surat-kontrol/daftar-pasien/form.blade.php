@@ -1309,17 +1309,15 @@
                 return $.extend(params, { faskes: $("input[name=Faskes]:checked").val() });
             },
             processResults: function(data, params) {
-                return select2VClaimResponse(data, params, function(data, params) {
-                    return {
-                        results: data.response.faskes.map(function(item) {
-                            return $.extend(item, {
-                                id: item.kode,
-                                text: item.nama,
-                            });
-                        }),
-                        pagination: {more: false},
-                    };
-                });
+                return {
+                    results: data.faskes.map(function(item) {
+                        return $.extend(item, {
+                            id: item.kode,
+                            text: item.nama,
+                        });
+                    }),
+                    pagination: {more: false},
+                };
             }
         }
     }));
