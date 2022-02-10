@@ -74,7 +74,7 @@
                                 <th>Nama Pasien</th>
                                 <th>Poli Rujukan</th>
                                 <th>Tanggal Pemeriksaan</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -93,7 +93,7 @@
                                 <td>{{ $l->Firstname }}</td>
                                 <td>{{ $l->NMPoli}}</td>
                                 <td>{{ date('d/m/Y',strtotime($l->TanggalSurat)) }}</td>
-                                <td>
+                                {{-- <td>
                                     <!-- Print Detail Pasien -->
                                    <!--  <a href="{{ route('mst-psn.print', ['Medrec' => $l->Medrec]) }}" target="_blank" title="Print Detail"><i class="fa fa-eye"></i></a> -->
                                     <!-- Edit Form -->
@@ -114,7 +114,7 @@
                                     <!-- Delete Form -->
                                     <!-- <a href="{{ route('mst-psn.form-delete') }}" title="Hapus Pasien" onclick="event.preventDefault(); document.getElementById('delete-form-{{$l->Medrec}}').submit();"> <i class="fa fa-trash red"></i>
                                     </a> -->
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                         </tbody>
@@ -130,7 +130,7 @@
                                 <th>Nama Pasien</th>
                                 <th>Poli Rujukan</th>
                                 <th>Tanggal Rujukan</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </tfoot>
                     </table>
