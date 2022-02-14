@@ -16,6 +16,7 @@ use App\Models\FtDokter;
 use App\Models\Kepri\Master\TmKelompokRujukan;
 use App\Models\POLItpp;
 use App\Models\StoredProcedures;
+use Illuminate\Support\Facades\Log;
 
 class RegistrasiUmumController extends Controller
 {
@@ -154,8 +155,15 @@ class RegistrasiUmumController extends Controller
                         'Umur_hari' => $request->UmurHari,
                     ];
 
+                    Log::info('Inset/Update Kunjungan Log');
+                    Log::info('Data Kunjungan:');
+                    Log::info($data_kunjungan);
+
                     $rs_net_kunjungan_controller = new RsNetKunjunganController();
                     $create_kunjungan = $rs_net_kunjungan_controller->store($data_kunjungan);
+                    Log::info('Response Kunjungan:');
+                    Log::info($create_kunjungan);
+                    Log::info('End Inset/Update Kunjungan Log');
                 } catch (\Throwable $th) {
                     $message = $th->getMessage();
                 }

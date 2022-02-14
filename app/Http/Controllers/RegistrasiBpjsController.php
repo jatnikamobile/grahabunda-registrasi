@@ -306,8 +306,15 @@ class RegistrasiBpjsController extends Controller
                         'I_SKP' => $request->NoSep,
                     ];
 
+                    Log::info('Inset/Update Kunjungan Log');
+                    Log::info('Data Kunjungan:');
+                    Log::info($data_kunjungan);
+
                     $rs_net_kunjungan_controller = new RsNetKunjunganController();
                     $create_kunjungan = $rs_net_kunjungan_controller->store($data_kunjungan);
+                    Log::info('Response Kunjungan:');
+                    Log::info($create_kunjungan);
+                    Log::info('End Inset/Update Kunjungan Log');
                 } catch (\Throwable $th) {
                     $message = $th->getMessage();
                 }

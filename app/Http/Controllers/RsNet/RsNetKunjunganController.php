@@ -299,8 +299,11 @@ class RsNetKunjunganController extends Controller
                 $last_rows_bt = BillTransaksi::orderBy('I_Transaksi', 'desc')->first();
                 $next_id_bt = $last_rows_bt ? $last_rows_bt->I_Transaksi + 1 : 1;
 
-                $bill_transaksi = $exists ? BillTransaksi::where('I_Kunjungan', $i_kunjungan)->first() : new BillTransaksi();
-                $bill_transaksi->I_Transaksi = $exists ? $bill_transaksi->I_Transaksi : $next_id_bt;
+                $bill_transaksi = BillTransaksi::where('I_Kunjungan', $i_kunjungan)->first();
+                if (!$bill_transaksi) {
+                    $bill_transaksi = new BillTransaksi();
+                    $bill_transaksi->I_Transaksi = $next_id_bt;
+                }
                 $bill_transaksi->I_Kunjungan = $kunjungan->I_Kunjungan;
                 $bill_transaksi->V_TotalTransaksi = $v_total_transaksi;
                 $bill_transaksi->IsLunasPendaftaran = 0;
@@ -323,7 +326,7 @@ class RsNetKunjunganController extends Controller
             Log::info($th->getMessage());
             DB::rollBack();
             DB::connection('sqlsrv_kepri')->rollBack();
-            return null;
+            return $th;
         }
     }
 
