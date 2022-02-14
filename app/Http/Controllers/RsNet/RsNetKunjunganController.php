@@ -300,7 +300,7 @@ class RsNetKunjunganController extends Controller
 
                 $v_total_transaksi = 0 ;
 
-                $bill_transaksi = BillTransaksi::where('I_Kunjungan', $i_kunjungan)->first();
+                $bill_transaksi = BillTransaksi::where('I_Kunjungan', $kunjungan->I_Kunjungan)->first();
                 Log::info('Bill Transaksi');
                 Log::info($bill_transaksi);
                 if (!$bill_transaksi) {
