@@ -300,11 +300,13 @@ class RsNetKunjunganController extends Controller
 
                 $v_total_transaksi = 0 ;
 
-                $last_rows_bt = BillTransaksi::orderBy('I_Transaksi', 'desc')->first();
-                $next_id_bt = $last_rows_bt ? $last_rows_bt->I_Transaksi + 1 : 1;
-
                 $bill_transaksi = BillTransaksi::where('I_Kunjungan', $i_kunjungan)->first();
+                Log::info('Bill Transaksi');
+                Log::info($bill_transaksi);
                 if (!$bill_transaksi) {
+                    $last_rows_bt = BillTransaksi::orderBy('I_Transaksi', 'desc')->first();
+                    $next_id_bt = $last_rows_bt ? $last_rows_bt->I_Transaksi + 1 : 1;
+    
                     $bill_transaksi = new BillTransaksi();
                     $bill_transaksi->I_Transaksi = $next_id_bt;
                 }
