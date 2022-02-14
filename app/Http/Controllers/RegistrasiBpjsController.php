@@ -234,6 +234,21 @@ class RegistrasiBpjsController extends Controller
         $register = new Register();
         $request->request->add(['id_old' => '']);
 
+        if ($request->form_type == 'update') {
+            $rs_net_kunjungan_controller = new RsNetKunjunganController();
+            $D_Masuk = $request->Regdate . ' ' . $request->Regtime;
+            $I_RekamMedis = $request->Medrec;
+            $cek_kunjungan = $rs_net_kunjungan_controller->cehKunjunganAktif($D_Masuk, $I_RekamMedis);
+
+            if (!$cek_kunjungan) {
+                $parse = array(
+                    'status' => false,
+                    'message' => 'Kunjungan di aplikasi lama sudah tidak aktif, mungkin sudah cancel atau closed. Update tidak bisa dilanjutkan!',
+                    'result' => ''
+                );
+                return response()->json($parse);
+            }
+        }
         
         $up = StoredProcedures::stpnet_AddNewRegistrasiBPJS_REGxhos($request->all());
 

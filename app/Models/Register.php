@@ -114,6 +114,9 @@ class Register extends Model
 				if($kategori == '1' || $kategori == '3'){
 					$data->where("Register.KdPoli",$poli);
 				}
+				if ($kategori == '28') {
+					$data->whereNotIn("Register.KdPoli", [30]);
+				}
 		return $data->first();
 	}
 	public function cek_sep_pasien($sep)

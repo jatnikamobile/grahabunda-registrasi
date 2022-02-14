@@ -3025,25 +3025,32 @@
                                             },
                                             success:function(response)
                                             {
-                                                pesan = response.message + "\n" +
-                                                        "Pasien " + response.data.Firstname + "\n" +
-                                                        "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
-                                                        "Antrian aplikasi lama " + response.result;
-                                                alert(pesan);
-                                                console.log(response);
-                                                loading.modal('hide');
-                                                $('#Regno').val(response.data.Regno);
-                                                $('#NomorUrut').val(response.data.NomorUrut);
-                                                
-                                                $("#submit").hide();
-                                                btn.prop('disabled', false);
-                                                btn.html(oldText);
-                                                if (fam_tracing == null) {
-                                                    push_print(response.data.Regno);
+                                                if (response.status == false) {
+                                                    btn.prop('disabled', false);
+                                                    btn.html(oldText);
+                                                    loading.modal('hide');
+                                                    alert(response.message);
+                                                } else {
+                                                    pesan = response.message + "\n" +
+                                                            "Pasien " + response.data.Firstname + "\n" +
+                                                            "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
+                                                            "Antrian aplikasi lama " + response.result;
+                                                    alert(pesan);
+                                                    console.log(response);
+                                                    loading.modal('hide');
+                                                    $('#Regno').val(response.data.Regno);
+                                                    $('#NomorUrut').val(response.data.NomorUrut);
+                                                    
+                                                    $("#submit").hide();
+                                                    btn.prop('disabled', false);
+                                                    btn.html(oldText);
+                                                    if (fam_tracing == null) {
+                                                        push_print(response.data.Regno);
+                                                    }
+                                                    // pesan = response.message + "\n" +
+                                                    //         "Pasien " + response.data.Firstname + "\n"
+                                                    // alert(pesan);
                                                 }
-                                                // pesan = response.message + "\n" +
-                                                //         "Pasien " + response.data.Firstname + "\n"
-                                                // alert(pesan);
                                             }
                                         });
                                     }

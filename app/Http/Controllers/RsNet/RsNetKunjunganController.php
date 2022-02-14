@@ -140,60 +140,7 @@ class RsNetKunjunganController extends Controller
                     $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_StatusKunjungan', 1)->first();
                     Log::info('Kunjungan:');
                     Log::info($kunjungan);
-                    if (!$kunjungan) {
-                        $exists = false;
-                        $i_kunjungan = null;
-                        $kunjungan = new AdmKunjungan();
-                        $kunjungan->I_Kunjungan = $kunjungan->generateCode($I_Unit, $D_Masuk);
-                        $kunjungan->I_RekamMedis = $I_RekamMedis;
-                        $kunjungan->I_Bagian = $bagian;
-                        $kunjungan->I_Unit = $I_Unit;
-                        $kunjungan->I_UrutMasuk = $I_UrutMasuk;
-                        $kunjungan->D_Masuk = $D_Masuk;
-                        $kunjungan->D_Keluar = $D_Keluar;
-                        $kunjungan->C_Pegawai = $nip_dokter;
-                        $kunjungan->I_Penerimaan = $rujukan_dari;
-                        $kunjungan->I_Rujukan = $I_Rujukan;
-                        $kunjungan->N_DokterPengirim = $N_DokterPengirim;
-                        $kunjungan->N_Diagnosa = $N_Diagnosa;
-                        $kunjungan->N_Tindakan = $N_Tindakan;
-                        $kunjungan->N_Terapi = $N_Terapi;
-                        $kunjungan->I_Kontraktor = $I_Kontraktor;
-                        $kunjungan->N_PenanggungJwb = $N_PenanggungJwb;
-                        $kunjungan->Telp_PenanggungJwb = $Telp_PenanggungJwb;
-                        $kunjungan->A_PenanggungJwb = $A_PenanggungJwb;
-                        $kunjungan->I_StatusBaru = $I_StatusBaru;
-                        $kunjungan->I_Kontrol = $I_Kontrol;
-                        $kunjungan->I_StatusKunjungan = $I_StatusKunjungan;
-                        $kunjungan->C_Shift = $C_Shift;
-                        $kunjungan->I_Entry = $I_Entry;
-                        $kunjungan->D_Entry = $D_Entry;
-                        $kunjungan->I_StatusPasien = $I_StatusPasien;
-                        $kunjungan->N_PasienLuar = $N_PasienLuar;
-                        $kunjungan->A_PasienLuar = $A_PasienLuar;
-                        $kunjungan->JK_PasienLuar = $JK_PasienLuar;
-                        $kunjungan->Umur_tahun = $Umur_tahun;
-                        $kunjungan->Umur_bulan = $Umur_bulan;
-                        $kunjungan->Umur_hari = $Umur_hari;
-                        $kunjungan->I_KunjunganAsal = $I_KunjunganAsal;
-                        $kunjungan->I_IjinPulang = $I_IjinPulang;
-                        $kunjungan->IsBayi = $IsBayi;
-                        $kunjungan->IsOpenMedrek = $IsOpenMedrek;
-                        $kunjungan->I_StatusObservasi = $I_StatusObservasi;
-                        $kunjungan->I_MasukUlang = $I_MasukUlang;
-                        $kunjungan->D_Masuk2 = $D_Masuk2;
-                        $kunjungan->D_Keluar2 = $D_Keluar2;
-                        $kunjungan->I_Urut = $I_Urut;
-                        $kunjungan->I_StatusPenanganan = $I_StatusPenanganan;
-                        $kunjungan->I_SKP = $I_SKP;
-                        $kunjungan->catatan = $catatan;
-                        $kunjungan->KD_RujukanSEP = $KD_RujukanSEP;
-                        $kunjungan->tgl_lahirPLuar = $tgl_lahirPLuar;
-                        $kunjungan->tempatLahirPLuar = $tempatLahirPLuar;
-                        $kunjungan->Pulang = $Pulang;
-                        $kunjungan->I_EntryUpdate = $I_EntryUpdate;
-                        $kunjungan->n_AsalRujukan = $n_AsalRujukan;
-                    } else {
+                    if ($kunjungan) {
                         $kunjungan->I_RekamMedis = $I_RekamMedis;
                         $kunjungan->I_Bagian = $bagian ?: $kunjungan->I_Bagian;
                         $kunjungan->I_Unit = $I_Unit ?: $kunjungan->I_Unit;
@@ -242,6 +189,8 @@ class RsNetKunjunganController extends Controller
                         $kunjungan->Pulang = $Pulang ?: $kunjungan->Pulang;
                         $kunjungan->I_EntryUpdate = $I_EntryUpdate ?: $kunjungan->I_EntryUpdate;
                         $kunjungan->n_AsalRujukan = $n_AsalRujukan ?: $kunjungan->n_AsalRujukan;
+                    } else {
+                        return false;
                     }
                 } else {
                     $exists = false;
@@ -392,5 +341,12 @@ class RsNetKunjunganController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function cehKunjunganAktif($D_Masuk, $I_RekamMedis)
+    {
+        $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_StatusKunjungan', 1)->first();
+
+        return $kunjungan ? true : false;
     }
 }
