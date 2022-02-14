@@ -134,8 +134,12 @@ class RsNetKunjunganController extends Controller
 
                 $exists = true;
 
+                Log::info('form_type:');
+                Log::info($form_type);
                 if ($form_type == 'update') {
                     $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->first();
+                    Log::info('Kunjungan:');
+                    Log::info($kunjungan);
                     if (!$kunjungan) {
                         $exists = false;
                         $i_kunjungan = null;
