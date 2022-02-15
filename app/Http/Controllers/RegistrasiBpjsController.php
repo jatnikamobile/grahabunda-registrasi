@@ -111,7 +111,7 @@ class RegistrasiBpjsController extends Controller
 
     public function find_nosurat(Request $request)
     {
-        $nosurat = $request->nosurat;
+        $nosurat = strtoupper($request->nosurat);
         $surat = new SuratControl();
         $data = $surat->find_nosurat($nosurat);
         

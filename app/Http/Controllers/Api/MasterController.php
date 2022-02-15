@@ -324,7 +324,7 @@ class MasterController extends Controller{
 		// ]);
 		
 		$vclaim_controller = new NewVClaimController();
-		$noRujukan = $request->noRujukan;
+		$noRujukan = strtoupper($request->noRujukan);
 		$request = $vclaim_controller->getRujukanByNomor($noRujukan, 1);
 
 		Log::info('BPJS Get Rujukan API Response:');
@@ -358,7 +358,7 @@ class MasterController extends Controller{
 	public function get_peserta_rujukan_rs(Request $request)
 	{
 		$vclaim_controller = new NewVClaimController();
-		$noRujukan = $request->noRujukan;
+		$noRujukan = strtoupper($request->noRujukan);
 		$request = $vclaim_controller->getRujukanByNomor($noRujukan, 2);
 
 		Log::info('BPJS Get Rujukan API Response:');
@@ -507,7 +507,7 @@ class MasterController extends Controller{
 		$noMR = $request->input("noMR");
 		$asalRujukan = $request->input("asalRujukan");
 		$tglRujukan = $request->input("tglRujukan");
-		$noRujukan = $request->input("noRujukan");
+		$noRujukan = strtoupper($request->input("noRujukan"));
 		$ppkRujukan = $request->input("ppkRujukan");
 		$catatan = $request->input("catatan");
 		$diagAwal = $request->input("diagAwal");
@@ -527,7 +527,7 @@ class MasterController extends Controller{
 		$kdPropinsi = $request->input("kdPropinsi");
 		$kdKabupaten = $request->input("kdKabupaten");
 		$kdKecamatan = $request->input("kdKecamatan");
-		$noSurat = $request->input("noSurat");
+		$noSurat = strtoupper($request->input("noSurat"));
 
 		$tujuan_kunjungan = $request->input('tujuan_kunjungan');
 		$flag_procedure = $request->input('flag_procedure');

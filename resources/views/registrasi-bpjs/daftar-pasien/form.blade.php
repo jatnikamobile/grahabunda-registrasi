@@ -161,7 +161,7 @@
                     <label class="col-sm-3 control-label no-padding-right">No Rujukan</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                        <input type="text" name="NoRujuk" class="form-control input-sm" id="NoRujuk" value="{{ @$edit->NoRujuk }}"/>
+                        <input type="text" name="NoRujuk" class="form-control input-sm" style="text-transform: uppercase" id="NoRujuk" value="{{ @$edit->NoRujuk }}"/>
                         <!-- Jam Registrasi -->
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">Jam Registrasi</span>
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
@@ -175,7 +175,7 @@
                     <label class="col-sm-3 control-label no-padding-right">No Surat Kontrol</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                        <input type="text" name="NoSuratKontrol" class="form-control input-sm" id="NoSuratKontrol" value="{{ @$edit->NoKontrol }}"/>
+                        <input type="text" name="NoSuratKontrol" class="form-control input-sm" style="text-transform: uppercase" id="NoSuratKontrol" value="{{ @$edit->NoKontrol }}"/>
                         <!-- Tanggal Registrasi -->
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">Tgl Rujukan</span>
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
