@@ -285,7 +285,7 @@ class MasterController extends Controller{
 		if ($reg_type == 'umum') {
 			$nik = $request->nik;
 			$data = true;
-			$pasien = MasterPS::where('NoIden', $nik)->first();
+			$pasien = MasterPS::where('NoIden', $nik)->orderBy('TglDaftar', 'desc')->first();
 			$no_peserta = $pasien ? $pasien->AskesNo : null;
 			$registers = $pasien ? Register::where('Medrec', $pasien->Medrec)->get() : [];
 		} else {
@@ -294,7 +294,7 @@ class MasterController extends Controller{
 			$tanggal = date('Y-m-d');
 			$data = $vclaim_controller->pesertaNIK($nik, $tanggal);
 			$peserta = $data['peserta'];
-			$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->first() : null;
+			$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->orderBy('TglDaftar', 'desc')->first() : null;
 			$no_peserta = $peserta ? $peserta['noKartu'] : null;
 			$registers = $no_peserta ? Register::where('NoPeserta', $no_peserta)->get() : [];
 		}
