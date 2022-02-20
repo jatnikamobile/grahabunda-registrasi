@@ -43,7 +43,7 @@ class Register extends Model
 									   Register.KdRujukan, Register.NmRujukan, Register.KdPoli, POLItpp.NMPoli, Register.NomorUrut, Register.NoSep,
 									   Register.KdICD, Register.KdJaminan, Register.KdCbayar, TBLJaminan.NMJaminan,
 									   Register.KdPerusahaan, Register.NoPeserta, Register.Regdate, Register.KdDoc,
-									   FtDokter.NmDoc, Register.Kategori, TblKategoriPsn.NmKategori, Register.ValidUser"))
+									   FtDokter.NmDoc, Register.Kategori, TblKategoriPsn.NmKategori, Register.ValidUser, Register.I_Kunjungan"))
 					->join("TblKategoriPsn", "Register.Kategori", "=", "TblKategoriPsn.KdKategori")
 					->leftJoin("TBLJaminan", "Register.KdJaminan", "=", "TBLJaminan.KDJaminan")
 					->leftJoin("TBLcarabayar", "Register.KdCbayar", "=" , "TBLcarabayar.KDCbayar")

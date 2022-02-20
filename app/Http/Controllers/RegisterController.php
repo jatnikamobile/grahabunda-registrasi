@@ -205,7 +205,8 @@ class RegisterController extends Controller
                     'medrec' => $register->Medrec,
                     'date' => date('Y-m-d', strtotime($register->Regdate)),
                     'kategori' => $data['kategori'],
-                    'I_Unit' => $register->KdPoli
+                    'I_Unit' => $register->KdPoli,
+                    'i_kunjungan' => isset($register->I_Kunjungan) ? $register->I_Kunjungan : null,
                 ];
 
                 $rs_net_kunjungan_controller = new RsNetKunjunganController();
@@ -241,6 +242,7 @@ class RegisterController extends Controller
                                 'date' => date('Y-m-d', strtotime($register->Regdate)),
                                 'poli' => $data['poli'],
                                 'dokter_pil' => $data['dokter_pil'],
+                                'i_kunjungan' => isset($register->I_Kunjungan) ? $register->I_Kunjungan : null,
                             ];
 
                             $rs_net_kunjungan_controller = new RsNetKunjunganController();

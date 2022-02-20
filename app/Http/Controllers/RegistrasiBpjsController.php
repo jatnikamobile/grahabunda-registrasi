@@ -269,14 +269,6 @@ class RegistrasiBpjsController extends Controller
                     $data = $register->get_register($medrec,$regdate,$kdpoli);
                 }
 
-                if ($data) {
-                    $register = Register::where('Regno', $data->Regno)->first();
-                    if ($register) {
-                        $register->rujukan_dari = $request->rujukan_dari;
-                        $register->save();
-                    }
-                }
-
                 if($request->input("Regno") == ''){
                     // $push = (new Procedure)->push_konsul($kdpoli, $data->Regno);
                 }
@@ -319,6 +311,7 @@ class RegistrasiBpjsController extends Controller
                         'Umur_bulan' => $request->UmurBln,
                         'Umur_hari' => $request->UmurHari,
                         'I_SKP' => $request->NoSep,
+                        'i_kunjungan' => isset($data->I_Kunjungan) ? $data->I_Kunjungan : null,
                     ];
 
                     Log::info('Inset/Update Kunjungan Log');
@@ -330,6 +323,15 @@ class RegistrasiBpjsController extends Controller
                     Log::info('Response Kunjungan:');
                     Log::info($create_kunjungan);
                     Log::info('End Inset/Update Kunjungan Log');
+
+                    if ($data) {
+                        $register = Register::where('Regno', $data->Regno)->first();
+                        if ($register) {
+                            $register->rujukan_dari = $request->rujukan_dari;
+                            $register->I_Kunjungan = $create_kunjungan->I_Kunjungan;
+                            $register->save();
+                        }
+                    }
                 } catch (\Throwable $th) {
                     $message = $th->getMessage();
                 }

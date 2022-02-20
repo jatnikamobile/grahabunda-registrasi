@@ -106,9 +106,17 @@ class RsNetKunjunganController extends Controller
             $kategori = isset($data_kunjungan['kategori']) ? $data_kunjungan['kategori'] : null;
             $poli = isset($data_kunjungan['poli']) ? $data_kunjungan['poli'] : null;
             $dokter_pil = isset($data_kunjungan['dokter_pil']) ? $data_kunjungan['dokter_pil'] : null;
+            $i_kunjungan = isset($data_kunjungan['i_kunjungan']) ? $data_kunjungan['i_kunjungan'] : null;
 
             if ($action == 'update_kategori') {
-                $kunjungan = AdmKunjungan::where('I_Unit', $I_Unit)->where('I_Kunjungan', 'like', date('dmy', strtotime($date)) . '%')->where('I_RekamMedis', $medrec)->first();
+                $kunjungan = $i_kunjungan ? AdmKunjungan::where('I_Kunjungan', $i_kunjungan)->first() : null;
+                Log::info('I_Kunjungan:');
+                Log::info($i_kunjungan);
+                Log::info('Kunjungan by I_Kunjungan:');
+                Log::info($kunjungan);
+                if (!$kunjungan) {
+                    $kunjungan = AdmKunjungan::where('I_Unit', $I_Unit)->where('I_Kunjungan', 'like', date('dmy', strtotime($date)) . '%')->where('I_RekamMedis', $medrec)->first();
+                }
                 if ($kunjungan) {
                     $kunjungan->I_Kontraktor = $kategori;
                     $kunjungan->save();
@@ -120,7 +128,14 @@ class RsNetKunjunganController extends Controller
                 $tm_unit = TmUnit::where('I_Unit', $poli)->first();
                 $bagian = $tm_unit ? $tm_unit->I_Bagian : 0;
 
-                $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($date)) . '%')->where('I_RekamMedis', $medrec)->first();
+                $kunjungan = $i_kunjungan ? AdmKunjungan::where('I_Kunjungan', $i_kunjungan)->first() : null;
+                Log::info('I_Kunjungan:');
+                Log::info($i_kunjungan);
+                Log::info('Kunjungan by I_Kunjungan:');
+                Log::info($kunjungan);
+                if (!$kunjungan) {
+                    $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($date)) . '%')->where('I_RekamMedis', $medrec)->first();
+                }
                 if ($kunjungan) {
                     $kunjungan->C_Pegawai = $nip_dokter;
                     $kunjungan->save();
@@ -132,14 +147,19 @@ class RsNetKunjunganController extends Controller
                 $tm_unit = TmUnit::where('I_Unit', $I_Unit)->first();
                 $bagian = $I_Bagian ? $I_Bagian : ($tm_unit ? $tm_unit->I_Bagian : 0);
 
-                $exists = true;
-
                 Log::info('form_type:');
                 Log::info($form_type);
                 if ($form_type == 'update') {
-                    $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_StatusKunjungan', 1)->first();
-                    Log::info('Kunjungan:');
+                    $kunjungan = $i_kunjungan ? AdmKunjungan::where('I_Kunjungan', $i_kunjungan)->first() : null;
+                    Log::info('I_Kunjungan:');
+                    Log::info($i_kunjungan);
+                    Log::info('Kunjungan by I_Kunjungan:');
                     Log::info($kunjungan);
+                    if (!$kunjungan) {
+                        $kunjungan = AdmKunjungan::where('I_Kunjungan', 'like', date('dmy', strtotime($D_Masuk)) . '%')->where('I_RekamMedis', $I_RekamMedis)->where('I_StatusKunjungan', 1)->first();
+                        Log::info('Kunjungan:');
+                        Log::info($kunjungan);
+                    }
                     if ($kunjungan) {
                         $kunjungan->I_RekamMedis = $I_RekamMedis;
                         $kunjungan->I_Bagian = $bagian ?: $kunjungan->I_Bagian;
@@ -193,7 +213,6 @@ class RsNetKunjunganController extends Controller
                         return false;
                     }
                 } else {
-                    $exists = false;
                     $kunjungan = new AdmKunjungan();
                     $kunjungan->I_Kunjungan = $kunjungan->generateCode($I_Unit, $D_Masuk);
                     $kunjungan->I_RekamMedis = $I_RekamMedis;

@@ -122,14 +122,6 @@ class RegistrasiUmumController extends Controller
                 //     }
                 // }
 
-                if ($data) {
-                    $register = Register::where('Regno', $data->Regno)->first();
-                    if ($register) {
-                        $register->rujukan_dari = $request->rujukan_dari;
-                        $register->save();
-                    }
-                }
-
                 try {
                     $data_kunjungan = [
                         'form_type' => $request->form_type,
@@ -153,6 +145,7 @@ class RegistrasiUmumController extends Controller
                         'Umur_tahun' => $request->UmurThn,
                         'Umur_bulan' => $request->UmurBln,
                         'Umur_hari' => $request->UmurHari,
+                        'i_kunjungan' => isset($data->I_Kunjungan) ? $data->I_Kunjungan : null,
                     ];
 
                     Log::info('Inset/Update Kunjungan Log');
@@ -164,6 +157,15 @@ class RegistrasiUmumController extends Controller
                     Log::info('Response Kunjungan:');
                     Log::info($create_kunjungan);
                     Log::info('End Inset/Update Kunjungan Log');
+
+                    if ($data) {
+                        $register = Register::where('Regno', $data->Regno)->first();
+                        if ($register) {
+                            $register->rujukan_dari = $request->rujukan_dari;
+                            $register->I_Kunjungan = $create_kunjungan->I_Kunjungan;
+                            $register->save();
+                        }
+                    }
                 } catch (\Throwable $th) {
                     $message = $th->getMessage();
                 }
