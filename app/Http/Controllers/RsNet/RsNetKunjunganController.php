@@ -165,8 +165,6 @@ class RsNetKunjunganController extends Controller
                         $kunjungan->I_Bagian = $bagian ?: $kunjungan->I_Bagian;
                         $kunjungan->I_Unit = $I_Unit ?: $kunjungan->I_Unit;
                         $kunjungan->I_UrutMasuk = $I_UrutMasuk ?: $kunjungan->I_UrutMasuk;
-                        $kunjungan->D_Masuk = $D_Masuk ?: $kunjungan->D_Masuk;
-                        $kunjungan->D_Keluar = $D_Keluar ?: $kunjungan->D_Keluar;
                         $kunjungan->C_Pegawai = $nip_dokter ?: $kunjungan->C_Pegawai;
                         $kunjungan->I_Penerimaan = $rujukan_dari ?: $kunjungan->I_Penerimaan;
                         $kunjungan->I_Rujukan = $I_Rujukan ?: $kunjungan->I_Rujukan;
@@ -197,9 +195,6 @@ class RsNetKunjunganController extends Controller
                         $kunjungan->IsOpenMedrek = $IsOpenMedrek ?: $kunjungan->IsOpenMedrek;
                         $kunjungan->I_StatusObservasi = $I_StatusObservasi ?: $kunjungan->I_StatusObservasi;
                         $kunjungan->I_MasukUlang = $I_MasukUlang ?: $kunjungan->I_MasukUlang;
-                        $kunjungan->D_Masuk2 = $D_Masuk2 ?: $kunjungan->D_Masuk2;
-                        $kunjungan->D_Keluar2 = $D_Keluar2 ?: $kunjungan->D_Keluar2;
-                        $kunjungan->I_Urut = $I_Urut ?: $kunjungan->I_Urut;
                         $kunjungan->I_StatusPenanganan = $I_StatusPenanganan ?: $kunjungan->I_StatusPenanganan;
                         $kunjungan->I_SKP = $I_SKP ?: $kunjungan->I_SKP;
                         $kunjungan->catatan = $catatan ?: $kunjungan->catatan;

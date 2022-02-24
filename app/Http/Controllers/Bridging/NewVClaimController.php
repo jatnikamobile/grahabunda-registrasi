@@ -2232,8 +2232,14 @@ class NewVClaimController extends Controller
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
 
+		Log::info('BPJS Delete SEP API Request:');
+		Log::info($data_request_sep);
+
         $send_request = $this->sendRequest('DELETE', $data_request_sep, $url, $headers['headers']);
         $result = json_decode($send_request, true);
+
+		Log::info('BPJS Delete SEP API Response:');
+		Log::info($result);
 
         $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
         if ($result_code == 200) {
@@ -2519,8 +2525,14 @@ class NewVClaimController extends Controller
         $headers = $this->setHeaders();
         $timestamp = $headers['timestamp'];
 
+		Log::info('BPJS Delete SEP API Request:');
+		Log::info($data_request_sep);
+
         $send_request = $this->sendRequest('DELETE', $data_request_sep, $url, $headers['headers']);
         $result = json_decode($send_request, true);
+
+		Log::info('BPJS Delete SEP API Response:');
+		Log::info($result);
 
         $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;
         if ($result_code == 200) {
