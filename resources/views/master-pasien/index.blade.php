@@ -107,7 +107,7 @@
                                 <td>{{ $l->Firstname }}</td>
                                 <td>{{ date('d/m/Y',strtotime($l->TglDaftar)) }}</td>
                                 <td>{{ $l->Pod }}, {{ date('d/m/Y',strtotime($l->Bod)) }}</td>
-                                <td>{{ $l->Sex }}</td>
+                                <td>{{ $l->KdSex == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                 <td>{{ $l->Address }}</td>
                                 <td>{{ $l->KdPos }}</td>
                                 <td>{{ $l->Phone}}</td>
