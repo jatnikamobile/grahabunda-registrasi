@@ -73,6 +73,7 @@
                         <input type="text" name="catatan" class="form-control input-sm" id="catatan" readonly />
                     </div>
                 </div>
+                <input type="hidden" name="user" id="user" value="{{ Auth::user()->DisplayName == '' ? Auth::user()->NamaUser : Auth::user()->DisplayName }}" />
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <p><u>Identitas Peserta</u></p>
@@ -249,6 +250,7 @@
                 dataType:"json",
                 data:{
                     noSep: $('#noSep').val(),
+                    user: $('#user').val()
                 },
                 success:function(response)
                 {
@@ -271,13 +273,16 @@
                         $('#poli').val('');
                         $('#poliEksekutif').val('');
                         $('#tglSep').val('');
-                        pesan = "Nomor SEP " + response.data + "\n" +
-                                response.metaData.message + "dihapus";
+                        pesan = "Nomor SEP " + response.data + " dihapus";
                         alert(pesan);
                     }else{
                         btn.prop('disabled', false);
                         btn.html(oldText);
-                        alert('Nomor SEP tidak ditemukan!');
+                        if ('message' in response) {
+                            alert(response.message);
+                        } else {
+                            alert('Nomor SEP tidak ditemukan!');
+                        }
                     }
                 }
             })

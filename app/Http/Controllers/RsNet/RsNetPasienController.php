@@ -41,14 +41,14 @@ class RsNetPasienController extends Controller
     public function store($data_pasien)
     {
         try {
+            DB::beginTransaction();
+            DB::connection('sqlsrv_kepri')->beginTransaction();
+
             $master_pasien = new TmPasien();
             $new_medrec = $master_pasien->generateCode();
             while (TmPasien::where('I_RekamMedis', $new_medrec)->first()) {
                 $new_medrec = $master_pasien->generateCode();
             }
-
-            DB::beginTransaction();
-            DB::connection('sqlsrv_kepri')->beginTransaction();
 
             $form_type = isset($data_pasien['form_type']) ? $data_pasien['form_type'] : null;
             $I_RekamMedis = isset($data_pasien['I_RekamMedis']) ? $data_pasien['I_RekamMedis'] : null;
@@ -257,16 +257,45 @@ class RsNetPasienController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $user = null)
     {
-        $pasien = TmPasien::find($id);
+        DB::beginTransaction();
+        DB::connection('sqlsrv_kepri')->beginTransaction();
 
-        if ($pasien) {
-            $pasien->delete();
+        try {
+            $pasien = TmPasien::where('I_RekamMedis', $id)->first();
+    
+            if ($pasien) {
+                Log::info('Pasien delete:');
+                Log::info($pasien);
+                $hub_klg = TmPasienHubKeluarga::where('I_RekamMedis', $id)->first();
+                if ($hub_klg) {
+                    $hub_klg->delete();
+                }
+    
+                $pasien_kontraktor = TmPasienKontraktor::where('I_RekamMedis', $id)->first();
+                if ($pasien_kontraktor) {
+                    $pasien_kontraktor->delete();
+                }
+    
+                $pasien->delete();
+    
+                DB::commit();
+                DB::connection('sqlsrv_kepri')->commit();
 
-            return true;
-        } else {
-            return false;
+                Log::info('Pasien with I_RekamMedis '. $id .' deleted by user ' . $user);
+                return true;
+            } else {
+                Log::info('Pasien with I_RekamMedis '. $id .' not found');
+                DB::rollBack();
+                DB::connection('sqlsrv_kepri')->rollBack();
+                return false;
+            }
+        } catch (\Throwable $th) {
+            Log::info('Delete Pasien with I_RekamMedis '. $id .' failed');
+            Log::info($th->getMessage());
+            DB::rollBack();
+            DB::connection('sqlsrv_kepri')->rollBack();
         }
     }
 }

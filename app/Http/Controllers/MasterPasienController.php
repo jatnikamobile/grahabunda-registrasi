@@ -286,11 +286,12 @@ class MasterPasienController extends Controller
         $delete =   MasterPS::where('Medrec',$medrec)->update(['Deleted'=>$Deleted]);
 
         // $del = Procedure::stpnet_DeletePasien_REGxhos($medrec);
-        if($delete){
-            {
-                $request->session()->flash('status', 'Data Berhasil Dihapus!');
-                return redirect()->route('mst-psn');
-            }
+        if ($delete) {
+            $rsnet_pasien_controller = new RsNetPasienController();
+            $rsnet_delete = $rsnet_pasien_controller->destroy($medrec, $Deleted);
+
+            $request->session()->flash('status', 'Data Berhasil Dihapus!');
+            return redirect()->route('mst-psn');
         }else{
             return redirect()->back();
         }

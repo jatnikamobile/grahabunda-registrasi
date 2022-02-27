@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Bridging\VClaim;
@@ -15,6 +14,7 @@ use App\Models\MasterPS;
 use App\Models\Register;
 use App\Models\Procedure;
 use App\Models\Bridging_bpjs;
+use App\Models\DeleteSepLog;
 use App\Models\Fppri;
 use App\Models\RsNet\AdmKunjungan;
 use App\Models\SuratKontrolInap;
@@ -830,26 +830,44 @@ class MasterController extends Controller{
 
 	public function delete_sep(Request $request)
 	{
-		$noSep = $request->input("noSep");
-		$no_sep = $request->noSep;
+		$noSep = $request->noSep;
 		$vclaim_controller = new NewVClaimController();
-		$validuser = 'SIMRS';
+		$validuser = $request->user;
 
-		$data = array(
-			'noSep' => $noSep,
-			'user' => $validuser
-		);
+		if (!$validuser) {
+			return response()->json(['data' => false, 'message' => 'User tidak ditemukan. Silahkan login ulang!']);
+		}
 
-		$response = $vclaim_controller->hapusSEP($data);
-		if (isset($response->metaData->code)) {
+		try {
+			$delete_sep_log = new DeleteSepLog();
+			$delete_sep_log->no_sep = $noSep;
+			$delete_sep_log->deleted_date = date('Y-m-d H:i:s');
+			$delete_sep_log->user = $validuser;
+			$delete_sep_log->save();
+
+			$data = array(
+				'noSep' => $noSep,
+				'user' => $validuser
+			);
+
+			$response = $vclaim_controller->hapusSEP($data);
+			if ($response == $noSep) {
+				return response()->json([
+					'data' => $response
+				]);
+			} else {
+				$delete_sep_log->delete();
+				$message = isset($response['metaData']['message']) ? $response['metaData']['message'] : 'Hapus SEP Gagal!';
+				return response()->json([
+					'message' => $message,
+					'data' => false
+				]);
+			}
+		} catch (\Throwable $th) {
+			$message = $th->getMessage();
 			return response()->json([
-				'metaData' => $response->metaData,
-				'data' => $response->response
-			]);
-		} else {
-			return response()->json([
-				'metaData' => $response->metaData,
-				'data' => $response->response
+				'message' => $message,
+				'data' => false
 			]);
 		}
 	}
