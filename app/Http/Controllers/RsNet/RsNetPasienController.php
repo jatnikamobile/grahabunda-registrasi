@@ -47,7 +47,7 @@ class RsNetPasienController extends Controller
             $master_pasien = new TmPasien();
             $new_medrec = $master_pasien->generateCode();
             while (TmPasien::where('I_RekamMedis', $new_medrec)->first()) {
-                $new_medrec = $master_pasien->generateCode();
+                $new_medrec = $master_pasien->generateCode(true);
             }
 
             $form_type = isset($data_pasien['form_type']) ? $data_pasien['form_type'] : null;

@@ -12,9 +12,9 @@ class TmPasien extends Model
     public $incrementing = false;
     public $timestamps = false;
 
-    public function generateCode()
+    public function generateCode($refresh = false)
     {
-        $temp_rm_number = TempRmNumber::on('sqlsrv_kepri')->first();
+        $temp_rm_number = $refresh ? null : TempRmNumber::on('sqlsrv_kepri')->first();
 
         if (!$temp_rm_number) {
             $last_record = $this->on('sqlsrv_kepri')->orderBy('I_RekamMedis', 'desc')->first();
@@ -39,7 +39,7 @@ class TmPasien extends Model
                 }
             }
 
-            $temp_rm_number = new TempRmNumber();
+            $temp_rm_number = $refresh ? TempRmNumber::on('sqlsrv_kepri')->first() : new TempRmNumber();
             $temp_rm_number->setConnection('sqlsrv_kepri');
             $temp_rm_number->medrec = $next_id;
             $temp_rm_number->save();
