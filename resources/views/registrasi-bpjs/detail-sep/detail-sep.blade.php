@@ -8,6 +8,7 @@
 <section>
     <div>
         <button type="button" id="btn-cari" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg-nomor-sep" style="width: 150px; height: 34px;">Cari SEP</button>
+        <button type="button" id="btn-list" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg-list-deleted-sep" style="width: 150px; height: 34px;">List Deleted SEP</button>
     </div>
     <hr>
     <form method="get" class="row">
@@ -207,12 +208,50 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal fade bd-example-modal-lg-list-deleted-sep"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h5 class="modal-title" id="exampleModalLabel">List Deleted SEP Pasien</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered" id="table-list-deleted-sep">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>No SEP</th>
+                                <th>Deleted Date</th>
+                                <th>Deleted By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (count($list_deleted) > 0)
+                                @foreach ($list_deleted as $row => $ld)
+                                    <tr>
+                                        <td>{{ $row + 1 }}</td>
+                                        <td>{{ $ld->no_sep }}</td>
+                                        <td>{{ date('Y-m-d H:i:s', strtotime($ld->deleted_date)) }}</td>
+                                        <td>{{ $ld->user }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 @endsection
 @section('script')
 <script>
     $(document).ready(function(){
         $('#sidebar').addClass('menu-min');
+        $('#table-list-deleted-sep').dataTable();
     });
 
     $('#bd-example-modal-lg-nomor-sep').submit(function(ev)  {
@@ -284,6 +323,7 @@
                             alert('Nomor SEP tidak ditemukan!');
                         }
                     }
+                    location.reload()
                 }
             })
         } else {

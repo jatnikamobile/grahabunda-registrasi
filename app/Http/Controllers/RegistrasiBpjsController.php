@@ -23,6 +23,7 @@ use App\Models\fPSEP01;
 use App\Models\SuratControl;
 use App\Models\StoredProcedures;
 use App\Models\Bridging_bpjs;
+use App\Models\DeleteSepLog;
 use App\Models\Kepri\Master\TmKelompokRujukan;
 use App\Models\SuratKonsul;
 use App\Models\Radiologi;
@@ -739,8 +740,10 @@ class RegistrasiBpjsController extends Controller
     public function detail_sep()
     {
         $list = [];
+        $list_deleted = DeleteSepLog::orderBy('deleted_date', 'desc')->get();
         $parse = [
             'list' => $list,
+            'list_deleted' => $list_deleted
         ];
         return view('registrasi-bpjs.detail-sep.detail-sep', $parse);
     }
