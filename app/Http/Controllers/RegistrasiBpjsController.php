@@ -30,8 +30,10 @@ use App\Models\Radiologi;
 use App\Models\Laboratorium;
 use App\Models\PengajuanSPRI;
 use App\Models\TblKategoriPsn;
+use App\RegisterTaskData;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class RegistrasiBpjsController extends Controller
@@ -331,6 +333,34 @@ class RegistrasiBpjsController extends Controller
                             $register->rujukan_dari = $request->rujukan_dari;
                             $register->I_Kunjungan = $create_kunjungan->I_Kunjungan;
                             $register->save();
+
+                            // API BPJS Update Waktu Antrean, saat ini aktif saat create SEP
+                            // $kode_booking = $register->Regno;
+                            // $register_task_data = RegisterTaskData::where('registrasi_id', $kode_booking)->where('task_id', 3)->where('tanggal', date('Y-m-d'))->first();
+                            // if ($kode_booking && !$register_task_data) {
+                            //     $int_time = strtotime(date('Y-m-d H:i:s') . ' Asia/Jakarta') * 1000;
+                            //     $data_update_waktu_antrean = [
+                            //         "kodebooking" => $kode_booking,
+                            //         "taskid" => 3,
+                            //         "waktu" => $int_time
+                            //     ];
+                    
+                            //     $vclaim_controller = new NewVClaimController();
+                            //     $update_waktu_antrean = $vclaim_controller->wsBpjsUpdateWaktuAntrean($data_update_waktu_antrean);
+
+                            //     $tz = 'Asia/Jakarta';
+                            //     $timestamp = time();
+                            //     $dt = new DateTime('now', new DateTimeZone($tz));
+                            //     $dt->setTimestamp($timestamp);
+                            //     $tm_tz = $dt->format('Y-m-d H:i:s');
+
+                            //     $register_task_data = new RegisterTaskData();
+                            //     $register_task_data->registrasi_id = $kode_booking;
+                            //     $register_task_data->tanggal = date('Y-m-d');
+                            //     $register_task_data->waktu = $tm_tz;
+                            //     $register_task_data->task_id = 3;
+                            //     $register_task_data->save();
+                            // }
                         }
                     }
                 } catch (\Throwable $th) {
@@ -343,6 +373,7 @@ class RegistrasiBpjsController extends Controller
                     'message' => 'Data berhasil disimpans!',
                     'result' => ''
                 );
+                
                 return response()->json($parse);
             }
         }else{

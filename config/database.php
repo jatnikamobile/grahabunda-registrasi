@@ -35,6 +35,7 @@ return [
         'main' => [
             'driver' => 'sqlsrv',
             'host' => env('MAIN_HOST', 'localhost'),
+            'port' => env('MAIN_PORT', '3306'),
             'database' => env('MAIN_DATABASE', 'forge'),
             'username' => env('MAIN_USERNAME', 'forge'),
             'password' => env('MAIN_PASSWORD', ''),
@@ -44,6 +45,7 @@ return [
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('MAIN_HOST', '192.168.0.3'),
+            'port' => env('MAIN_PORT', '3306'),
             'database' => env('MAIN_DATABASE', 'dbSIMRSMK'),
             'username' => env('MAIN_USERNAME', 'kepri'),
             'password' => env('MAIN_PASSWORD', 'simrskepri2012'),
@@ -53,6 +55,7 @@ return [
         'sqlsrv_kepri' => [
             'driver' => 'sqlsrv',
             'host' => env('MAIN_KEPRI_HOST', '192.168.0.3'),
+            'port' => env('MAIN_KEPRI_PORT', '3306'),
             'database' => env('MAIN_KEPRI_DATABASE', 'RS-NET'),
             'username' => env('MAIN_KEPRI_USERNAME', 'kepri'),
             'password' => env('MAIN_KEPRI_PASSWORD', 'simrskepri2012'),
@@ -62,6 +65,7 @@ return [
         'sqlsrv_vclaim' => [
             'driver' => 'sqlsrv',
             'host' => env('MAIN_VKLAIM_HOST', '192.168.0.3'),
+            'port' => env('MAIN_VKLAIM_PORT', '3306'),
             'database' => env('MAIN_VKLAIM_DATABASE', 'dbBRIDGING'),
             'username' => env('MAIN_VKLAIM_USERNAME', 'kepri'),
             'password' => env('MAIN_VKLAIM_PASSWORD', 'simrskepri2012'),

@@ -18,6 +18,9 @@ use App\Models\DeleteSepLog;
 use App\Models\Fppri;
 use App\Models\RsNet\AdmKunjungan;
 use App\Models\SuratKontrolInap;
+use App\RegisterTaskData;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\Log;
 
 class MasterController extends Controller{
@@ -707,6 +710,33 @@ class MasterController extends Controller{
 				'message' => 'success'
 			];
 			$response['response'] = $response;
+
+			$kode_booking = $register->Regno;
+			$register_task_data = RegisterTaskData::where('registrasi_id', $Regno)->where('task_id', 3)->where('tanggal', date('Y-m-d'))->first();
+			if ($Regno && !$register_task_data) {
+				$int_time = strtotime(date('Y-m-d H:i:s') . ' Asia/Jakarta') * 1000;
+				$data_update_waktu_antrean = [
+					"kodebooking" => $kode_booking,
+					"taskid" => 3,
+					"waktu" => $int_time
+				];
+	
+				$vclaim_controller = new NewVClaimController();
+				$update_waktu_antrean = $vclaim_controller->wsBpjsUpdateWaktuAntrean($data_update_waktu_antrean);
+
+                $tz = 'Asia/Jakarta';
+                $timestamp = time();
+                $dt = new DateTime('now', new DateTimeZone($tz));
+                $dt->setTimestamp($timestamp);
+                $tm_tz = $dt->format('Y-m-d H:i:s');
+
+                $register_task_data = new RegisterTaskData();
+                $register_task_data->registrasi_id = $kode_booking;
+                $register_task_data->tanggal = date('Y-m-d');
+                $register_task_data->waktu = $tm_tz;
+                $register_task_data->task_id = 3;
+                $register_task_data->save();
+			}
 		}
 		
 		if (isset($response['metaData']['code']) && $response['metaData']['code'] == '201') {
