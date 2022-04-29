@@ -75,7 +75,7 @@
 	}
 </style>
 <div class="header-title">
-	<img src="{{ asset('public/template/images/logobpjs1.png') }}" class="logo">
+	<img src="{{ asset('/template/images/logobpjs1.png') }}" class="logo">
 	<div style="display: inline-block; vertical-align: top; text-align: center; padding-left: 50px;">
 		<b>SURAT ELEGIBILITAS PESERTA</b><br>
 		<b>RSUD Raja Ahmad Tabib</b><br>

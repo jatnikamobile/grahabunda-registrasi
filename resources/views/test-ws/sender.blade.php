@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<script src="<?=asset('public/js/ws-client.js')?>"></script>
+<script src="<?=asset('/js/ws-client.js')?>"></script>
 <script>
   // init web shocket
   let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {

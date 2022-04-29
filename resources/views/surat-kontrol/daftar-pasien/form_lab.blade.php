@@ -5,7 +5,7 @@
 @section('header','Registrasi Pasien BPJS')
 @section('subheader','Form Data')
 @section('content')
-<script src="<?=asset('public/js/ws-client.js')?>"></script>
+<script src="<?=asset('/js/ws-client.js')?>"></script>
 <script>
   // init web shocket
   let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {

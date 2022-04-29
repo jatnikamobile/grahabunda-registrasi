@@ -71,7 +71,8 @@ return [
     */
 
     // 'connection' => 'logs',
-    'connection' => env('SESSION_CONNECTION', 'logs'),
+    // 'connection' => env('SESSION_CONNECTION', 'logs'),
+    'connection' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -84,8 +85,8 @@ return [
     |
     */
 
-    // 'table' => 'sessions',
-    'table' => env('SESSION_TABLE', 'sessions'),
+    'table' => 'sessions',
+    // 'table' => env('SESSION_TABLE', 'sessions'),
 
     /*
     |--------------------------------------------------------------------------
@@ -140,8 +141,8 @@ return [
     |
     */
 
-    // 'path' => '/',
-    'path' => '/'.basename(realpath(__DIR__.'/..')).'/',
+    'path' => '/',
+    // 'path' => '/'.basename(realpath(__DIR__.'/..')).'/',
 
     /*
     |--------------------------------------------------------------------------
