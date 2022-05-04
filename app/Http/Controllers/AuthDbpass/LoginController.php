@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -69,11 +70,15 @@ class LoginController extends Controller
             'Password' => strtoupper($request->Password),
             // 'Shift'    => $request->Shift,
         ];
-        if(Auth::guard('dbpass')->attempt($credential,$request->member)){
-            $request->session()->put('Shift',$request->Shift); 
-            return redirect()->intended(route('beranda'));
+        try {
+            if(Auth::guard('dbpass')->attempt($credential,$request->member)){
+                $request->session()->put('Shift',$request->Shift); 
+                return redirect()->intended(route('beranda'));
+            }
+            return redirect()->back()->withInput($request->only('NamaUser','Remember'));
+        } catch (\Throwable $th) {
+            Log::info($th);
         }
-        return redirect()->back()->withInput($request->only('NamaUser','Remember'));
     }
 
 }
