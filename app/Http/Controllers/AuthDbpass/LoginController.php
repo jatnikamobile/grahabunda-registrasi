@@ -73,8 +73,11 @@ class LoginController extends Controller
 
         Log::info($credential);
         if(Auth::guard('dbpass')->attempt($credential,$request->member)){
+            Log::info('Logged In');
             $request->session()->put('Shift',$request->Shift); 
             return redirect()->intended(route('beranda'));
+        } else {
+            Log::info('Not Logged In');
         }
         return redirect()->back()->withInput($request->only('NamaUser','Remember'));
     }
