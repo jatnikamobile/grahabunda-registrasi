@@ -14,7 +14,7 @@
 </style>
 <body>
     <div class="body">
-        RSUD Raja Ahmad Tabib
+        RSU Graha Bunda
         <div style="padding-top: 10pt; ">
             <center><b>Slip Status Pasien</b></center>
         </div>

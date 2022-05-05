@@ -78,7 +78,7 @@
 	<img src="{{ asset('/template/images/thumb/logobpjs.jpg') }}" class="logo">
 	<div style="display: inline-block; vertical-align: top; text-align: center; padding-left: 50px;">
 		<b>SURAT ELEGIBILITAS PESERTA</b><br>
-		<b>RSUD Raja Ahmad Tabib</b><br>
+		<b>RSU Graha Bunda</b><br>
 	</div>
 </div>
 <table style="width: 100%;">

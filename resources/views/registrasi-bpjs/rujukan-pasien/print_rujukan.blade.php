@@ -20,7 +20,7 @@
 	<img src="{{ asset('/template/images/thumb/logobpjs.jpg') }}" class="logo">
 	<div style="display: inline-block; vertical-align: center; text-align: left; padding-left: 10px; padding-top: 20px;">
 		<b>SURAT RUJUKAN</b><br>
-		<b>RSUD Raja Ahmad Tabib</b><br>
+		<b>RSU Graha Bunda</b><br>
 	</div>
 	<div style="float: right; padding-right: 50px; padding-top: 20px;">No. {{ $data->NoRujukan }}<br> Tgl. {{ date('j F Y', strtotime($data->TglRujukan)) }}</div>
 </div>

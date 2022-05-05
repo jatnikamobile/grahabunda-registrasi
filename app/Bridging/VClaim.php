@@ -5,7 +5,7 @@ namespace App\Bridging;
 class VClaim
 {
 	public static $ppkPelayanan = '0903R005';
-	public static $namaPpkPelayanan = 'RSUD Raja Ahmad Tabib';
+	public static $namaPpkPelayanan = 'RSUGraha Bunda';
 
 	/**
 	 * Pencarian data diagnosa ICD-10

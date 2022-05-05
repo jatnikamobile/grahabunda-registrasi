@@ -39,8 +39,8 @@
     }
 </style>
 <div class="top-header">
-    DINAS KESEHATAN ANGKATAN UDARA<br>
-    RSUD Raja Ahmad Tabib
+    DINAS KESEHATAN<br>
+    RSU Graha Bunda
 </div>
 <div class="title-header">
     KEYAKINAN DAN NILAI-NILAI

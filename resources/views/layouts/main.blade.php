@@ -169,7 +169,7 @@
                 <div class="footer-inner">
                     <div class="footer-content">
                         <span class="bigger-120">
-                            <span class="blue bolder"><!-- <i class="fa fa-laptop"></i> --><img src="<?=asset('/template/images/thumb/logo-grahabunda.png')?>" width="25px">&nbsp;Modul Registrasi 1.0</span> MK Medika| RSUD Raja Ahmad Tabib &copy;<?=date('Y')?>
+                            <span class="blue bolder"><!-- <i class="fa fa-laptop"></i> --><img src="<?=asset('/template/images/thumb/logo-grahabunda.png')?>" width="25px">&nbsp;Modul Registrasi 1.0</span> MK Medika| RSU Graha Bunda &copy;<?=date('Y')?>
                         </span>
                         &nbsp; &nbsp;
                         <!-- <span class="action-buttons">

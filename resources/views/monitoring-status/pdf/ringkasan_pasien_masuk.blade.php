@@ -31,7 +31,7 @@
 <body>
 
     <div style = "width: 33%; text-align: center; border-bottom: 1px solid black; margin-bottom: 0px "> 
-        <span>RUMAH SAKIT ANGKATAN UDARA </span><br> 
+        <span>DINAS KESEHATAN </span><br> 
         <span>dr. ESNAWAN ANTARIKSA  </span> 
     </div>
     <div style = "width: 100%; text-align: center;  margin-bottom: 20px; margin-top: 0px "> 

@@ -36,7 +36,7 @@
     <tbody>
         <tr>
             <td style="width: 10%; text-align: center; border-right: 1px solid black;"><img src="{{ asset('/template/images/thumb/logo-grahabunda.png') }}" class="logo"></td>
-            <td><center>RSUD Raja Ahmad Tabib <br>INSTALASI RAWAT JALAN</center></td>
+            <td><center>RSU Graha Bunda <br>INSTALASI RAWAT JALAN</center></td>
             <td style="border-left: 1px solid black;"><center><h1>RM 02</h1></center></td>
         </tr>
     </tbody>
