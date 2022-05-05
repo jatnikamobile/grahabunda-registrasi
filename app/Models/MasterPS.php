@@ -29,13 +29,30 @@ class MasterPS extends Model
     {
         $last_data = $this->where('Medrec', 'like', 'P%')->orderBy('Medrec', 'desc')->first();
 
-        if (!$last_data) {
+        $last_medrec = $last_data ? $last_data->Medrec : null;
+        $last_medrec_length = $last_medrec ? strlen($last_medrec) : 0;
+
+        if (!$last_data || $last_medrec_length < 9) {
+            $last_data = $this->where('Medrec', 'P10000001')->first();
+
+            if ($last_data) {
+                $medrec = str_replace('P', '', $last_data->Medrec);
+                $next_regno = $medrec + 1;
+                while ($this->where('Medrec', 'P' . str_pad($next_regno, 8, '0', STR_PAD_LEFT))->first()) {
+                    $next_regno = $next_regno + 1;
+                }
+    
+                return 'P' . str_pad($next_regno, 8, '0', STR_PAD_LEFT);
+            }
             return 'P10000001';
         } else {
             $medrec = str_replace('P', '', $last_data->Medrec);
             $next_regno = $medrec + 1;
+            while ($this->where('Medrec', 'P' . str_pad($next_regno, 8, '0', STR_PAD_LEFT))->first()) {
+                $next_regno = $next_regno + 1;
+            }
 
-            return 'P' . sprintf('%08', $next_regno);
+            return 'P' . str_pad($next_regno, 8, '0', STR_PAD_LEFT);
         }
     }
 
