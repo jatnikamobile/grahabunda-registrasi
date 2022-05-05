@@ -269,6 +269,7 @@ class MasterController extends Controller{
 		$nopeserta = $request->nopeserta;
 		$tanggal = date('Y-m-d');
 		$request = $vclaim_controller->pesertaKartu($nopeserta, $tanggal);
+		Log::info($request);
 		$peserta = $request['peserta'];
 		$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->first() : null;
 		$registers = Register::where('NoPeserta', $nopeserta)->get();
@@ -296,6 +297,7 @@ class MasterController extends Controller{
 			$nik = $request->nik;
 			$tanggal = date('Y-m-d');
 			$data = $vclaim_controller->pesertaNIK($nik, $tanggal);
+			Log::info($data);
 			$peserta = $data['peserta'];
 			$pasien = $peserta ? MasterPS::where('NoIden', $peserta['nik'])->orderBy('TglDaftar', 'desc')->first() : null;
 			$no_peserta = $peserta ? $peserta['noKartu'] : null;
