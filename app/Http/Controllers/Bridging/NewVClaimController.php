@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use LZCompressor\LZString;
+use Illuminate\Support\Facades\Http;
 
 class NewVClaimController extends Controller
 {
@@ -115,6 +116,13 @@ class NewVClaimController extends Controller
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 
         $result = curl_exec($curl);
+
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+            Log::info('Curl Error:');
+            Log::info($error_msg);
+        }
+        curl_close($curl);
 
         return $result;
     }
