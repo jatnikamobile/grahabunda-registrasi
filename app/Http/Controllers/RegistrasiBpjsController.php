@@ -6,9 +6,6 @@ use Auth;
 use PDF;
 use App\Bridging\VClaim;
 use App\Http\Controllers\Bridging\NewVClaimController;
-use App\Http\Controllers\RsNet\RsNetBridgingController;
-use App\Http\Controllers\RsNet\RsNetKunjunganController;
-use App\Http\Controllers\RsNet\RsNetPasienController;
 use App\Http\Controllers\RsNet\RsNetRujukanController;
 use App\Models\TBLICD10;
 use App\Models\Refppk;
@@ -237,22 +234,6 @@ class RegistrasiBpjsController extends Controller
         $register = new Register();
         $request->request->add(['id_old' => '']);
 
-        if ($request->form_type == 'update') {
-            $rs_net_kunjungan_controller = new RsNetKunjunganController();
-            $D_Masuk = $request->Regdate . ' ' . $request->Regtime;
-            $I_RekamMedis = $request->Medrec;
-            $cek_kunjungan = $rs_net_kunjungan_controller->cehKunjunganAktif($D_Masuk, $I_RekamMedis);
-
-            if (!$cek_kunjungan) {
-                $parse = array(
-                    'status' => false,
-                    'message' => 'Kunjungan di aplikasi lama sudah tidak aktif, mungkin sudah cancel atau closed. Update tidak bisa dilanjutkan!',
-                    'result' => ''
-                );
-                return response()->json($parse);
-            }
-        }
-        
         $up = StoredProcedures::stpnet_AddNewRegistrasiBPJS_REGxhos($request->all());
 
         if($up)
@@ -321,17 +302,10 @@ class RegistrasiBpjsController extends Controller
                     Log::info('Data Kunjungan:');
                     Log::info($data_kunjungan);
 
-                    $rs_net_kunjungan_controller = new RsNetKunjunganController();
-                    $create_kunjungan = $rs_net_kunjungan_controller->store($data_kunjungan);
-                    Log::info('Response Kunjungan:');
-                    Log::info($create_kunjungan);
-                    Log::info('End Inset/Update Kunjungan Log');
-
                     if ($data) {
                         $register = Register::where('Regno', $data->Regno)->first();
                         if ($register) {
                             $register->rujukan_dari = $request->rujukan_dari;
-                            $register->I_Kunjungan = $create_kunjungan->I_Kunjungan;
                             $register->save();
 
                             // API BPJS Update Waktu Antrean, saat ini aktif saat create SEP
@@ -452,11 +426,6 @@ class RegistrasiBpjsController extends Controller
         $delete = Register::where('Regno',$Regno)->update(['Deleted'=>$Deleted]);
         if($delete){
             {
-                if ($get_delete->IdRegOld!= '') {
-                    $rs_net_kunjungan_controller = new RsNetKunjunganController();
-                    $delete_kunjungan = $rs_net_kunjungan_controller->destroy($get_delete);
-                }
-                
                 $request->session()->flash('status', 'Data Berhasil Dihapus!');
                 return redirect()->route('reg-bpjs-daftar');
             }
@@ -468,22 +437,6 @@ class RegistrasiBpjsController extends Controller
     public function update_kategori(Request $request)
     {
         $up = Procedure::stpnet_UpdateKategori_REGxhos($request->all());
-
-        $data_pasien = [
-            'I_RekamMedis' => $request->Medrec,
-            'NoPeserta' => $request->askesno,
-            'kategori' => $request->Kategori,
-            'I_NoIdentitas' => $request->NoIden
-        ];
-
-        $rs_net_pasien_controller = new RsNetPasienController();
-        $update_pasien = $rs_net_pasien_controller->store($data_pasien);
-
-        $pasien = MasterPS::where('Medrec', $request->Medrec)->first();
-        if ($pasien) {
-            $pasien->Medrec = $update_pasien->I_RekamMedis;
-            $pasien->save();
-        }
     }
 
     // MUTASI PASIEN BPJS
@@ -537,9 +490,6 @@ class RegistrasiBpjsController extends Controller
             $cetakan = Procedure::stpnet_NomCetakSEP_REGxhos($request->Regno);
 
             $KdTuju = Register::where('Regno',$request->Regno)->update(['KdTuju'=>'RI']);
-
-            $rs_net_bridging = new RsNetBridgingController();
-            $rs_net_ranap = $rs_net_bridging->addDataRanap($request, $fppri);
 
             $parse = array(
                 'status' => true,

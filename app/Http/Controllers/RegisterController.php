@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\RsNet\RsNetKunjunganController;
 use Auth;
 use App\Models\Register;
 use App\Models\POLItpp;
@@ -208,9 +207,6 @@ class RegisterController extends Controller
                     'I_Unit' => $register->KdPoli,
                     'i_kunjungan' => isset($register->I_Kunjungan) ? $register->I_Kunjungan : null,
                 ];
-
-                $rs_net_kunjungan_controller = new RsNetKunjunganController();
-                $update_reg = $rs_net_kunjungan_controller->store($data_update);
             }
             
             $request->session()->flash('status', 'Data Berhasil Diubah!');            
@@ -244,9 +240,6 @@ class RegisterController extends Controller
                                 'dokter_pil' => $data['dokter_pil'],
                                 'i_kunjungan' => isset($register->I_Kunjungan) ? $register->I_Kunjungan : null,
                             ];
-
-                            $rs_net_kunjungan_controller = new RsNetKunjunganController();
-                            $update_reg = $rs_net_kunjungan_controller->store($data_update);
                         }
 
                         $request->session()->flash('status', 'Data Berhasil Diubah!');            

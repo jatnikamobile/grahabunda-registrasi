@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\RsNet\RsNetKunjunganController;
 use Illuminate\Http\Request;
 use Auth;
 use PDF;
@@ -152,17 +151,10 @@ class RegistrasiUmumController extends Controller
                     Log::info('Data Kunjungan:');
                     Log::info($data_kunjungan);
 
-                    $rs_net_kunjungan_controller = new RsNetKunjunganController();
-                    $create_kunjungan = $rs_net_kunjungan_controller->store($data_kunjungan);
-                    Log::info('Response Kunjungan:');
-                    Log::info($create_kunjungan);
-                    Log::info('End Inset/Update Kunjungan Log');
-
                     if ($data) {
                         $register = Register::where('Regno', $data->Regno)->first();
                         if ($register) {
                             $register->rujukan_dari = $request->rujukan_dari;
-                            $register->I_Kunjungan = $create_kunjungan->I_Kunjungan;
                             $register->save();
                         }
                     }
@@ -252,11 +244,6 @@ class RegistrasiUmumController extends Controller
         $delete =   Register::where('Regno',$Regno)->update(['Deleted'=>$Deleted]);
         if($delete){
             {
-                if ($get_delete->IdRegOld!= '') {
-                    $rs_net_kunjungan_controller = new RsNetKunjunganController();
-                    $delete_kunjungan = $rs_net_kunjungan_controller->destroy($get_delete);
-                }
-                
                 $request->session()->flash('status', 'Data Berhasil Dihapus!');
                 return redirect()->route('reg-umum-daftar');
             }
