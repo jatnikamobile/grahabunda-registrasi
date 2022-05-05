@@ -11,7 +11,7 @@
     
     <title> @yield('title') </title>
 
-    <link rel="icon" href="<?=asset('/template/images/thumb/logo.png')?>" type="image/ico" />
+    <link rel="icon" href="<?=asset('/template/images/thumb/logo-grahabunda.png')?>" type="image/ico" />
 
    <!-- bootstrap & fontawesome -->
    <link rel="stylesheet" href="<?=asset('/template/css/bootstrap.min.css')?>" />
@@ -68,7 +68,7 @@
                 </button>
                 <div class="navbar-header pull-left">
                     <a href="#" class="navbar-brand">
-                        <small><!-- <i class="fa fa-laptop"></i> --><img src="{{asset('/template/images/thumb/logo.png')}}" width="25px">&nbsp; Modul Registrasi</small>
+                        <small><!-- <i class="fa fa-laptop"></i> --><img src="{{asset('/template/images/thumb/logo-grahabunda.png')}}" width="25px">&nbsp; Modul Registrasi</small>
                     </a>
                     <ul class="nav navbar-nav">
                         <li><a href="{{ route('reg-bpjs-daftar.form') }}"><i class="menu-icon fa fa-list-alt"></i>&nbsp; Daftar BPJS</a></li>
@@ -169,7 +169,7 @@
                 <div class="footer-inner">
                     <div class="footer-content">
                         <span class="bigger-120">
-                            <span class="blue bolder"><!-- <i class="fa fa-laptop"></i> --><img src="<?=asset('/template/images/thumb/logo.png')?>" width="25px">&nbsp;Modul Registrasi 1.0</span> MK Medika| RSUD Raja Ahmad Tabib &copy;<?=date('Y')?>
+                            <span class="blue bolder"><!-- <i class="fa fa-laptop"></i> --><img src="<?=asset('/template/images/thumb/logo-grahabunda.png')?>" width="25px">&nbsp;Modul Registrasi 1.0</span> MK Medika| RSUD Raja Ahmad Tabib &copy;<?=date('Y')?>
                         </span>
                         &nbsp; &nbsp;
                         <!-- <span class="action-buttons">

@@ -7,7 +7,7 @@
             <h4 class="header blue lighter bigger"><i class="ace-icon fa fa-users green"></i> Please Enter Your Information </h4>
             <div class="space-6"></div>
             <form class="form-horizontal" method="POST" action="{{ route('dbpass.submit.login') }}" id="login-form">
-                        {{ csrf_field() }}
+                {{ csrf_field() }}
                 <div class="form-group{{ $errors->has('NamaUser') ? ' has-error' : '' }}">
                     <label for="email" class="col-md-4 control-label">Username</label>
 
