@@ -25,7 +25,7 @@
                                     <label class="col-sm-3 control-label no-padding-right">No Rekam Medic</label>
                                     <div class="input-group col-sm-9">
                                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                                        <input type="text" data-inputmask="'mask': '99-99-99'" name="Medrec" id="Medrec" class="form-control input-sm col-xs-10 col-sm-5" value="<?= Request::input('Medrec') !== null ? Request::input('Medrec') : Request::input('Medrec') ?>"/>
+                                        <input type="text" name="Medrec" id="Medrec" class="form-control input-sm col-xs-10 col-sm-5" value="<?= Request::input('Medrec') !== null ? Request::input('Medrec') : Request::input('Medrec') ?>"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
