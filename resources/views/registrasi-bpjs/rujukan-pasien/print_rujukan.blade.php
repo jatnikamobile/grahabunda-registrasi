@@ -17,7 +17,7 @@
 	}
 </style>
 <div class="header-title">
-	<img src="{{ asset('/template/images/thumb/logobpjs.jpg') }}" class="logo">
+	<img src="/template/images/thumb/logobpjs.jpg" class="logo">
 	<div style="display: inline-block; vertical-align: center; text-align: left; padding-left: 10px; padding-top: 20px;">
 		<b>SURAT RUJUKAN</b><br>
 		<b>RSU Graha Bunda</b><br>

@@ -75,7 +75,7 @@
 </style>
 @for($i = 0; $i < 1; $i++)
 <div class="header-title">
-	<img src="{{ asset('/template/images/thumb/logobpjs.jpg') }}" class="logo">
+	<img src="/template/images/thumb/logobpjs.jpg" class="logo">
 	<div style="display: inline-block; vertical-align: top; text-align: center; padding-left: 50px;">
 		<b>SURAT ELEGIBILITAS PESERTA</b><br>
 		<b>RSU Graha Bunda</b><br>

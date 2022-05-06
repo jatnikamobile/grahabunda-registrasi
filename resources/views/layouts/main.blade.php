@@ -11,43 +11,43 @@
     
     <title> @yield('title') </title>
 
-    <link rel="icon" href="<?=asset('/template/images/thumb/logo-grahabunda.png')?>" type="image/ico" />
+    <link rel="icon" href="/template/images/thumb/logo-grahabunda.png" type="image/ico" />
 
    <!-- bootstrap & fontawesome -->
-   <link rel="stylesheet" href="<?=asset('/template/css/bootstrap.min.css')?>" />
-    <link rel="stylesheet" href="<?=asset('/template/font-awesome/4.5.0/css/font-awesome.min.css')?>" />
+   <link rel="stylesheet" href="/template/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/template/font-awesome/4.5.0/css/font-awesome.min.css" />
     <!-- page specific plugin styles -->
 
     <!-- text fonts -->
-    <link rel="stylesheet" href="<?=asset('/template/css/fonts.googleapis.com.css')?>" />
+    <link rel="stylesheet" href="/template/css/fonts.googleapis.com.css" />
 
     <!-- ace styles -->
-    <link rel="stylesheet" href="<?=asset('/template/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style')?>" />
-    <link rel="stylesheet" href="<?=asset('/template/css/ace-skins.min.css')?>" />
-    <link rel="stylesheet" href="<?=asset('/template/css/ace-rtl.min.css')?>" />
+    <link rel="stylesheet" href="/template/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <link rel="stylesheet" href="/template/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="/template/css/ace-rtl.min.css" />
 
     <!-- Select2 -->
-    <link href="<?=asset('/template/select2/css/select2.css')?>" rel="stylesheet">
+    <link href="/template/select2/css/select2.css" rel="stylesheet">
 
     <!-- inline styles related to this page -->
-    <link rel="stylesheet" href="<?=asset('/template/css/jquery-ui.custom.min.css')?>" />
-    <link rel="stylesheet" href="<?=asset('/template/css/chosen.min.css')?>" />
-    <link rel="stylesheet" href="<?= asset('/template/bootstrap-datepicker/css/datepicker.css') ?>" />
-    <link rel="stylesheet" href="<?=asset('/template/css/bootstrap-timepicker.min.css')?>" />
-    <link rel="stylesheet" href="<?=asset('/template/css/daterangepicker.min.css')?>" />
-    <link rel="stylesheet" href="<?=asset('/template/css/bootstrap-datetimepicker.min.css')?>" />
-    <link rel="stylesheet" href="<?=asset('/template/css/bootstrap-colorpicker.min.css')?>" />
-    <link rel="stylesheet" href="<?=asset('/template/css/jquery-ui.min.css')?>">
-    <link rel="stylesheet" href="<?=asset('/template/datatables/css/dataTables.bootstrap.min.css')?>">
-    <link rel="stylesheet" href="<?=asset('/template/css/style.css')?>">
-    <link rel="stylesheet" href="<?=asset('/template/css/palette.css')?>">
-    <link rel="stylesheet" href="<?=asset('/template/SweetAlert/sweetalert2.min.css')?>">
-    <link rel="stylesheet" href="<?=asset('/template/print/printArea.css')?>">
-    <link rel="stylesheet" href="<?=asset('/css/select2-fix.css')?>">
+    <link rel="stylesheet" href="/template/css/jquery-ui.custom.min.css" />
+    <link rel="stylesheet" href="/template/css/chosen.min.css" />
+    <link rel="stylesheet" href="/template/bootstrap-datepicker/css/datepicker.css') ?>" />
+    <link rel="stylesheet" href="/template/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/template/css/daterangepicker.min.css" />
+    <link rel="stylesheet" href="/template/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="/template/css/bootstrap-colorpicker.min.css" />
+    <link rel="stylesheet" href="/template/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/template/datatables/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="/template/css/style.css">
+    <link rel="stylesheet" href="/template/css/palette.css">
+    <link rel="stylesheet" href="/template/SweetAlert/sweetalert2.min.css">
+    <link rel="stylesheet" href="/template/print/printArea.css">
+    <link rel="stylesheet" href="/css/select2-fix.css">
     <!-- High Chart -->
-    <link href="<?=asset('/template/highchart/code/css/highcharts.css')?>" rel="stylesheet" />
-    <script src="<?=asset('/template/jquery.min.js')?>"></script>
-    <script src="<?=asset('/js/axios.min.js')?>"></script>
+    <link href="/template/highchart/code/css/highcharts.css" rel="stylesheet" />
+    <script src="/template/jquery.min.js"></script>
+    <script src="/js/axios.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $.ajaxSetup({
@@ -68,7 +68,7 @@
                 </button>
                 <div class="navbar-header pull-left">
                     <a href="#" class="navbar-brand">
-                        <small><!-- <i class="fa fa-laptop"></i> --><img src="{{asset('/template/images/thumb/logo-grahabunda.png')}}" width="25px">&nbsp; Modul Registrasi</small>
+                        <small><!-- <i class="fa fa-laptop"></i> --><img src="/template/images/thumb/logo-grahabunda.png" width="25px">&nbsp; Modul Registrasi</small>
                     </a>
                     <ul class="nav navbar-nav">
                         <li><a href="{{ route('reg-bpjs-daftar.form') }}"><i class="menu-icon fa fa-list-alt"></i>&nbsp; Daftar BPJS</a></li>
@@ -141,7 +141,7 @@
             <!--  -->
             <div class="main-content">
                 <div class="main-content-inner">
-                    <div class="page-content" style="background-image: url({{ asset('/template/images/bg.jpeg') }}); background-size: cover;">
+                    <div class="page-content" style="background-image: url(/template/images/bg.jpeg); background-size: cover;">
                         <div class="page-header">
                             <h1>
                                 @yield('header')
@@ -169,7 +169,7 @@
                 <div class="footer-inner">
                     <div class="footer-content">
                         <span class="bigger-120">
-                            <span class="blue bolder"><!-- <i class="fa fa-laptop"></i> --><img src="<?=asset('/template/images/thumb/logo-grahabunda.png')?>" width="25px">&nbsp;Modul Registrasi 1.0</span> MK Medika| RSU Graha Bunda &copy;<?=date('Y')?>
+                            <span class="blue bolder"><!-- <i class="fa fa-laptop"></i> --><img src="/template/images/thumb/logo-grahabunda.png" width="25px">&nbsp;Modul Registrasi 1.0</span> MK Medika| RSU Graha Bunda &copy;<?=date('Y')?>
                         </span>
                         &nbsp; &nbsp;
                         <!-- <span class="action-buttons">
@@ -194,46 +194,46 @@
 <![endif]-->
     <!-- jQuery -->
     <!-- Print Element -->
-    <script src="{{ asset('/js/PrintEl/jquery.printElement.js') }}"></script>
+    <script src="/js/PrintEl/jquery.printElement.js"></script>
     <!-- Select2 -->
-    <script src="<?=asset('/template/select2/js/select2.min.js')?>"></script>
+    <script src="/template/select2/js/select2.min.js"></script>
     <!-- ace scripts -->
-    <script src="<?=asset('/template/js/ace-elements.min.js')?>"></script>
-    <script src="<?=asset('/template/js/ace-extra.min.js')?>"></script>
-    <script src="<?=asset('/template/js/ace.min.js')?>"></script>
+    <script src="/template/js/ace-elements.min.js"></script>
+    <script src="/template/js/ace-extra.min.js"></script>
+    <script src="/template/js/ace.min.js"></script>
 
     <!-- High Chart -->
-    <script src="<?=asset('/template/highchart/code/js/highcharts.js')?>"></script>
-    <script src="<?=asset('/template/highchart/code/highcharts.js')?>"></script>
-    <script src="<?=asset('/template/highchart/code/modules/exporting.js')?>"></script>
-    <script src="<?=asset('/template/highchart/code/modules/export-data.js')?>"></script>
+    <script src="/template/highchart/code/js/highcharts.js"></script>
+    <script src="/template/highchart/code/highcharts.js"></script>
+    <script src="/template/highchart/code/modules/exporting.js"></script>
+    <script src="/template/highchart/code/modules/export-data.js"></script>
     <!-- page specific plugin scripts -->
-    <script src="<?=asset('/template/js/bootstrap.min.js')?>"></script>
-    <script src="<?=asset('/template/js/jquery-ui.min.js')?>"></script>
-    <script src="<?=asset('/template/js/jquery-ui.custom.min.js')?>"></script>
-    <script src="<?=asset('/template/js/jquery.ui.touch-punch.min.js')?>"></script>
-    <script src="<?=asset('/template/js/autosize.min.js')?>"></script>
-    <script src="<?=asset('/template/js/jquery.maskedinput.min.js')?>"></script>
-    <script src="<?=asset('/template/js/bootstrap-tag.min.js')?>"></script>
-    <script src="<?=asset('/template/js/jquery.validate.min.js')?>"></script>
-    <script src="<?=asset('/template/js/jquery-additional-methods.min.js')?>"></script>
-    <script src="<?=asset('/template/js/bootbox.js')?>"></script>
-    <script src="<?=asset('/template/js/jquery.blockUI.js')?>"></script>
-    <script src="<?=asset('/template/SweetAlert/sweetalert.min.js')?>"></script>
+    <script src="/template/js/bootstrap.min.js"></script>
+    <script src="/template/js/jquery-ui.min.js"></script>
+    <script src="/template/js/jquery-ui.custom.min.js"></script>
+    <script src="/template/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="/template/js/autosize.min.js"></script>
+    <script src="/template/js/jquery.maskedinput.min.js"></script>
+    <script src="/template/js/bootstrap-tag.min.js"></script>
+    <script src="/template/js/jquery.validate.min.js"></script>
+    <script src="/template/js/jquery-additional-methods.min.js"></script>
+    <script src="/template/js/bootbox.js"></script>
+    <script src="/template/js/jquery.blockUI.js"></script>
+    <script src="/template/SweetAlert/sweetalert.min.js"></script>
     
-    <script src="<?= asset('/template/webcamjs/webcam.min.js')?>"></script>
-    <script src="<?= asset('/template/print/jquery.printArea.js')?>"></script>
-    <script src="<?= asset('/template/print/printThis.js')?>"></script>
-    <script src="<?= asset('/template/bootstrap-datepicker/js/bootstrap-datepicker.js') ?>"></script>
+    <script src="/template/webcamjs/webcam.min.js"></script>
+    <script src="/template/print/jquery.printArea.js"></script>
+    <script src="/template/print/printThis.js"></script>
+    <script src="/template/bootstrap-datepicker/js/bootstrap-datepicker.js') ?>"></script>
 
 
-    <script type="text/javascript" src="<?=asset('/template/datatables/js/jquery.dataTables.min.js')?>"></script>
-    <script type="text/javascript" src="<?=asset('/template/datatables/js/dataTables.bootstrap.min.js')?>"></script>
+    <script type="text/javascript" src="/template/datatables/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/template/datatables/js/dataTables.bootstrap.min.js"></script>
     
-    <script src="<?= asset('/template/chart.js/Chart.js') ?>"></script>
-    <script src="<?= asset('/js/inputmask/inputmask.min.js') ?>"></script>
-    <script src="<?= asset('/js/inputmask/jquery.inputmask.min.js') ?>"></script>
-    <script src="<?= asset('/js/inputmask/bindings/inputmask.binding.js') ?>"></script>
+    <script src="/template/chart.js/Chart.js') ?>"></script>
+    <script src="/js/inputmask/inputmask.min.js') ?>"></script>
+    <script src="/js/inputmask/jquery.inputmask.min.js') ?>"></script>
+    <script src="/js/inputmask/bindings/inputmask.binding.js') ?>"></script>
     <script type="text/javascript">        
         //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
         //so disable dragging when clicking on label
@@ -246,7 +246,7 @@
             if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
             });
         }
-        var url = '<?=asset('/template/js/jquery.mobile.custom.min.js')?>';
+        var url = '/template/js/jquery.mobile.custom.min.js';
         if('ontouchstart' in document.documentElement) document.write("<script src="+url+">"+"<"+"/script>");
 
         $(document).ready(function(){

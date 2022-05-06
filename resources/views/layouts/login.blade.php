@@ -7,25 +7,25 @@
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<meta name="description" content="User login page" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-		<link rel="icon" href="<?php echo asset('/template/images/thumb/logo-grahabunda.png')?>" type="image/ico" />
+		<link rel="icon" href="/template/images/thumb/logo-grahabunda.png" type="image/ico" />
 
 		<!-- bootstrap & fontawesome -->
-	    <link rel="stylesheet" href="<?php echo asset('/template/css/bootstrap.min.css')?>" />
-	    <link rel="stylesheet" href="<?php echo asset('/template/font-awesome/4.5.0/css/font-awesome.min.css')?>" />
+	    <link rel="stylesheet" href="/template/css/bootstrap.min.css" />
+	    <link rel="stylesheet" href="/template/font-awesome/4.5.0/css/font-awesome.min.css" />
 	    <!-- page specific plugin styles -->
 
 	    <!-- text fonts -->
-	    <link rel="stylesheet" href="<?php echo asset('/template/css/fonts.googleapis.com.css')?>" />
+	    <link rel="stylesheet" href="/template/css/fonts.googleapis.com.css" />
 
 	    <!-- ace styles -->
-	    <link rel="stylesheet" href="<?php echo asset('/template/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style')?>" />
-	    <link rel="stylesheet" href="<?php echo asset('/template/css/ace-skins.min.css')?>" />
-	    <link rel="stylesheet" href="<?php echo asset('/template/css/ace-rtl.min.css')?>" />
+	    <link rel="stylesheet" href="/template/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+	    <link rel="stylesheet" href="/template/css/ace-skins.min.css" />
+	    <link rel="stylesheet" href="/template/css/ace-rtl.min.css" />
 	    <!-- jQuery -->
-    	<script src="<?php echo asset('/template/jquery.min.js')?>"></script>
+    	<script src="/template/jquery.min.js"></script>
 	</head>
 
-	<body class="login-layout" style="background-image: url({{ asset('/template/images/bg.jpeg') }}); background-size: cover;">
+	<body class="login-layout" style="background-image: url(/template/images/bg.jpeg); background-size: cover;">
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">
@@ -34,7 +34,7 @@
 							<br><br><hr>
 							<div class="center">
 								<h1>
-									<img src="<?php echo asset('/template/images/thumb/logo-grahabunda.png')?>" width="100" alt="logo_rs">
+									<img src="/template/images/thumb/logo-grahabunda.png" width="100" alt="logo_rs">
 									<br>
 									<span class="red"> Modul Registrasi</span>
 								</h1>

@@ -1,4 +1,4 @@
-<script src="<?=asset('/js/ws-client.js')?>"></script>
+<script src="/js/ws-client.js"></script>
 <script type="text/javascript">
 var perjanjian = "{{ $perjanjian ?: false }}"
 var debug = "{{ $debug ?: false }}"

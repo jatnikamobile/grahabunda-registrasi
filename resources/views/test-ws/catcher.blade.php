@@ -3,7 +3,7 @@
 @section('menu_beranda','active')
 @section('header','Beranda')
 @section('content')
-<script src="<?=asset('/js/ws-client.js')?>"></script>
+<script src="/js/ws-client.js"></script>
 <script>
 let arr_append = new Array();
 let ws = new AntrianWS("{{ config('ws.host') }}:{{ config('ws.port') }}", 'tracer', 1, function(data) {
