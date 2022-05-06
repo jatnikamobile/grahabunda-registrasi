@@ -139,22 +139,6 @@
                     </div>
                 </div>
                 </form>
-                <!-- Asal Rujukan -->
-                <div class="form-group">
-                    <label class="col-md-3 control-label no-padding-right">Rujukan Dari</label>
-                    <div class="input-group col-md-9">
-                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                        <select type="text" name="rujukan_dari" id="rujukan_dari" style="width:100%;" class="form-control">
-                            <option value="">-= Rujukan Dari =-</option>
-                            @foreach ($kelompok_rujukan as $kr)
-                                <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : ($kr->I_KelompokRujukan == 99 ? 'selected' : '')}}>{{ $kr->N_KelompokRujukan }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback text-danger hide" id="rujukan-dari-validation">
-                            Pilih asal rujukan pasien!
-                        </div>
-                    </div>
-                </div>
                 <!-- No Rujukan -->
                 <form method="get" id="search_noRujukan">
                 <div class="form-group">
@@ -1541,12 +1525,6 @@
         KdDPJP = ev.params.data.KdDPJP;
     });
 
-    $('#rujukan_dari').select2();
-
-    $('#rujukan_dari').on('select2:select', function(ev) {
-        $('#rujukan-dari-validation').addClass('hide');
-    });
-
     let polirujukan = null;
     $('#DokterPengirim').select2({
         ajax: {
@@ -2792,12 +2770,6 @@
                 loading.modal('hide');
                 validation = false;
             }
-            if($('#rujukan_dari').val() == '') {
-                $('#rujukan-dari-validation').removeClass('hide');
-                // alert('Silahkan pilih kategori atau segera update kategori');
-                loading.modal('hide');
-                validation = false;
-            }
             if(($('input[name=KdSex]:checked').length) <= 0 ) {
                 $('#kdsex-validation').removeClass('hide');
                 // alert('Pilih jenis kelamin Pasien');
@@ -2851,7 +2823,6 @@
                                                     type:"post",
                                                     dataType:"json",
                                                     data:{
-                                                        rujukan_dari: $('#rujukan_dari').val(),
                                                         Regno: $('#Regno').val(),
                                                         // Medrec: rekammedis.substring(0,6),
                                                         Medrec: rekammedis,
@@ -2967,7 +2938,6 @@
                                             type:"post",
                                             dataType:"json",
                                             data:{
-                                                rujukan_dari: $('#rujukan_dari').val(),
                                                 Regno: $('#Regno').val(),
                                                 // Medrec: rekammedis.substring(0,6),
                                                 Medrec: rekammedis,

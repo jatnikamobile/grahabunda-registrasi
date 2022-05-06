@@ -121,47 +121,6 @@ class RegistrasiUmumController extends Controller
                 //     }
                 // }
 
-                try {
-                    $data_kunjungan = [
-                        'form_type' => $request->form_type,
-                        'rujukan_dari' => $request->rujukan_dari,
-                        'poli' => $request->KdPoli,
-                        'I_RekamMedis' => $request->Medrec,
-                        'I_Unit' => $request->KdPoli,
-                        'I_UrutMasuk' => $data->NomorUrut,
-                        'D_Masuk' => $request->Regdate . ' ' . $request->Regtime,
-                        'C_Pegawai' => $request->kdDoc,
-                        'I_Penerimaan' => 0,
-                        'N_DokterPengirim' => $request->KdDPJP,
-                        'N_Diagnosa' => $request->DiagAw,
-                        'I_Kontraktor' => $request->Kategori,
-                        'I_StatusBaru' => $request->Kunjungan == 'Baru' ? 1 : 0,
-                        'I_StatusKunjungan' => 1,
-                        'C_Shift' => 1,
-                        'I_Entry' => Auth::user() ? Auth::user()->NamaUser : 'system',
-                        'D_Entry' => $request->Regdate,
-                        'N_PasienLuar' => $request->Firstname,
-                        'Umur_tahun' => $request->UmurThn,
-                        'Umur_bulan' => $request->UmurBln,
-                        'Umur_hari' => $request->UmurHari,
-                        'i_kunjungan' => isset($data->I_Kunjungan) ? $data->I_Kunjungan : null,
-                    ];
-
-                    Log::info('Inset/Update Kunjungan Log');
-                    Log::info('Data Kunjungan:');
-                    Log::info($data_kunjungan);
-
-                    if ($data) {
-                        $register = Register::where('Regno', $data->Regno)->first();
-                        if ($register) {
-                            $register->rujukan_dari = $request->rujukan_dari;
-                            $register->save();
-                        }
-                    }
-                } catch (\Throwable $th) {
-                    $message = $th->getMessage();
-                }
-
                 $parse = array(
                     'status' => true,
                     'data' => $data,

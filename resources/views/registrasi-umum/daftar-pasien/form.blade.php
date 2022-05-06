@@ -100,18 +100,6 @@
                         <input type="time" name="Regtime" id="Regtime" class="form-control input-sm col-xs-6 col-sm-6" value="{{ isset($edit->Regtime) ? date('H:i',strtotime($edit->Regtime)) : date('H:i') }}" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-md-3 control-label no-padding-right">Rujukan Dari</label>
-                    <div class="input-group col-md-9">
-                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-                        <select type="text" name="rujukan_dari" id="rujukan_dari" style="width:100%;" class="form-control">
-                            <option value="">-= Rujukan Dari =-</option>
-                            @foreach ($kelompok_rujukan as $kr)
-                                <option value="{{ $kr->I_KelompokRujukan }}" {{ isset($edit->rujukan_dari) && @$edit->rujukan_dari == $kr->I_KelompokRujukan ? 'selected' : ($kr->I_KelompokRujukan == 99 ? 'selected' : '')}}>{{ $kr->N_KelompokRujukan }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -515,8 +503,6 @@
     //         push_print(c.regno);
     //     });
     // });
-
-    $('#rujukan_dari').select2();
 
     $('#cara_bayar').select2({
         ajax: {
@@ -1191,7 +1177,6 @@
                                 type:"post",
                                 dataType:"json",
                                 data:{
-                                    rujukan_dari: $('#rujukan_dari').val(),
                                     Regno: $('[name=Regno]').val(),
                                     Medrec: $('[name=Medrec]').val(),
                                     Firstname: $('[name=Firstname]').val(),
@@ -1273,7 +1258,6 @@
                     type:"post",
                     dataType:"json",
                     data:{
-                        rujukan_dari: $('#rujukan_dari').val(),
                         Regno: $('[name=Regno]').val(),
                         Medrec: $('[name=Medrec]').val(),
                         Firstname: $('[name=Firstname]').val(),
