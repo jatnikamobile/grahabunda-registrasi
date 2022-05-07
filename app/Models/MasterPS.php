@@ -37,22 +37,22 @@ class MasterPS extends Model
 
             if ($last_data) {
                 $medrec = str_replace('P', '', $last_data->Medrec);
-                $next_regno = $medrec + 1;
-                while ($this->where('Medrec', 'P' . str_pad($next_regno, 8, '0', STR_PAD_LEFT))->first()) {
-                    $next_regno = $next_regno + 1;
+                $next_medrec = $medrec + 1;
+                while ($this->where('Medrec', 'P' . str_pad($next_medrec, 8, '0', STR_PAD_LEFT))->first()) {
+                    $next_medrec = $next_medrec + 1;
                 }
     
-                return 'P' . str_pad($next_regno, 8, '0', STR_PAD_LEFT);
+                return 'P' . str_pad($next_medrec, 8, '0', STR_PAD_LEFT);
             }
             return 'P10000001';
         } else {
             $medrec = str_replace('P', '', $last_data->Medrec);
-            $next_regno = $medrec + 1;
-            while ($this->where('Medrec', 'P' . str_pad($next_regno, 8, '0', STR_PAD_LEFT))->first()) {
-                $next_regno = $next_regno + 1;
+            $next_medrec = $medrec + 1;
+            while ($this->where('Medrec', 'P' . str_pad($next_medrec, 8, '0', STR_PAD_LEFT))->first()) {
+                $next_medrec = $next_medrec + 1;
             }
 
-            return 'P' . str_pad($next_regno, 8, '0', STR_PAD_LEFT);
+            return 'P' . str_pad($next_medrec, 8, '0', STR_PAD_LEFT);
         }
     }
 
