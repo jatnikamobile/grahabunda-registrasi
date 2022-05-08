@@ -428,6 +428,8 @@ class NewVClaimController extends Controller
         $timestamp = $headers['timestamp'];
 
         $send_request = $this->sendRequest('GET', null, $url, $headers['headers']);
+        Log::info('api dataKlaim response:');
+        Log::info($send_request);
         $result = json_decode($send_request, true);
 
         $result_code = isset($result['metaData']['code']) ? $result['metaData']['code'] : null;

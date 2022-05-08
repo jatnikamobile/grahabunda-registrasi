@@ -148,8 +148,68 @@ class MasterPasienController extends Controller
             );
 
             return response()->json($parse);
-        }else{
-            return redirect()->back()->withInput($request->all());
+        } else {
+            try {
+                $new_pasien = new MasterPS();
+                $new_pasien->Medrec = $new_pasien->generateMedrec();
+                $new_pasien->Firstname = $request->Firstname;
+                $new_pasien->Pod = $request->Pod;
+                $new_pasien->Bod = $request->Bod;
+                $new_pasien->UmurThn = $request->UmurThn;
+                $new_pasien->UmurBln = $request->UmurBln;
+                $new_pasien->UmurHr = $request->UmurHari;
+                $new_pasien->GolDarah = $request->GolDarah;
+                $new_pasien->RHDarah = $request->RHDarah;
+                $new_pasien->WargaNegara = $request->WargaNegara;
+                $new_pasien->NoIden = $request->NoIden;
+                $new_pasien->Perkawinan = $request->Perkawinan;
+                $new_pasien->Agama = $request->Agama;
+                $new_pasien->Pendidikan = $request->Pendidikan;
+                $new_pasien->NamaAyah = $request->NamaAyah;
+                $new_pasien->NamaIbu = $request->NamaIbu;
+                $new_pasien->AskesNo = $request->NoPeserta;
+                $new_pasien->TglDaftar = date('Y-m-d H:i:s');
+                $new_pasien->Address = $request->Alamat;
+                $new_pasien->City = $request->NmKabupaten;
+                $new_pasien->Propinsi = $request->NmProvinsi;
+                $new_pasien->Kecamatan = $request->NmKecamatan;
+                $new_pasien->Kelurahan = $request->NmKelurahan;
+                $new_pasien->KdPos = $request->KdPos;
+                $new_pasien->Phone = $request->Phone;
+                $new_pasien->Kategori = $request->Kategori;
+                $new_pasien->NmUnit = $request->Unit;
+                $new_pasien->NrpNip = $request->Nrp;
+                $new_pasien->NmKesatuan = $request->NmKesatuan;
+                $new_pasien->NmGol = $request->NmGol;
+                $new_pasien->NmPangkat = $request->NmPangkat;
+                $new_pasien->Pekerjaan = $request->Pekerjaan;
+                $new_pasien->NmKorp = $request->NmKorp;
+                $new_pasien->NamaPJ = $request->NamaPJ;
+                $new_pasien->HubunganPJ = $request->HungunganPJ;
+                $new_pasien->PekerjaanPJ = $request->PekerjaanPJ;
+                $new_pasien->PhonePJ = $request->PhonePJ;
+                $new_pasien->AlamatPJ = $request->AlamatPJ;
+                $new_pasien->KdKelurahan = $request->Kelurahan;
+                $new_pasien->NmSuku = $request->Suku;
+                $new_pasien->KdSex = $request->KdSex;
+                $new_pasien->Keyakinan = $request->KdNilai;
+                $new_pasien->ValidUser = Auth::user() ? Auth::user()->NamaUser : 'system';
+                $new_pasien->save();
+
+                $pasien = new MasterPS();
+                $handleServer = $pasien->khusus_validuser($request->Firstname);
+    
+                $parse = array(
+                    'status' => true,
+                    'data' => $handleServer,
+                    'message' => 'Data berhasil disimpan!'
+                );
+    
+                return response()->json($parse);
+            } catch (\Throwable $th) {
+                Log::info('Create Pasien Error:');
+                Log::info($th);
+            }
         }
     }
 
