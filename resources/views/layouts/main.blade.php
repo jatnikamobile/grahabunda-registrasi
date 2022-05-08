@@ -32,7 +32,7 @@
     <!-- inline styles related to this page -->
     <link rel="stylesheet" href="/template/css/jquery-ui.custom.min.css" />
     <link rel="stylesheet" href="/template/css/chosen.min.css" />
-    <link rel="stylesheet" href="/template/bootstrap-datepicker/css/datepicker.css') ?>" />
+    <link rel="stylesheet" href="/template/bootstrap-datepicker/css/datepicker.css" />
     <link rel="stylesheet" href="/template/css/bootstrap-timepicker.min.css" />
     <link rel="stylesheet" href="/template/css/daterangepicker.min.css" />
     <link rel="stylesheet" href="/template/css/bootstrap-datetimepicker.min.css" />
@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="/template/css/style.css">
     <link rel="stylesheet" href="/template/css/palette.css">
     <link rel="stylesheet" href="/template/SweetAlert/sweetalert2.min.css">
-    <link rel="stylesheet" href="/template/print/printArea.css">
+    <link rel="stylesheet" href="/template/print/PrintArea.css">
     <link rel="stylesheet" href="/css/select2-fix.css">
     <!-- High Chart -->
     <link href="/template/highchart/code/css/highcharts.css" rel="stylesheet" />
@@ -222,18 +222,18 @@
     <script src="/template/SweetAlert/sweetalert.min.js"></script>
     
     <script src="/template/webcamjs/webcam.min.js"></script>
-    <script src="/template/print/jquery.printArea.js"></script>
+    <script src="/template/print/jquery.PrintArea.js"></script>
     <script src="/template/print/printThis.js"></script>
-    <script src="/template/bootstrap-datepicker/js/bootstrap-datepicker.js') ?>"></script>
+    <script src="/template/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 
     <script type="text/javascript" src="/template/datatables/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="/template/datatables/js/dataTables.bootstrap.min.js"></script>
     
-    <script src="/template/chart.js/Chart.js') ?>"></script>
-    <script src="/js/inputmask/inputmask.min.js') ?>"></script>
-    <script src="/js/inputmask/jquery.inputmask.min.js') ?>"></script>
-    <script src="/js/inputmask/bindings/inputmask.binding.js') ?>"></script>
+    <script src="/template/chart.js/Chart.js"></script>
+    <script src="/js/inputmask/inputmask.min.js"></script>
+    <script src="/js/inputmask/jquery.inputmask.min.js"></script>
+    <script src="/js/inputmask/bindings/inputmask.binding.js"></script>
     <script type="text/javascript">        
         //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
         //so disable dragging when clicking on label
