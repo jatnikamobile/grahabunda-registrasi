@@ -469,9 +469,6 @@
                         $("input[name=KdSex][value=" + response.pasien.KdSex.toUpperCase() + "]").attr('checked', 'checked');
 
                         loading.modal('hide');
-
-                        let uri = "{{ route('api.api-db.check-status-pasien') }}"
-                        cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
                     }else{
                         alert('Pasien tidak ada!');
                     }
@@ -979,8 +976,6 @@
     });
     $('#btnCari').on("click", function(ev){
         ev.preventDefault();
-        let uri = "{{ route('api.api-db.check-status-pasien') }}"
-        cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
         let btn = $('#btnCari');
         let oldText = btn.html();
         btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());

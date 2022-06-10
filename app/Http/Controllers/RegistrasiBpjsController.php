@@ -79,7 +79,7 @@ class RegistrasiBpjsController extends Controller
         $parse['diagnosa'] = [];
         $parse['prov'] = [];
         $parse['dokter'] = [];
-        $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
+        $parse['kelompok_rujukan'] = [];
         // $regno = $request->input("Regno");
         if ($regno !== null){
             $register = new Register();

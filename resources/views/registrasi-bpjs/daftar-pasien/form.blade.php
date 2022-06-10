@@ -1943,9 +1943,6 @@
                                 $('#DokterPengirim').prop('readonly', false);
                             }
 
-                            let uri = "{{ route('api.api-db.check-status-pasien') }}"
-                            cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
-
                             // Panggil histori
                             get_histori($('#noKartu').val());
                         } else {
@@ -2226,9 +2223,6 @@
                         if (response.data) {
                             $('#DokterPengirim').prop('readonly', false);
                         }
-
-                        let uri = "{{ route('api.api-db.check-status-pasien') }}"
-                        cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
 
                         // Panggil histori
                         get_histori(response.data.peserta.noKartu);
