@@ -59,44 +59,9 @@ $(document).ready(function(){
     $('#sidebar').addClass('menu-min');
 });
 
-function doSync(date_from, date_to) {
-    let loading = $('.modal-loading');
-    let uri = "{{ route('api.api-db.sync-pasien') }}"
-    
-    let data = {
-        params: {
-            action: 'sync-data',
-            date_from: date_from,
-            date_to: date_to
-        }
-    }
-    
-    loading.modal('show');
-    axios.get(uri, data).then(response => {
-        if (response.data.status == 'success') {
-            let arr_pasien = response.data.arr_pasien
-            let row = ''
-
-            if (arr_pasien.length > 0) {
-                arr_pasien.forEach(pasien => {
-                    if (pasien.status == 'success' || pasien.status == 'already exists') {
-                        row += '<tr class="info"><td>'+ pasien.medrec +'</td><td>'+ pasien.nama +'</td><td>'+ pasien.tanggal +'</td><td>'+ pasien.status +'</td></tr>';
-                    } else {
-                        row += '<tr class="info"><td>'+ pasien.medrec +'</td><td colspan="3">'+ pasien.message +'</td></tr>';
-                    }
-                });
-            }
-
-            $('#table-sync').html(row)
-        }
-        loading.modal('hide');
-    })
-}
-
 $('#mulai').on('click', function () {
     let date_from = $('#date_from').val()
     let date_to = $('#date_to').val()
-    doSync(date_from, date_to);
 })
 </script>
 @endsection

@@ -2323,9 +2323,6 @@
                                 var $pengobatan = $("<option selected></option>").val(response.data.rujukan.pelayanan.kode).text(response.data.rujukan.pelayanan.nama);
                                 $('#pengobatan').append($pengobatan).trigger('change');
 
-                                let uri = "{{ route('api.api-db.check-status-pasien') }}"
-                                cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
-
                                 // Panggil histori
                                 get_histori(response.data.rujukan.peserta.noKartu);
                             }else{
@@ -2538,9 +2535,6 @@
                     // $('input[name=pantangPerawatan][value=' + response.ppcek + ']').attr('checked', 'checked');
                     // $('#pantangPerawatanNote').val(response.ppnote);
                     // $('#lain').val(response.lain);
-
-                    let uri = "{{ route('api.api-db.check-status-pasien') }}"
-                    cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
                 } else {
                     alert(response.message);
                 }
@@ -2552,8 +2546,6 @@
 
     $('#btnCari').on("click", function(ev){
         ev.preventDefault();
-        let uri = "{{ route('api.api-db.check-status-pasien') }}"
-        cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
         let btn = $('#btnCari');
         let oldText = btn.html();
         btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
@@ -2717,324 +2709,318 @@
         e.preventDefault();
 
         // cekStatusPasien function is in script.js, check status of previous reg, is closed or open
-        let uri = "{{ route('api.api-db.check-status-pasien') }}"
-        cekStatusPasien(uri, $('#Medrec').val(), $('#noKartu').val(), $('#NoIden').val())
+        let btn = $('#submit');
+        let oldText = btn.html();
+        // btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
+        // btn.prop('disabled', true);
 
-        let status = $('#status_pasien').val();
-        if (status == 1) {
-            let btn = $('#submit');
-            let oldText = btn.html();
-            // btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());
-            // btn.prop('disabled', true);
+        let loading = $('.modal-loading');
+        loading.modal('show');
 
-            let loading = $('.modal-loading');
-            loading.modal('show');
-
-            var h2 = $('#Regdate').val();
-            var selisih = (Number(new Date(h2)) - Number(new Date())) / (60 * 60 * 24 * 1000);
-            var rekammedis = $('#Medrec').val();
-            let validation = true;
-            
-            if ($('#pengobatan').val() == '') {
-                // alert('Pilih Tujuan!');
-                loading.modal('hide');
-                validation = false;
+        var h2 = $('#Regdate').val();
+        var selisih = (Number(new Date(h2)) - Number(new Date())) / (60 * 60 * 24 * 1000);
+        var rekammedis = $('#Medrec').val();
+        let validation = true;
+        
+        if ($('#pengobatan').val() == '') {
+            // alert('Pilih Tujuan!');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#poli').val() == '') {
+            $('#poli-validation').removeClass('hide');
+            // alert('Pilih Poli!');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#Dokter').val() == '') {
+            $('#dokter-validation').removeClass('hide');
+            // alert('Pilih Dokter!');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#Medrec').val() == '') {
+            $('#rekammedis-validation').removeClass('hide');
+            // alert('No Rekam Medis Kosong!');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#Kategori').val() == '') {
+            $('#kategori-validation').removeClass('hide');
+            // alert('Silahkan pilih kategori atau segera update kategori');
+            loading.modal('hide');
+            validation = false;
+        }
+        if(($('input[name=KdSex]:checked').length) <= 0 ) {
+            $('#kdsex-validation').removeClass('hide');
+            // alert('Pilih jenis kelamin Pasien');
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#poli').val() == '39' && $('#cara_bayar').val() != '04'){
+            alert('Cara Bayar Harus COVID19 !');
+            btn.prop('disabled', false);
+            btn.html(oldText);
+            loading.modal('hide');
+            validation = false;
+        }
+        if($('#poli').val() == '39' && $('#Kategori').val() != '3'){
+            alert('Khusus Poli COVID19 Kategori Pasien Harus Jaminan Lain !');
+            btn.prop('disabled', false);
+            btn.html(oldText);
+            loading.modal('hide');
+            validation = false;
+        }
+        if (validation == false ) {
+            alert('Bebebrapa data harus diisi!');
+        } else {
+            var send = {
+                medrec : rekammedis,
+                regno : $("#Regno").val(),
+                regdate : $("#Regdate").val(),
+                poli : $('#poli').val(),
+                kategori : $('#Kategori').val(),
+                cbayar : $('#cara_bayar').val(),
+                nosep: $('#NoSep').val(),
             }
-            if($('#poli').val() == '') {
-                $('#poli-validation').removeClass('hide');
-                // alert('Pilih Poli!');
-                loading.modal('hide');
-                validation = false;
-            }
-            if($('#Dokter').val() == '') {
-                $('#dokter-validation').removeClass('hide');
-                // alert('Pilih Dokter!');
-                loading.modal('hide');
-                validation = false;
-            }
-            if($('#Medrec').val() == '') {
-                $('#rekammedis-validation').removeClass('hide');
-                // alert('No Rekam Medis Kosong!');
-                loading.modal('hide');
-                validation = false;
-            }
-            if($('#Kategori').val() == '') {
-                $('#kategori-validation').removeClass('hide');
-                // alert('Silahkan pilih kategori atau segera update kategori');
-                loading.modal('hide');
-                validation = false;
-            }
-            if(($('input[name=KdSex]:checked').length) <= 0 ) {
-                $('#kdsex-validation').removeClass('hide');
-                // alert('Pilih jenis kelamin Pasien');
-                loading.modal('hide');
-                validation = false;
-            }
-            if($('#poli').val() == '39' && $('#cara_bayar').val() != '04'){
-                alert('Cara Bayar Harus COVID19 !');
-                btn.prop('disabled', false);
-                btn.html(oldText);
-                loading.modal('hide');
-                validation = false;
-            }
-            if($('#poli').val() == '39' && $('#Kategori').val() != '3'){
-                alert('Khusus Poli COVID19 Kategori Pasien Harus Jaminan Lain !');
-                btn.prop('disabled', false);
-                btn.html(oldText);
-                loading.modal('hide');
-                validation = false;
-            }
-            if (validation == false ) {
-                alert('Bebebrapa data harus diisi!');
-            } else {
-                var send = {
-                    medrec : rekammedis,
-                    regno : $("#Regno").val(),
-                    regdate : $("#Regdate").val(),
-                    poli : $('#poli').val(),
-                    kategori : $('#Kategori').val(),
-                    cbayar : $('#cara_bayar').val(),
-                    nosep: $('#NoSep').val(),
-                }
-                $.ajax({
-                    url:'{{ route("api.cek-sep-pasien") }}',
-                    type:'get',
-                    dataType:'json',
-                    data:send,
-                    success(resp){
-                        if(resp.stat){
-                            @if(!isset($edit))
-                                if (selisih <= 8) {
-                                    $.ajax({
-                                        type:"GET",
-                                        url:"{{route('api.cek-regis-pasien')}}",
-                                        data:send,
-                                        success(resp){
-                                            if(resp.status){
-                                                // $("#form-psn-bpjs").submit();
-                                                $.ajax({
-                                                    url:"{{ route('reg-bpjs-daftar.form-post') }}",
-                                                    type:"post",
-                                                    dataType:"json",
-                                                    data:{
-                                                        Regno: $('#Regno').val(),
-                                                        // Medrec: rekammedis.substring(0,6),
-                                                        Medrec: rekammedis,
-                                                        Firstname: $('#Firstname').val(),
-                                                        Regdate: $('#Regdate').val(),
-                                                        Regtime: $('#Regtime').val(),
-                                                        KdCbayar: $('#cara_bayar').val(),
-                                                        Penjamin: $('[name=Penjamin]').val(),
-                                                        noKartu: $('#noKartu').val(),
-                                                        KdTuju: $('#pengobatan').val(),
-                                                        KdPoli: $('#poli').val(),
-                                                        DocRS: $('#Dokter').val(),
-                                                        Kunjungan: $('#Kunjungan').val(),
-                                                        UmurThn: $('#UmurThn').val(),
-                                                        UmurBln: $('#UmurBln').val(),
-                                                        UmurHari: $('#UmurHari').val(),
-                                                        Bod: $('#Bod').val(),
-                                                        NomorUrut: $('#NomorUrut').val(),
-                                                        KategoriPasien: $('#Kategori').val(),
-                                                        NoSep: $('#NoSep').val(),
-                                                        DiagAw: $('#Diagnosa').val(),
-                                                        KdSex: $('input[name=KdSex]:checked').val(),
-                                                        pisat: $('#pisat').val(),
-                                                        GroupUnit: $('#GroupUnit').val(),
-                                                        NoRujuk: $('#NoRujuk').val(),
-                                                        Keterangan: $('#Keterangan').val(),
-                                                        RegRujuk: $('#RegRujuk').val(),
-                                                        noPpk: $('#noPpk').val(),
-                                                        Ppk: $('#Ppk').val(),
-                                                        kodePeserta: $('#kodePeserta').val(),
-                                                        Peserta: $('#Peserta').val(),
-                                                        JatKelas: $('#jatah_kelas').val(),
-                                                        NotifSep: $('#NotifSep').val(),
-                                                        KasKe: $('input[name=KasKe]:checked').val(),
-                                                        NoIden: $('#NoIden').val(),
-                                                        statusPeserta: $('#statusPeserta').val(),
-                                                        Faskes: $('input[name=Faskes]:checked').val(),
-                                                        Notelp: $('#Notelp').val(),
-                                                        Cob: $('input[name=Cob]:checked').val(),
-                                                        Keyakinan: $('#change_keyakinan').val(),
-                                                        Prolanis: $('#Prolanis').val(),
-                                                        Perjanjian: janji,
-                                                        Fam_trace: fam_tracing,
-                                                        asalRujukan: $('[name=Faskes]').val(),
-                                                        KdDPJP: $('#DokterPengirim').val(),
-                                                        kdrujuk: $('#NoRujuk').val(),
-                                                        nokontrol: $('#NoSuratKontrol').val(),
-                                                        idregold: $('[name=regold]').val(),
-                                                        catatan: $('#catatan').val(),
-                                                        kodeoPpk: $('#kodeoPpk').val(),
-                                                        form_type: $('#form_type').val()
-                                                    },
-                                                    // error: function(response){
-                                                    //     alert('Gagal menambahkan/server down, Silahkan coba lagi');
-                                                    //     loading.modal('hide');
-                                                    //     btn.prop('disabled', false);
-                                                    //     btn.html(oldText);
-                                                    // },
-                                                    success:function(response)
-                                                    {
-                                                        pesan = response.message + "\n" +
-                                                                "Pasien " + response.data.Firstname + "\n" +
-                                                                "Antrian aplikasi baru " + response.data.NomorUrut + "\n" ;
-                                                        alert(pesan);
-                                                        console.log(response);
-                                                        loading.modal('hide');
-                                                        $('#Regno').val(response.data.Regno);
-                                                        $('#NomorUrut').val(response.data.NomorUrut);
-                                                        // alert('sedang dalam perbaikan 30mnt/ selain fisio terapi pasien masuk');
-                                                        btn.prop('disabled', false);
-                                                        $("#submit").hide();
-                                                        btn.html(oldText);
-                                                        loading.modal('hide');
-                                                        if (fam_tracing == null) {
-                                                            push_print(response.data.Regno);
-                                                        }
-                                                    }
-                                                });
-                                            }else{
-                                                loading.modal('hide');
-                                                pesan = "Pasien Telah Terdaftar pada \n" +
-                                                        "Tanggal :" + resp.data.Regdate + "\n" +
-                                                        "di Poli :" + resp.data.NMPoli + "\n" +
-                                                        "Dengan no Reg :" + resp.data.Regno + "\n" +
-                                                        "Dokter :" + resp.data.NmDoc + "\n" +
-                                                        "*Untuk mengkonfirmasi pendaftaran Klik icon pensil pada list pasien atau" + "\n" +
-                                                        "*Bila ingin mengganti poli silahkan klik icon pensil pada list pasien";
-                                                alert(pesan);
-                                                btn.prop('disabled', false);
-                                                btn.html(oldText);
-                                            }  
-                                        }
-                                    });
-                                } else {
-                                    alert('Pendaftaran lebih dari 7 hari');
-                                }
-                            @else
-                                let nourut = '';
+            $.ajax({
+                url:'{{ route("api.cek-sep-pasien") }}',
+                type:'get',
+                dataType:'json',
+                data:send,
+                success(resp){
+                    if(resp.stat){
+                        @if(!isset($edit))
+                            if (selisih <= 8) {
                                 $.ajax({
-                                    type:"get",
-                                    url:"{{route('api.cek-nomor-urut')}}",
-                                    data:{
-                                        regno:$('#Regno').val(),
-                                        kdpoli:$('#poli').val(),
-                                        regdate:$('#Regdate').val()
-                                    },
+                                    type:"GET",
+                                    url:"{{route('api.cek-regis-pasien')}}",
+                                    data:send,
                                     success(resp){
                                         if(resp.status){
-                                            nourut = $('#NomorUrut').val();
-                                        }
-                                        $.ajax({
-                                            url:"{{ route('reg-bpjs-daftar.form-post') }}",
-                                            type:"post",
-                                            dataType:"json",
-                                            data:{
-                                                Regno: $('#Regno').val(),
-                                                // Medrec: rekammedis.substring(0,6),
-                                                Medrec: rekammedis,
-                                                Firstname: $('#Firstname').val(),
-                                                Regdate: $('#Regdate').val(),
-                                                Regtime: $('#Regtime').val(),
-                                                KdCbayar: $('#cara_bayar').val(),
-                                                Penjamin: $('[name=Penjamin]').val(),
-                                                noKartu: $('#noKartu').val(),
-                                                KdTuju: $('#pengobatan').val(),
-                                                KdPoli: $('#poli').val(),
-                                                DocRS: $('#Dokter').val(),
-                                                NomorUrut: nourut,
-                                                Kunjungan: $('#Kunjungan').val(),
-                                                UmurThn: $('#UmurThn').val(),
-                                                UmurBln: $('#UmurBln').val(),
-                                                UmurHari: $('#UmurHari').val(),
-                                                Bod: $('#Bod').val(),
-                                                KategoriPasien: $('#Kategori').val(),
-                                                NoSep: $('#NoSep').val(),
-                                                DiagAw: $('#Diagnosa').val(),
-                                                KdSex: $('input[name=KdSex]:checked').val(),
-                                                pisat: $('#pisat').val(),
-                                                GroupUnit: $('#GroupUnit').val(),
-                                                Keterangan: $('#Keterangan').val(),
-                                                NoRujuk: $('#NoRujuk').val(),
-                                                RegRujuk: $('#RegRujuk').val(),
-                                                noPpk: $('#noPpk').val(),
-                                                Ppk: $('#Ppk').val(),
-                                                kodePeserta: $('#kodePeserta').val(),
-                                                Peserta: $('#Peserta').val(),
-                                                JatKelas: $('#jatah_kelas').val(),
-                                                NotifSep: $('#NotifSep').val(),
-                                                KasKe: $('input[name=KasKe]:checked').val(),
-                                                NoIden: $('#NoIden').val(),
-                                                statusPeserta: $('#statusPeserta').val(),
-                                                Faskes: $('input[name=Faskes]:checked').val(),
-                                                Notelp: $('#Notelp').val(),
-                                                Cob: $('input[name=Cob]:checked').val(),
-                                                Keyakinan: $('#change_keyakinan').val(),
-                                                Prolanis: $('#Prolanis').val(),
-                                                Perjanjian: janji,
-                                                asalRujukan: $('[name=Faskes]').val(),
-                                                KdDPJP: $('#DokterPengirim').val(),
-                                                nokontrol: $('#NoSuratKontrol').val(),
-                                                idregold: $('[name=regold]').val(),
-                                                catatan: $('#catatan').val(),
-                                                kodeoPpk: $('#kodeoPpk').val(),
-                                                form_type: $('#form_type').val()
-                                            },error: function(response){
-                                                alert('Gagal menambahkan/server down, Silahkan coba lagi');
-                                                loading.modal('hide');
-                                                btn.prop('disabled', false);
-                                                btn.html(oldText);
-                                            },
-                                            success:function(response)
-                                            {
-                                                if (response.status == false) {
-                                                    btn.prop('disabled', false);
-                                                    btn.html(oldText);
-                                                    loading.modal('hide');
-                                                    alert(response.message);
-                                                } else {
+                                            // $("#form-psn-bpjs").submit();
+                                            $.ajax({
+                                                url:"{{ route('reg-bpjs-daftar.form-post') }}",
+                                                type:"post",
+                                                dataType:"json",
+                                                data:{
+                                                    Regno: $('#Regno').val(),
+                                                    // Medrec: rekammedis.substring(0,6),
+                                                    Medrec: rekammedis,
+                                                    Firstname: $('#Firstname').val(),
+                                                    Regdate: $('#Regdate').val(),
+                                                    Regtime: $('#Regtime').val(),
+                                                    KdCbayar: $('#cara_bayar').val(),
+                                                    Penjamin: $('[name=Penjamin]').val(),
+                                                    noKartu: $('#noKartu').val(),
+                                                    KdTuju: $('#pengobatan').val(),
+                                                    KdPoli: $('#poli').val(),
+                                                    DocRS: $('#Dokter').val(),
+                                                    Kunjungan: $('#Kunjungan').val(),
+                                                    UmurThn: $('#UmurThn').val(),
+                                                    UmurBln: $('#UmurBln').val(),
+                                                    UmurHari: $('#UmurHari').val(),
+                                                    Bod: $('#Bod').val(),
+                                                    NomorUrut: $('#NomorUrut').val(),
+                                                    KategoriPasien: $('#Kategori').val(),
+                                                    NoSep: $('#NoSep').val(),
+                                                    DiagAw: $('#Diagnosa').val(),
+                                                    KdSex: $('input[name=KdSex]:checked').val(),
+                                                    pisat: $('#pisat').val(),
+                                                    GroupUnit: $('#GroupUnit').val(),
+                                                    NoRujuk: $('#NoRujuk').val(),
+                                                    Keterangan: $('#Keterangan').val(),
+                                                    RegRujuk: $('#RegRujuk').val(),
+                                                    noPpk: $('#noPpk').val(),
+                                                    Ppk: $('#Ppk').val(),
+                                                    kodePeserta: $('#kodePeserta').val(),
+                                                    Peserta: $('#Peserta').val(),
+                                                    JatKelas: $('#jatah_kelas').val(),
+                                                    NotifSep: $('#NotifSep').val(),
+                                                    KasKe: $('input[name=KasKe]:checked').val(),
+                                                    NoIden: $('#NoIden').val(),
+                                                    statusPeserta: $('#statusPeserta').val(),
+                                                    Faskes: $('input[name=Faskes]:checked').val(),
+                                                    Notelp: $('#Notelp').val(),
+                                                    Cob: $('input[name=Cob]:checked').val(),
+                                                    Keyakinan: $('#change_keyakinan').val(),
+                                                    Prolanis: $('#Prolanis').val(),
+                                                    Perjanjian: janji,
+                                                    Fam_trace: fam_tracing,
+                                                    asalRujukan: $('[name=Faskes]').val(),
+                                                    KdDPJP: $('#DokterPengirim').val(),
+                                                    kdrujuk: $('#NoRujuk').val(),
+                                                    nokontrol: $('#NoSuratKontrol').val(),
+                                                    idregold: $('[name=regold]').val(),
+                                                    catatan: $('#catatan').val(),
+                                                    kodeoPpk: $('#kodeoPpk').val(),
+                                                    form_type: $('#form_type').val()
+                                                },
+                                                // error: function(response){
+                                                //     alert('Gagal menambahkan/server down, Silahkan coba lagi');
+                                                //     loading.modal('hide');
+                                                //     btn.prop('disabled', false);
+                                                //     btn.html(oldText);
+                                                // },
+                                                success:function(response)
+                                                {
                                                     pesan = response.message + "\n" +
                                                             "Pasien " + response.data.Firstname + "\n" +
-                                                            "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
-                                                            "Antrian aplikasi lama " + response.result;
+                                                            "Antrian aplikasi baru " + response.data.NomorUrut + "\n" ;
                                                     alert(pesan);
                                                     console.log(response);
                                                     loading.modal('hide');
                                                     $('#Regno').val(response.data.Regno);
                                                     $('#NomorUrut').val(response.data.NomorUrut);
-                                                    
-                                                    $("#submit").hide();
+                                                    // alert('sedang dalam perbaikan 30mnt/ selain fisio terapi pasien masuk');
                                                     btn.prop('disabled', false);
+                                                    $("#submit").hide();
                                                     btn.html(oldText);
+                                                    loading.modal('hide');
                                                     if (fam_tracing == null) {
                                                         push_print(response.data.Regno);
                                                     }
-                                                    // pesan = response.message + "\n" +
-                                                    //         "Pasien " + response.data.Firstname + "\n"
-                                                    // alert(pesan);
                                                 }
-                                            }
-                                        });
+                                            });
+                                        }else{
+                                            loading.modal('hide');
+                                            pesan = "Pasien Telah Terdaftar pada \n" +
+                                                    "Tanggal :" + resp.data.Regdate + "\n" +
+                                                    "di Poli :" + resp.data.NMPoli + "\n" +
+                                                    "Dengan no Reg :" + resp.data.Regno + "\n" +
+                                                    "Dokter :" + resp.data.NmDoc + "\n" +
+                                                    "*Untuk mengkonfirmasi pendaftaran Klik icon pensil pada list pasien atau" + "\n" +
+                                                    "*Bila ingin mengganti poli silahkan klik icon pensil pada list pasien";
+                                            alert(pesan);
+                                            btn.prop('disabled', false);
+                                            btn.html(oldText);
+                                        }  
                                     }
                                 });
-                            @endif
-                        }else{
-                            pesan = "Maaf. NoSep telah digunakan oleh : "+ "\n" +
-                                    " - No RM - " + resp.data.Medrec + "\n" +
-                                    " - Nama Pasien - " + resp.data.Firstname + "\n" +
-                                    " - No Registrasi - " + resp.data.Regno + "\n" +
-                                    " - Tgl Registrasi - " + resp.data.Regdate + "\n" +
-                                    " - Poli - " + resp.data.NMPoli;
-                            alert(pesan);
-                            loading.modal('hide');
-                            btn.prop('disabled', false);
-                            btn.html(oldText);
-                        }
+                            } else {
+                                alert('Pendaftaran lebih dari 7 hari');
+                            }
+                        @else
+                            let nourut = '';
+                            $.ajax({
+                                type:"get",
+                                url:"{{route('api.cek-nomor-urut')}}",
+                                data:{
+                                    regno:$('#Regno').val(),
+                                    kdpoli:$('#poli').val(),
+                                    regdate:$('#Regdate').val()
+                                },
+                                success(resp){
+                                    if(resp.status){
+                                        nourut = $('#NomorUrut').val();
+                                    }
+                                    $.ajax({
+                                        url:"{{ route('reg-bpjs-daftar.form-post') }}",
+                                        type:"post",
+                                        dataType:"json",
+                                        data:{
+                                            Regno: $('#Regno').val(),
+                                            // Medrec: rekammedis.substring(0,6),
+                                            Medrec: rekammedis,
+                                            Firstname: $('#Firstname').val(),
+                                            Regdate: $('#Regdate').val(),
+                                            Regtime: $('#Regtime').val(),
+                                            KdCbayar: $('#cara_bayar').val(),
+                                            Penjamin: $('[name=Penjamin]').val(),
+                                            noKartu: $('#noKartu').val(),
+                                            KdTuju: $('#pengobatan').val(),
+                                            KdPoli: $('#poli').val(),
+                                            DocRS: $('#Dokter').val(),
+                                            NomorUrut: nourut,
+                                            Kunjungan: $('#Kunjungan').val(),
+                                            UmurThn: $('#UmurThn').val(),
+                                            UmurBln: $('#UmurBln').val(),
+                                            UmurHari: $('#UmurHari').val(),
+                                            Bod: $('#Bod').val(),
+                                            KategoriPasien: $('#Kategori').val(),
+                                            NoSep: $('#NoSep').val(),
+                                            DiagAw: $('#Diagnosa').val(),
+                                            KdSex: $('input[name=KdSex]:checked').val(),
+                                            pisat: $('#pisat').val(),
+                                            GroupUnit: $('#GroupUnit').val(),
+                                            Keterangan: $('#Keterangan').val(),
+                                            NoRujuk: $('#NoRujuk').val(),
+                                            RegRujuk: $('#RegRujuk').val(),
+                                            noPpk: $('#noPpk').val(),
+                                            Ppk: $('#Ppk').val(),
+                                            kodePeserta: $('#kodePeserta').val(),
+                                            Peserta: $('#Peserta').val(),
+                                            JatKelas: $('#jatah_kelas').val(),
+                                            NotifSep: $('#NotifSep').val(),
+                                            KasKe: $('input[name=KasKe]:checked').val(),
+                                            NoIden: $('#NoIden').val(),
+                                            statusPeserta: $('#statusPeserta').val(),
+                                            Faskes: $('input[name=Faskes]:checked').val(),
+                                            Notelp: $('#Notelp').val(),
+                                            Cob: $('input[name=Cob]:checked').val(),
+                                            Keyakinan: $('#change_keyakinan').val(),
+                                            Prolanis: $('#Prolanis').val(),
+                                            Perjanjian: janji,
+                                            asalRujukan: $('[name=Faskes]').val(),
+                                            KdDPJP: $('#DokterPengirim').val(),
+                                            nokontrol: $('#NoSuratKontrol').val(),
+                                            idregold: $('[name=regold]').val(),
+                                            catatan: $('#catatan').val(),
+                                            kodeoPpk: $('#kodeoPpk').val(),
+                                            form_type: $('#form_type').val()
+                                        },error: function(response){
+                                            alert('Gagal menambahkan/server down, Silahkan coba lagi');
+                                            loading.modal('hide');
+                                            btn.prop('disabled', false);
+                                            btn.html(oldText);
+                                        },
+                                        success:function(response)
+                                        {
+                                            if (response.status == false) {
+                                                btn.prop('disabled', false);
+                                                btn.html(oldText);
+                                                loading.modal('hide');
+                                                alert(response.message);
+                                            } else {
+                                                pesan = response.message + "\n" +
+                                                        "Pasien " + response.data.Firstname + "\n" +
+                                                        "Antrian aplikasi baru " + response.data.NomorUrut + "\n" +
+                                                        "Antrian aplikasi lama " + response.result;
+                                                alert(pesan);
+                                                console.log(response);
+                                                loading.modal('hide');
+                                                $('#Regno').val(response.data.Regno);
+                                                $('#NomorUrut').val(response.data.NomorUrut);
+                                                
+                                                $("#submit").hide();
+                                                btn.prop('disabled', false);
+                                                btn.html(oldText);
+                                                if (fam_tracing == null) {
+                                                    push_print(response.data.Regno);
+                                                }
+                                                // pesan = response.message + "\n" +
+                                                //         "Pasien " + response.data.Firstname + "\n"
+                                                // alert(pesan);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        @endif
+                    }else{
+                        pesan = "Maaf. NoSep telah digunakan oleh : "+ "\n" +
+                                " - No RM - " + resp.data.Medrec + "\n" +
+                                " - Nama Pasien - " + resp.data.Firstname + "\n" +
+                                " - No Registrasi - " + resp.data.Regno + "\n" +
+                                " - Tgl Registrasi - " + resp.data.Regdate + "\n" +
+                                " - Poli - " + resp.data.NMPoli;
+                        alert(pesan);
+                        loading.modal('hide');
+                        btn.prop('disabled', false);
+                        btn.html(oldText);
                     }
-                });
-            }
+                }
+            });
         }
     });
 
