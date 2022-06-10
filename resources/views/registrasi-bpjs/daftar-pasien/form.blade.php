@@ -1099,11 +1099,9 @@
     </div><!-- MODAL UPDATE KATEGORI -->
 
     <input type="hidden" id="form_type">
-    <input type="hidden" id="status_pasien">
 </section>
 @endsection
 @section('script')
-<script src="/js/script.js"></script>
 <script>
     $('[name=KasKe]').on('change', function(ev,xv){
         if($(this).val() == '1'){
@@ -2708,7 +2706,6 @@
     $("#submit").on("click",function(e){
         e.preventDefault();
 
-        // cekStatusPasien function is in script.js, check status of previous reg, is closed or open
         let btn = $('#submit');
         let oldText = btn.html();
         // btn.html('<i class="fa fa-spin fa-spinner"></i> ' + btn.text());

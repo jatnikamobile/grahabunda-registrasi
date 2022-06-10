@@ -406,11 +406,9 @@
         </div>
     </div>
     <input type="hidden" id="form_type">
-    <input type="hidden" id="status_pasien">
 </section>
 @endsection
 @section('script')
-<script src="/js/script.js"></script>
 <script>
     $(document).ready(function(){
         $('#sidebar').addClass('menu-min');
