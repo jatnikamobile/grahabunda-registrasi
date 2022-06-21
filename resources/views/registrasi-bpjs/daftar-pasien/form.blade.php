@@ -3348,12 +3348,30 @@
 
     });
 
+    function getStartAndEndDate() {
+        let date = new Date()
+        let year = date.getFullYear()
+        let month = date.getMonth()+1 < 10 ? '0' + (date.getMonth()+1) : date.getMonth()+1
+        let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+        let current_date = year + '-' + month + '-' + day
+        let begin_date = new Date(date.setDate(date.getDate()-89))
+        let begin_year = begin_date.getFullYear()
+        let begin_month = begin_date.getMonth()+1 < 10 ? '0' + (begin_date.getMonth()+1) : begin_date.getMonth()+1
+        let begin_day = begin_date.getDate() < 10 ? '0' + begin_date.getDate() : begin_date.getDate()
+        let start_date = begin_year + '-' + begin_month + '-' + begin_day
+        return {
+            start_date: start_date,
+            end_date: current_date
+        }
+    }
+
     function get_histori(no_kartu_pasien) {
+        let date_dange = getStartAndEndDate()
         // get histori peserta
         $.get('{{ route('vclaim.histori_peserta') }}', {
             no_kartu: no_kartu_pasien,
-            tanggal_mulai: '1990-01-01',
-            tanggal_akhir: '2024-01-01',
+            tanggal_mulai: date_dange.start_date,
+            tanggal_akhir: date_dange.end_date,
         })
         .always(function() {
             
