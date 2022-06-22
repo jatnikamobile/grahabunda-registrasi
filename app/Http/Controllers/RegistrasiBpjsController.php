@@ -416,8 +416,10 @@ class RegistrasiBpjsController extends Controller
         return view('registrasi-bpjs.mutasi-pasien.index',$parse);
     }
 
-    public function mutasi_form($regno = null)
+    public function mutasi_form($regno = null, Request $request)
     {
+        $regno = $request->regno ? $regno : null;
+
         $kelas = Procedure::stpn_ViewKelas_INAxhos();
 
         $parse = [
@@ -827,7 +829,7 @@ class RegistrasiBpjsController extends Controller
 
     public function pengajuanSPRIIndex(Request $request)
     {
-        $pengajuan_spri = PengajuanSPRI::orderBy('id', 'desc')->paginate(10);
+        $pengajuan_spri = PengajuanSPRI::with('fppri')->orderBy('id', 'desc')->paginate(10);
 
         return view('registrasi-bpjs.pengajuan-spri.index', compact('pengajuan_spri'));
     }
@@ -920,6 +922,24 @@ class RegistrasiBpjsController extends Controller
                 $data_poli = $register ? POLItpp::where('KDPoli', $register->KdPoli)->first() : null;
 
                 return response()->json(['status' => 'success', 'register' => $register, 'poli' => $poli, 'dokter' => $dokter, 'data_dokter' => $data_dokter, 'data_poli' => $data_poli]);
+                break;
+
+            case 'delete-spri':
+                $no_spri = $request->no_spri;
+        
+                $spri = PengajuanSPRI::where('no_spri', $no_spri)->first();
+        
+                if ($spri) {
+                    try {
+                        $spri->delete();
+        
+                        return response()->json(['status' => 'success']);
+                    } catch (\Throwable $th) {
+                        return response()->json(['status' => 'failed', 'message' => $th->getMessage()]);
+                    }
+                } else {
+                    return response()->json(['status' => 'failed', 'message' => 'Data tidak ditemukan']);
+                }
                 break;
             
             default:

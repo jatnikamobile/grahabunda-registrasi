@@ -36,7 +36,7 @@
 					<label class="col-sm-3 control-label no-padding-right"> Poli</label>
 					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-						<select name="poli" id="poli" class="form-control input-sm col-xs-6 col-sm-6" required="required">
+						<select name="poli" id="poli" class="input-sm col-xs-6 col-sm-6" required="required">
 							<option>-= Pilih Poli =-</option>
 							@if (count($poli) > 0)
 								@foreach ($poli as $pli)
@@ -51,7 +51,7 @@
 					<label class="col-sm-3 control-label no-padding-right"> Dokter</label>
 					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
-						<select name="dokter" id="dokter" class="form-control input-sm col-xs-6 col-sm-6" required="required">
+						<select name="dokter" id="dokter" class="input-sm col-xs-6 col-sm-6" required="required">
 							<option>-= Pilih Dokter =-</option>
 							@if ($dokter)
 								@foreach ($dokter as $dok)
