@@ -434,7 +434,7 @@ class RegistrasiBpjsController extends Controller
             ];
         }
         // dd($parse);
-        $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
+        // $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
         return view('registrasi-bpjs.mutasi-pasien.form',$parse);
     }
 

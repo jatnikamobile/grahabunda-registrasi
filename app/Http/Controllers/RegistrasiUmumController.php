@@ -241,7 +241,7 @@ class RegistrasiUmumController extends Controller
         }
         
         $parse['ruang'] = $kelas;
-        $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
+        // $parse['kelompok_rujukan'] = TmKelompokRujukan::orderBy('I_KelompokRujukan')->get();
         // dd($parse);
         return view('registrasi-umum.mutasi-pasien.form',$parse);
     }

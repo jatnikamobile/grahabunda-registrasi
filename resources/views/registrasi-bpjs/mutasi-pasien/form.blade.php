@@ -105,7 +105,7 @@
                 </div>
                 </form>
                 <!-- Asal Rujukan -->
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label class="col-md-3 control-label no-padding-right">Rujukan Dari</label>
                     <div class="input-group col-md-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
@@ -119,7 +119,7 @@
                             Pilih asal rujukan pasien!
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <!-- No Rujukan -->
                 <form method="get" id="search_noRujukan">
                 <div class="form-group">
@@ -497,7 +497,7 @@
                     </div>
                 </div>
                 <!-- Ruang Rawat -->
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">Ruang Rawat</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
@@ -519,9 +519,9 @@
                         </select>
                         
                     </div>
-                </div>
+                </div> --}}
                 <!-- Kelas -->
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">Kode Ruangan</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
@@ -529,9 +529,9 @@
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">Kode Kelas</span>
                         <input type="text" name="Kelas" id="kelas" class="form-control input-sm col-xs-6 col-sm-6" readonly value="{{ @$edit->KdBangsal }}" />
                     </div>
-                </div>
+                </div> --}}
                 <!-- No Kamar -->
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">Pilih Kamar</label>
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
@@ -552,7 +552,7 @@
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">Tempat Tidur</span>
                         <input type="text" name="TempatTidur" id="TempatTidur" class="form-control input-sm col-xs-6 col-sm-6" readonly value="{{ @$edit->NoTTidur }}" />
                     </div>
-                </div>
+                </div> --}}
                 <!-- Dokter Yang Merawat -->
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">Dokter Yg Merawat</label>
