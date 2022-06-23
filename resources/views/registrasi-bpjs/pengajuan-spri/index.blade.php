@@ -44,7 +44,11 @@
                                         <td>{{ $ps->no_spri }}</td>
                                         <td>{{ $ps->nama_diagnosa }}</td>
                                         <td>
-                                            <a href="{{ Route('reg-bpjs-mutasi.form-edit') }}/{{ $ps->fppri ? $ps->fppri->Regno : '' }}" title="Buka form admission"><i class="fa fa-newspaper-o"></i></a>
+                                            @if ($ps->fppri)
+                                                <a href="{{ Route('reg-bpjs-mutasi.form-edit') }}/{{ $ps->regno }}" title="Buka form admission"><i class="fa fa-newspaper-o"></i></a>
+                                            @else
+                                                <a href="{{ Route('reg-bpjs-mutasi.form') }}?regno={{ $ps->regno }}" title="Buka form admission"><i class="fa fa-newspaper-o"></i></a>
+                                            @endif
                                             <a href="javascript:void(0)" title="Hapus SPRI" class="text-danger" onclick="confirmDeleteSPRI('{{ $ps->no_spri }}')"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>

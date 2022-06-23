@@ -418,8 +418,6 @@ class RegistrasiBpjsController extends Controller
 
     public function mutasi_form($regno = null, Request $request)
     {
-        $regno = $request->regno ? $regno : null;
-
         $kelas = Procedure::stpn_ViewKelas_INAxhos();
 
         $parse = [
@@ -430,7 +428,13 @@ class RegistrasiBpjsController extends Controller
             $data = $register->get_one_bpjs($regno);
             $parse = [
                 'ruang' => $kelas,
-                'edit' => $data
+                'edit' => $data,
+                'param_regno' => null
+            ];
+        } else {
+            $parse = [
+                'ruang' => $kelas,
+                'param_regno' => $request->regno
             ];
         }
         // dd($parse);
@@ -846,6 +850,7 @@ class RegistrasiBpjsController extends Controller
 
     public function pengajuanSPRISave(Request $request)
     {
+        $regno = $request->regno;
         $no_kartu = $request->no_kartu;
         $poli = $request->poli;
         $dokter = $request->dokter;
@@ -878,6 +883,7 @@ class RegistrasiBpjsController extends Controller
             $pengajuan_spri->no_spri = $insert_spri['noSPRI'];
             $pengajuan_spri->nama_diagnosa = $insert_spri['namaDiagnosa'];
             $pengajuan_spri->user = Auth::user()['NamaUser'];
+            $pengajuan_spri->regno = $regno;
             $pengajuan_spri->save();
         }
 

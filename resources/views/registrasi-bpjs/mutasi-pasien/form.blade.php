@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <div class="input-group col-sm-9">
                             <span class="input-group-addon" id="" style="border:none;background-color:transparent;">No Registrasi: </span>
-                            <input type="text" name="Regno" id="Regno" value="{{ @$edit->Regno }}" required />
+                            <input type="text" name="Regno" id="Regno" value="{{ @$edit->Regno ?: $param_regno }}" required />
                             <button type="submit" class="btn btn-info btn-sm" id="btnCari" style="margin-left: 10px;"><i class="ace-icon fa fa-search"></i>Cari</button>
                         </div>
                     </div>
@@ -1734,6 +1734,11 @@
         })
         loading.modal('hide');
     });
+
+    var param_regno = '{{ $param_regno }}'
+    if (param_regno) {
+        $('#btnCari').click()
+    }
 
     $('#updateTanggalPulang').on('click', function(ev) {
         ev.preventDefault();

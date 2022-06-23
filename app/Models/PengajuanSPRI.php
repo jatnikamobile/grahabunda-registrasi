@@ -9,6 +9,7 @@ class PengajuanSPRI extends Model
     protected $connection = 'main';
     protected $table = 'pengajuan_spri';
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     public function fppri()
     {
