@@ -132,7 +132,7 @@ class NewVClaimController extends Controller
     {
         $signature = $this->createSignature();
         
-        return [
+        $headers = [
             'headers' => [
                 'Accept: application/json',
                 'X-cons-id: ' . $this->cons_id,
@@ -142,6 +142,11 @@ class NewVClaimController extends Controller
             ],
             'timestamp' => $signature['timestamp']
         ];
+
+        Log::info('api_bpjs_header:');
+        Log::info($headers);
+
+        return $headers;
     }
 
     private function setAntreanHeaders()
