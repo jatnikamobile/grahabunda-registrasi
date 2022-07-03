@@ -72,6 +72,7 @@
                     </a>
                     <ul class="nav navbar-nav">
                         <li><a href="{{ route('reg-bpjs-daftar.form') }}"><i class="menu-icon fa fa-list-alt"></i>&nbsp; Daftar BPJS</a></li>
+                        <li><a href="{{ route('reg-bpjs-daftar.reg-antrol') }}"><i class="menu-icon fa fa-list-alt"></i>&nbsp; Reg Antrol</a></li>
                         <li><a href="{{ route('reg-umum-daftar.form') }}"><i class="menu-icon fa fa-list-alt"></i>&nbsp; Daftar Umum</a></li>
                         <li><a href="{{ route('register-perjanjian') }}"><i class="fa fa-users"></i>&nbsp;List Perjanjian</a></li>
                         <li><a href="{{ route('register-mcu') }}"><i class="fa fa-user"></i>&nbsp;MCU</a></li>

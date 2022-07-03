@@ -91,6 +91,11 @@ class RegistrasiBpjsController extends Controller
         return view('registrasi-bpjs.daftar-pasien.form',$parse);
     }
 
+    public function reg_antrol()
+    {
+        return view('registrasi-bpjs.daftar-pasien.reg-antrol');
+    }
+
     public function find_pasien(Request $request)
 	{
 		$medrec = $request->input("medrec");

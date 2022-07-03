@@ -95,6 +95,7 @@ Route::group(['prefix'=>'ReigstrasiBPJS'], function(){
     Route::group(['prefix'=>'Pendaftaran'],function(){
         Route::get('/', ['as' => 'reg-bpjs-daftar', 'uses' => 'RegistrasiBpjsController@daftar_index']);
         Route::get('/Form', ['as' => 'reg-bpjs-daftar.form', 'uses' => 'RegistrasiBpjsController@daftar_form']);
+        Route::get('/reg-antrol', ['as' => 'reg-bpjs-daftar.reg-antrol', 'uses' => 'RegistrasiBpjsController@reg_antrol']);
         Route::get('/Edit/{regno?}', ['as' => 'reg-bpjs-daftar.form-edit', 'uses' => 'RegistrasiBpjsController@daftar_form']);
         Route::post('/Post', ['as' => 'reg-bpjs-daftar.form-post', 'uses' => 'RegistrasiBpjsController@post']);
         Route::post('/Delete', ['as' => 'reg-bpjs-daftar-delete', 'uses' => 'RegistrasiBpjsController@delete']);
