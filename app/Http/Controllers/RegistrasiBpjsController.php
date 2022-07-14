@@ -142,7 +142,7 @@ class RegistrasiBpjsController extends Controller
             if ($jenis_pelayanan == 'Rawat Inap') {
                 $register = Fppri::where('nosep', $bpjs_data['sep']['noSep'])->first();
                 $master_ps = $register ? MasterPS::where('Medrec', $register->Medrec)->first() : null;
-                $kategori = TblKategoriPsn::where('KdKategori', 28)->first();
+                $kategori = TblKategoriPsn::where('KdKategori', 2)->first();
                 $dokter = FtDokter::where('KdDPJP', $bpjs_data['kodeDokter'])->first();
                 $poli = POLItpp::where('KdBPJS', $bpjs_data['poliTujuan'])->first();
             } else {
@@ -454,7 +454,7 @@ class RegistrasiBpjsController extends Controller
         if ($up) {
             $fppri = Fppri::where('nosep', $request->NoSep)->first();
             if ($fppri) {
-                $fppri->Kategori = '28';
+                $fppri->Kategori = '2';
                 $fppri->no_spri = $request->noSurat;
                 $fppri->save();
             }

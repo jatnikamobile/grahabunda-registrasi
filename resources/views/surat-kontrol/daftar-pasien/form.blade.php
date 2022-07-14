@@ -2431,7 +2431,7 @@
                     $('#NoRujuk').val(bpjs_data.sep.provPerujuk.noRujukan);
                     $('#RegRujuk').val(bpjs_data.sep.provPerujuk.tglRujukan.substring(0,10));
 
-                    var $kategori = $("<option selected></option>").val(28).text('BPJS KESEHATAN');
+                    var $kategori = $("<option selected></option>").val(2).text('BPJS');
                     $('#Kategori').append($kategori).trigger('change');
 
                     var $dokter = $("<option selected></option>").val(dokter_data.KdDoc).text(dokter_data.NmDoc);
@@ -2463,7 +2463,7 @@
                     $('#kat_Firstname').val(firstname);
                     $('#kat_NoPeserta').val(no_peserta);
                     $('#noKartu').val(no_peserta);
-                    var $ka_kategori = $("<option selected></option>").val(28).text('BPJS KESEHATAN');
+                    var $ka_kategori = $("<option selected></option>").val(2).text('BPJS');
                     $('#kat_Kategori').append($ka_kategori).trigger('change');
 
                     // var $groupUnit = $("<option selected></option>").val(response.GroupUnit).text(response.GroupUnit);

@@ -114,7 +114,7 @@ class Register extends Model
 				if($kategori == '1' || $kategori == '3'){
 					$data->where("Register.KdPoli",$poli);
 				}
-				if ($kategori == '28') {
+				if ($kategori == '2') {
 					$data->whereNotIn("Register.KdPoli", [30]);
 				}
 		return $data->first();

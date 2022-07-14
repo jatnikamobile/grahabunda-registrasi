@@ -237,7 +237,7 @@
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
                         <select type="text" name="KategoriPasien" id="Kategori" style="width:50%;" class="form-control select2 input-sm col-xs-6 col-sm-6">
-                            <option value="{{ isset($edit->Kategori) ? $edit->Kategori : '28' }}">{{ isset($edit->NmKategori) ? @$edit->NmKategori : 'BPJS KESEHATAN' }}</option>
+                            <option value="{{ isset($edit->Kategori) ? $edit->Kategori : '2' }}">{{ isset($edit->NmKategori) ? @$edit->NmKategori : 'BPJS' }}</option>
                         </select>
                         <div class="invalid-feedback text-danger hide" id="kategori-validation">
                             Silahkan pilih kategori atau segera update kategori!
@@ -2480,7 +2480,7 @@
                     $('#NoRujuk').val(bpjs_data.sep.provPerujuk.noRujukan);
                     $('#RegRujuk').val(bpjs_data.sep.provPerujuk.tglRujukan.substring(0,10));
 
-                    var $kategori = $("<option selected></option>").val(28).text('BPJS KESEHATAN');
+                    var $kategori = $("<option selected></option>").val(2).text('BPJS');
                     $('#Kategori').append($kategori).trigger('change');
 
                     var $dokter = $("<option selected></option>").val(dokter_data.KdDoc).text(dokter_data.NmDoc);
@@ -2512,7 +2512,7 @@
                     $('#kat_Firstname').val(firstname);
                     $('#kat_NoPeserta').val(no_peserta);
                     $('#noKartu').val(no_peserta);
-                    var $ka_kategori = $("<option selected></option>").val(28).text('BPJS KESEHATAN');
+                    var $ka_kategori = $("<option selected></option>").val(2).text('BPJS');
                     $('#kat_Kategori').append($ka_kategori).trigger('change');
 
                     // var $groupUnit = $("<option selected></option>").val(register_data.GroupUnit).text(register_data.GroupUnit);
@@ -2579,7 +2579,7 @@
                     $('#UmurThn').val(response.data.UmurThn);
                     $('#noKartu').val(response.data.AskesNo);
 
-                    var $kategori = response.data.Kategori ? $("<option selected></option>").val(response.data.Kategori).text(response.data.NmKategori) : $("<option selected></option>").val(28).text('BPJS KESEHATAN');
+                    var $kategori = response.data.Kategori ? $("<option selected></option>").val(response.data.Kategori).text(response.data.NmKategori) : $("<option selected></option>").val(2).text('BPJS');
                     $('#Kategori').append($kategori).trigger('change');
 
                     if (response.data.KdSex != null) {
