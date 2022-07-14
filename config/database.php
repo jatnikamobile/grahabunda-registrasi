@@ -52,16 +52,6 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
         ],
-        'sqlsrv_kepri' => [
-            'driver' => 'sqlsrv',
-            'host' => env('MAIN_KEPRI_HOST', '192.168.0.3'),
-            'port' => env('MAIN_KEPRI_PORT', '3306'),
-            'database' => env('MAIN_KEPRI_DATABASE', 'RS-NET'),
-            'username' => env('MAIN_KEPRI_USERNAME', 'kepri'),
-            'password' => env('MAIN_KEPRI_PASSWORD', 'simrskepri2012'),
-            'charset' => 'utf8',
-            'prefix' => '',
-        ],
         'sqlsrv_vclaim' => [
             'driver' => 'sqlsrv',
             'host' => env('MAIN_VKLAIM_HOST', '192.168.0.3'),

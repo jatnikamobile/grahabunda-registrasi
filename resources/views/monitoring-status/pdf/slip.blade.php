@@ -14,7 +14,7 @@
 </style>
 <body>
     <div class="body">
-        RSU Graha Bunda
+        RSUD Majalaya
         <div style="padding-top: 10pt; ">
             <center><b>Slip Status Pasien</b></center>
         </div>

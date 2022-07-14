@@ -47,7 +47,7 @@
 </style>
 <div class="top-header">
     DINAS KESEHATAN REPUBLIK INDONESIA<br>
-    RSU Graha Bunda
+    RSUD Majalaya
 </div>
 <div class="Medrec">
     NO REKAM MEDIS

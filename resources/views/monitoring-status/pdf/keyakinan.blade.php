@@ -40,7 +40,7 @@
 </style>
 <div class="top-header">
     DINAS KESEHATAN<br>
-    RSU Graha Bunda
+    RSUD Majalaya
 </div>
 <div class="title-header">
     KEYAKINAN DAN NILAI-NILAI

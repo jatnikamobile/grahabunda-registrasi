@@ -78,7 +78,7 @@
 	<img src="/template/images/logobpjs1.png" class="logo">
 	<div style="display: inline-block; vertical-align: top; text-align: center; padding-left: 50px;">
 		<b>SURAT ELEGIBILITAS PESERTA</b><br>
-		<b>RSU Graha Bunda</b><br>
+		<b>RSUD Majalaya</b><br>
 	</div>
 </div>
 <table style="width: 100%;">
