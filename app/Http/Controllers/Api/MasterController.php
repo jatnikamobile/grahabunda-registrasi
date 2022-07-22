@@ -41,8 +41,7 @@ class MasterController extends Controller{
 
 		$register = new Register();
 		$check = $register->cek_pasien($medrec);
-		$kunjungan = AdmKunjungan::where('I_RekamMedis', $medrec)->first();
-		// dd($check);
+		$kunjungan = Register::where('Medrec', $medrec)->first();
 
 		return response()->json([
 			'status' => true,
