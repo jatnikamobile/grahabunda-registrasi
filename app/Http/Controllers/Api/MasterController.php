@@ -16,7 +16,6 @@ use App\Models\Procedure;
 use App\Models\Bridging_bpjs;
 use App\Models\DeleteSepLog;
 use App\Models\Fppri;
-use App\Models\RsNet\AdmKunjungan;
 use App\Models\SuratKontrolInap;
 use App\RegisterTaskData;
 use DateTime;
