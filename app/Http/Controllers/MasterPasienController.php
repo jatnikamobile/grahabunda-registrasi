@@ -10,7 +10,6 @@ use App\Models\MasterPS;
 use App\Models\Procedure;
 use App\Models\StoredProcedures;
 use App\Models\FKeyakinan;
-use App\Models\RsNet\TmGolonganDarah;
 use App\Models\TBLAgama;
 use App\Models\TBLKabupaten;
 use App\Models\TBLKelurahan;
@@ -82,7 +81,6 @@ class MasterPasienController extends Controller
         $GolDarah = $request->GolDarah;
         $RHDarah = $request->RHDarah;
         $golongan_darah = $GolDarah . $RHDarah;
-        $dt_gol_darah = TmGolonganDarah::where('N_GolonganDarah', $golongan_darah)->first();
 
         $new_pasien = MasterPS::where('Medrec', $request->Medrec)->first();
         if (!$new_pasien) {
