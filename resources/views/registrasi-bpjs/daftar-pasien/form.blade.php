@@ -527,7 +527,8 @@
                     <div class="input-group col-sm-9">
                         <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
                         <select type="text" name="KdCbayar" id="cara_bayar" style="width:100%;" class="form-control select2 input-sm col-xs-6 col-sm-6">
-                            <option value="02" selected="selected">BPJS</option>
+                            <option value="" selected="selected">-= Cara Bayar =-</option>
+                            <!-- <option value="02" selected="selected">BPJS</option> -->
                         </select>
                     </div>
                 </div>
@@ -1666,6 +1667,7 @@
             data: function(params) {
                 return {
                     q: params.term,
+                    kategori: $('#Kategori').val(),
                     offset: (params.page || 0) * 20
                 };
             },

@@ -461,6 +461,76 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ">
+                <p><u>Ruang Perawatan</u></p>
+                <!-- Ruang Rawat -->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right">Ruang Rawat</label>
+                    <div class="input-group col-sm-9">
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                     
+                          <select name="oBangsal" id="oBangsal" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                            @if(isset($edit))
+                                    <option value="{{ @$edit->kdbangsal }}{{ @$edit->kdkelas }}" 
+                                        {{ isset($edit->nmbangsal) && @$edit->nmbangsal == @$edit->nmbangsal ? 'selected' : '-= Ruang Rawat =-'}}>
+                                        {{ @$edit->nmkelas }} - {{ @$edit->nmbangsal }}
+                                    </option>
+                                @foreach($ruang as $data)
+                                    <option value="{{ $data->Kdbangsal }}{{ $data->kdkelas }}">{{ $data->nmkelas }} - {{ $data->nmbangsal }}</option>
+                                @endforeach
+                            @else
+                            <option value="">-= Ruang Rawat =-</option>
+                                @foreach($ruang as $data)
+                                    <option value="{{ $data->Kdbangsal }}{{ $data->kdkelas }}">{{ $data->nmkelas }} - {{ $data->nmbangsal }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+                <!-- Kelas -->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right">Kode Ruangan</label>
+                    <div class="input-group col-sm-9">
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                        <input type="text" name="Bangsal" id="bangsal" class="form-control input-sm col-xs-6 col-sm-6" readonly value="{{ @$edit->kdkelas }}" />
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">Kode Kelas</span>
+                        <input type="text" name="Kelas" id="kelas" class="form-control input-sm col-xs-6 col-sm-6" readonly value="{{ @$edit->kdbangsal }}" />
+                    </div>
+                </div>
+                <!-- No Kamar -->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right">Pilih Kamar</label>
+                    <div class="input-group col-sm-9">
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                        <select name="Kamar" id="Kamar" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                            @if(isset($edit))
+                                <option value="{{ isset($edit->nokamar) ? $edit->nokamar : '' }}">{{ @$edit->nokamar }} - {{@$edit->nottidur}}</option>
+                            @else
+                                <option value="">-= Pilih Kamar =-</option>
+                            @endif
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right">No Kamar</label>
+                    <div class="input-group col-sm-9">
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                        <input type="text" name="Bed" id="Bed" class="form-control input-sm col-xs-6 col-sm-6" readonly value="{{ @$edit->nokamar }}" />
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">Tempat Tidur</span>
+                        <input type="text" name="TempatTidur" id="TempatTidur" class="form-control input-sm col-xs-6 col-sm-6" readonly value="{{ @$edit->nottidur }}" />
+                    </div>
+                </div>
+                <!-- Dokter Yang Merawat -->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right">Dokter Yang Merawat</label>
+                    <div class="input-group col-sm-9">
+                        <span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
+                        <select name="Docmerawat" id="DokterRawat" style="width:100%;" class="form-control input-sm select2 col-xs-6 col-sm-6">
+                            <option value="{{ isset($edit->kddocrawat) ? $edit->kddocrawat : '' }}">{{ isset($edit->nmdoc) ? @$edit->nmdoc : '-= Dokter Yang Merawat =-' }}</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <br><br>
                 <p><u>Status Pembayaran</u></p>
                 <!-- Cara Bayar -->
                 <div class="form-group">

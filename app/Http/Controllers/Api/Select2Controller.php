@@ -113,9 +113,10 @@ class Select2Controller extends Controller
     public function cara_bayar(Request $request)
     {
         $q = $request->input('q');
+        $kategori = $request->input('kategori');
         $offset = $request->input('offset');
         $limit = $request->input('limit');
-        $data = TBLcarabayar::select2($q,$limit,$offset);
+        $data = TBLcarabayar::select2($q, $kategori, $limit, $offset);
         return response()->json($data);
     }
     

@@ -22,12 +22,15 @@ class TBLcarabayar extends Model
         $this->hidden = [];
     }
 
-    public static function select2($q, $limit = 15, $offset=0)
+    public static function select2($q, $kategori = null, $limit = 15, $offset=0)
     {
         $data = self::offset($offset)
                       ->limit($limit);
         if($q !== null){
             $data->where('NMCbayar', 'like', '%'.$q.'%')->orWhere('KDCbayar', 'like', '%'.$q.'%');
+        }
+        if ($kategori) {
+            $data->where('Kategori', $kategori);
         }
         $data = $data->get();
         $has_next = count($data) == (1 + $limit);
