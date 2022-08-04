@@ -756,7 +756,7 @@ class MasterController extends Controller{
 
 			$kode_booking = $register->Regno;
 			$register_task_data = RegisterTaskData::where('registrasi_id', $Regno)->where('task_id', 3)->where('tanggal', date('Y-m-d'))->first();
-			if ($Regno && !$register_task_data) {
+			if ($kode_booking && !$register_task_data) {
 				$int_time = strtotime(date('Y-m-d H:i:s') . ' Asia/Jakarta') * 1000;
 				$data_update_waktu_antrean = [
 					"kodebooking" => $kode_booking,
