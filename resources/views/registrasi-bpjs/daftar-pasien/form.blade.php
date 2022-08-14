@@ -3098,6 +3098,7 @@
                 type:"post",
                 dataType:"json",
                 data:{
+                    Regno: $('#Regno').val(),
                     StatusRujuk: $('input[name=StatusRujuk]:checked').val(),
                     noMR: $('#Medrec').val(),
                     noKartu: $('#noKartu').val(),

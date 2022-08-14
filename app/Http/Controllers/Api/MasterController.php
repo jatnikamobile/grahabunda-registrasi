@@ -14,8 +14,10 @@ use App\Models\MasterPS;
 use App\Models\Register;
 use App\Models\Procedure;
 use App\Models\Bridging_bpjs;
+use App\Models\DataPasienBooking;
 use App\Models\DeleteSepLog;
 use App\Models\Fppri;
+use App\Models\PendingTaskIdUpdate;
 use App\Models\SuratKontrolInap;
 use App\RegisterTaskData;
 use DateTime;
@@ -748,15 +750,115 @@ class MasterController extends Controller{
 		Log::info($response);
 
 		if (isset($response['sep'])) {
+			$nosep = isset($response['sep']['noSep']) ? $response['sep']['noSep'] : '';
+			Log::info('Create SEP Success. SEP: ' . $nosep);
 			$response['metaData'] = [
 				'code' => 200,
 				'message' => 'success'
 			];
 			$response['response'] = $response;
 
-			$kode_booking = $register->Regno;
-			$register_task_data = RegisterTaskData::where('registrasi_id', $Regno)->where('task_id', 3)->where('tanggal', date('Y-m-d'))->first();
+			$kode_booking = $Regno;
+			Log::info('Kode Booking: ' . $kode_booking);
+			$register_task_data = RegisterTaskData::where('registrasi_id', $kode_booking)->where('task_id', 3)->where('tanggal', date('Y-m-d'))->first();
+			Log::info('register_task_data:');
+			Log::info($register_task_data);
 			if ($kode_booking && !$register_task_data) {
+				$pending_task_id_updates = PendingTaskIdUpdate::where('kode_booking', $kode_booking)->orderBy('task_id')->get();
+				Log::info('pending_task_id_updates:');
+				Log::info($pending_task_id_updates);
+				if (count($pending_task_id_updates) > 0) {
+					foreach ($pending_task_id_updates as $ptiu) {
+						if ($ptiu->task_id == 1) {
+							$data_pasien_booking = DataPasienBooking::where('kodebooking', $kode_booking)->first();
+							if ($data_pasien_booking) {
+								$data_antrean_baru = [
+									"kodebooking" => $data_pasien_booking->kodebooking,
+									"jenispasien" => $data_pasien_booking->jenispasien,
+									"nomorkartu" => $data_pasien_booking->nomorkartu,
+									"nik" => $data_pasien_booking->nik,
+									"nohp" => $data_pasien_booking->nohp,
+									"kodepoli" => $data_pasien_booking->kodepoli,
+									"namapoli" => $data_pasien_booking->namapoli,
+									"pasienbaru" => $data_pasien_booking->pasienbaru,
+									"norm" => $data_pasien_booking->norm,
+									"tanggalperiksa" => $data_pasien_booking->tanggalperiksa,
+									"kodedokter" => $data_pasien_booking->kodedokter,
+									"namadokter" => $data_pasien_booking->namadokter,
+									"jampraktek" => $data_pasien_booking->jampraktek,
+									"jeniskunjungan" => $data_pasien_booking->jeniskunjungan,
+									"nomorreferensi" => $data_pasien_booking->nomorreferensi,
+									"nomorantrean" => $data_pasien_booking->nomorantrean,
+									"angkaantrean" => $data_pasien_booking->angkaantrean,
+									"estimasidilayani" => $data_pasien_booking->estimasidilayani,
+									"sisakuotajkn" => $data_pasien_booking->sisakuotajkn,
+									"kuotajkn" => $data_pasien_booking->kuotajkn,
+									"sisakuotanonjkn" => $data_pasien_booking->sisakuotanonjkn,
+									"kuotanonjkn" => $data_pasien_booking->kuotanonjkn,
+									"keterangan" => $data_pasien_booking->keterangan,
+								];
+					
+								Log::info('Data Antrean Baru:');
+								Log::info($data_antrean_baru);
+					
+								$vclaim_controller = new NewVClaimController();
+								$tambah_antrean = $vclaim_controller->wsBpjsTambahAntrean($data_antrean_baru);
+					
+								Log::info('API BPJS Tambah Antrean API Response:');
+								Log::info($tambah_antrean);
+								$data_update_waktu_antrean = [
+									"kodebooking" => $kode_booking,
+									"taskid" => 1,
+									"waktu" => $ptiu->time
+								];
+			
+								$vclaim_controller = new NewVClaimController();
+								$update_waktu_antrean = $vclaim_controller->wsBpjsUpdateWaktuAntrean($data_update_waktu_antrean);
+			
+								Log::info('data_update_waktu_antrean:');
+								Log::info($data_update_waktu_antrean);
+								Log::info('update_waktu_antrean:');
+								Log::info($update_waktu_antrean);
+
+								$tz = 'Asia/Jakarta';
+								$dt = new DateTime(date('Y-m-d', strtotime($ptiu->created_at)), new DateTimeZone($tz));
+								$tm_tz = $dt->format('Y-m-d H:i:s');
+			
+								$register_task_data = new RegisterTaskData();
+								$register_task_data->registrasi_id = $kode_booking;
+								$register_task_data->tanggal = date('Y-m-d', strtotime($ptiu->created_at));
+								$register_task_data->waktu = $tm_tz;
+								$register_task_data->task_id = 1;
+								$register_task_data->save();
+							}
+						} else {
+							$data_update_waktu_antrean = [
+								"kodebooking" => $kode_booking,
+								"taskid" => $ptiu->task_id,
+								"waktu" => $ptiu->time
+							];
+		
+							$vclaim_controller = new NewVClaimController();
+							$update_waktu_antrean = $vclaim_controller->wsBpjsUpdateWaktuAntrean($data_update_waktu_antrean);
+			
+							Log::info('data_update_waktu_antrean:');
+							Log::info($data_update_waktu_antrean);
+							Log::info('update_waktu_antrean:');
+							Log::info($update_waktu_antrean);
+		
+							$tz = 'Asia/Jakarta';
+							$dt = new DateTime(date('Y-m-d', strtotime($ptiu->created_at)), new DateTimeZone($tz));
+							$tm_tz = $dt->format('Y-m-d H:i:s');
+		
+							$register_task_data = new RegisterTaskData();
+							$register_task_data->registrasi_id = $kode_booking;
+							$register_task_data->tanggal = date('Y-m-d', strtotime($ptiu->created_at));
+							$register_task_data->waktu = $tm_tz;
+							$register_task_data->task_id = $ptiu->task_id;
+							$register_task_data->save();
+						}
+					}
+				}
 				$int_time = strtotime(date('Y-m-d H:i:s') . ' Asia/Jakarta') * 1000;
 				$data_update_waktu_antrean = [
 					"kodebooking" => $kode_booking,
@@ -766,6 +868,11 @@ class MasterController extends Controller{
 	
 				$vclaim_controller = new NewVClaimController();
 				$update_waktu_antrean = $vclaim_controller->wsBpjsUpdateWaktuAntrean($data_update_waktu_antrean);
+
+				Log::info('data_update_waktu_antrean:');
+				Log::info($data_update_waktu_antrean);
+				Log::info('update_waktu_antrean:');
+				Log::info($update_waktu_antrean);
 
                 $tz = 'Asia/Jakarta';
                 $timestamp = time();
