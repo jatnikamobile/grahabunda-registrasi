@@ -20,6 +20,7 @@ class NewVClaimController extends Controller
 
     public function __construct()
     {
+        date_default_timezone_set('Asia/Jakarta');
         $this->url = config('vclaim.url');
         $this->antrean_url = config('vclaim.antrean_url');
         $this->cons_id = config('vclaim.cons_id');
@@ -31,7 +32,7 @@ class NewVClaimController extends Controller
 
     private function createSignature()
     {
-        date_default_timezone_set('UTC');
+        date_default_timezone_set('Asia/Jakarta');
         $timestamp = strval(time()-strtotime('1970-01-01 00:00:00'));
         return [
             'timestamp' => $timestamp,
