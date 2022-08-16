@@ -32,7 +32,7 @@ class NewVClaimController extends Controller
 
     private function createSignature()
     {
-        date_default_timezone_set('Asia/Jakarta');
+        date_default_timezone_set('UTC');
         $timestamp = strval(time()-strtotime('1970-01-01 00:00:00'));
         return [
             'timestamp' => $timestamp,
