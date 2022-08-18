@@ -29,7 +29,7 @@
 <div id="trc-div">
     <table class="table-list">
         <tr>
-            <td style="width:50%">RSUD Majalaya<br>REGISTRASI PASIEN</td>
+            <td style="width:50%">RSU Graha Bunda<br>REGISTRASI PASIEN</td>
             <td style="text-align: right;">{{ $data->NMPoli }}<br>{{ $data->NmDoc }}<br>Tanggal:<br>{{ date('d/m/Y',strtotime($data->Regdate))}} / {{ substr($data->Regtime,11,5) }}</td>
         </tr>
         <tr>

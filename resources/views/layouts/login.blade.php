@@ -7,7 +7,7 @@
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<meta name="description" content="User login page" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-		<link rel="icon" href="/template/images/thumb/logo-majalaya.png" type="image/ico" />
+		<link rel="icon" href="/template/images/thumb/logo-grahabunda.png" type="image/ico" />
 
 		<!-- bootstrap & fontawesome -->
 	    <link rel="stylesheet" href="/template/css/bootstrap.min.css" />
@@ -34,7 +34,7 @@
 							<br><br><hr>
 							<div class="center">
 								<h1>
-									<img src="/template/images/thumb/logo-majalaya.png" width="100" alt="logo_rs">
+									<img src="/template/images/thumb/logo-grahabunda.png" width="100" alt="logo_rs">
 									<br>
 									<span class="red"> Modul Registrasi</span>
 								</h1>
@@ -44,7 +44,7 @@
 								@yield('content')
 							</div>
 							<div class="center">
-								<h4 class="blue" id="id-company-text">&copy; RSUD Majalaya</h4>
+								<h4 class="blue" id="id-company-text">&copy; RSU Graha Bunda</h4>
 							</div><hr>
 						</div><!-- /.col -->
 					</div><!-- /.row -->

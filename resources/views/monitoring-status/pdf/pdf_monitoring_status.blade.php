@@ -20,7 +20,7 @@
 </style>
 <div class="top-header">
     DINAS KESEHATAN<br>
-    RSUD Majalaya
+    RSU Graha Bunda
 </div>
 <div class="title-header">
     LAPORAN MONITORING STATUS
