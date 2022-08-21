@@ -29,6 +29,7 @@ use App\RegisterTaskData;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class RegistrasiBpjsController extends Controller
@@ -236,6 +237,56 @@ class RegistrasiBpjsController extends Controller
         $message = '';
         $register = new Register();
         $request->request->add(['id_old' => '']);
+
+        $regno = $request->Regno;
+        $reg_data = Register::where('Regno', $regno)->first();
+        if ($reg_data) {
+            try {
+                $medrec = $reg_data->Medrec;
+                $master_ps = MasterPS::where('Medrec', $medrec)->first();
+                if ($master_ps) {
+                    $upd_medrec = $request->Medrec;
+                    $ps_name = $master_ps->Firstname;
+    
+                    if ($upd_medrec) {
+                        $check_existing = MasterPS::where('Medrec', $upd_medrec)->where('Firstname', '!=', $ps_name)->first();
+    
+                        if ($check_existing) {
+                            $parse = array(
+                                'status' => false,
+                                'data' => $reg_data,
+                                'message' => 'Pasien dengan no RM ' . $upd_medrec . ' sudah ada!',
+                                'result' => ''
+                            );
+    
+                            return response()->json($parse);
+                        }
+                        
+                        DB::transaction(function () use ($master_ps, $upd_medrec, $medrec) {
+                            $master_ps->Medrec = $upd_medrec;
+                            $master_ps->save();
+        
+                            $upd_registers = Register::where('Medrec', $medrec)->get();
+                            if (count($upd_registers) > 0) {
+                                foreach ($upd_registers as $upd_reg) {
+                                    $upd_reg->Medrec = $upd_medrec;
+                                    $upd_reg->save();
+                                }
+                            }
+                        });
+                    }
+                }
+            } catch (\Throwable $th) {
+                $parse = array(
+                    'status' => false,
+                    'data' => $reg_data,
+                    'message' => $th->getMessage(),
+                    'result' => ''
+                );
+
+                return response()->json($parse);
+            }
+        }
 
         $up = StoredProcedures::stpnet_AddNewRegistrasiBPJS_REGxhos($request->all());
 

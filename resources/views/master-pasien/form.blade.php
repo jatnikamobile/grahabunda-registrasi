@@ -19,9 +19,11 @@
 					<div class="input-group col-sm-9">
 						<span class="input-group-addon" id="" style="border:none;background-color:white;">:</span>
 						@if(isset($edit))
+							<input type="hidden" name="current_medrec" value="{{ @$edit->Medrec }}">
 							<input type="text" name="Medrec" id="Medrec" value="{{ @$edit->Medrec }}"/>
 							<button type="button" name="PrintKartu" id="PrintKartu" class="btn btn-primary" target="_blank" style="margin-left: 10px;"><i class="fa fa-print"></i> Print Kartu</button>
 						@else
+							<input type="hidden" name="current_medrec" value="">
 							<input type="text" name="Medrec" class="" id="Medrec" readonly/>
 							<button type="button" name="PrintKartu" id="PrintKartu" class="btn btn-primary" target="_blank" style="margin-left: 10px;"><i class="fa fa-print"></i> Print Kartu</button>
 						@endif
@@ -748,6 +750,7 @@
                 type:"post",
                 dataType:"json",
                 data:{
+                	current_medrec: $('[name=current_medrec]').val(),
                 	Medrec: $('[name=Medrec]').val(),
 					Firstname: $('[name=Firstname]').val(),
 					Pod: $('[name=Pod]').val(),
