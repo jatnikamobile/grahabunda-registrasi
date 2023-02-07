@@ -801,8 +801,21 @@ class RegistrasiBpjsController extends Controller
         // dd($nosep);
         $register = new Register();
         $data = $register->print_sep($regno);
+
+        $vclaim_controller = new NewVClaimController();
+        $peserta = $vclaim_controller->pesertaKartu($data['NoPeserta'], date('Y-m-d'));
+
+        $data_qr = [
+            'nama' => $data->firstname,
+            'tanggal_lahir' => date('Y-m-d', strtotime($data->Bod)),
+            'tanggal_registrasi' => date('Y-m-d', strtotime($data->Regdate)),
+        ];
+        $qrcode = (new QRCode)->render(json_encode($data_qr));
+        
         $parse = array(
-            'data' => $data
+            'data' => $data,
+            'qrcode' => $qrcode,
+            'hak_kelas' => isset($peserta['peserta']['hakKelas']['kode']) ? $peserta['peserta']['hakKelas']['kode'] : null,
         );
         
         return view('registrasi-bpjs.pengajuan-sep.lembar-sep', $parse);
