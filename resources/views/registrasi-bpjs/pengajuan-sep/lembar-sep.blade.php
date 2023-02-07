@@ -159,6 +159,11 @@
 					<td><?= $data['NMTuju'] == 'Rawat Inap' ? 'Rawat Inap': 'Rawat Jalan' ?></td>
 				</tr>
 				<tr>
+					<td>Kls Hak</td>
+					<td>:</td>
+					<td><?= $hak_kelas ?></td>
+				</tr>
+				<tr>
 					<td>Kls Rawat</td>
 					<td>:</td>
 					<td><?= $data['NmKelas'] ?></td>
@@ -199,6 +204,11 @@
 			<td>Petugas BPJS Kesehatan</td>
 		</tr>
 		<tr>
+			<td><img src='<?= $qrcode ?>' alt='QR Code' width='100' height='100'></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><?= $data['Firstname'] ?></td>
 			<td></td>
 		</tr>
 	</tbody>
