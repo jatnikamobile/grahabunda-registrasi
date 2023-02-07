@@ -26,6 +26,7 @@ use App\Models\Laboratorium;
 use App\Models\PengajuanSPRI;
 use App\Models\TblKategoriPsn;
 use App\RegisterTaskData;
+use chillerlan\QRCode\QRCode;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
@@ -772,9 +773,22 @@ class RegistrasiBpjsController extends Controller
         // dd($nosep);
         $register = new Register();
         $data = $register->print_sep($regno);
+
+        $vclaim_controller = new NewVClaimController();
+        $peserta = $vclaim_controller->pesertaKartu($data['NoPeserta'], date('Y-m-d'));
+
+        $data_qr = [
+            'nama' => $data->Firstname,
+            'tanggal_lahir' => date('Y-m-d', strtotime($data->Bod)),
+            'tanggal_registrasi' => date('Y-m-d', strtotime($data->Regdate)),
+        ];
+        $qrcode = (new QRCode)->render(json_encode($data_qr));
+
         $parse = array(
             'data' => $data,
-            'reff' => 'list'
+            'reff' => 'list',
+            'qrcode' => $qrcode,
+            'hak_kelas' => isset($peserta['peserta']['hakKelas']['kode']) ? $peserta['peserta']['hakKelas']['kode'] : null,
         );
         // dd($parse);
         return view('registrasi-bpjs.pengajuan-sep.lembar-sep', $parse);
@@ -804,8 +818,21 @@ class RegistrasiBpjsController extends Controller
         // dd($nosep);
         $fppri = new Fppri();
         $data = $fppri->print_sep_rawat_inap($regno);
+
+        $vclaim_controller = new NewVClaimController();
+        $peserta = $vclaim_controller->pesertaKartu($data['NoPeserta'], date('Y-m-d'));
+
+        $data_qr = [
+            'nama' => $data->firstname,
+            'tanggal_lahir' => date('Y-m-d', strtotime($data->Bod)),
+            'tanggal_registrasi' => date('Y-m-d', strtotime($data->Regdate)),
+        ];
+        $qrcode = (new QRCode)->render(json_encode($data_qr));
+
         $parse = array(
-            'data' => $data
+            'data' => $data,
+            'qrcode' => $qrcode,
+            'hak_kelas' => isset($peserta['peserta']['hakKelas']['kode']) ? $peserta['peserta']['hakKelas']['kode'] : null,
         );
         return view('registrasi-bpjs.pengajuan-sep.lembar-sep-rawat-inap', $parse);
     }
