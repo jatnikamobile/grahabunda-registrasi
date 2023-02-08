@@ -783,12 +783,17 @@ class RegistrasiBpjsController extends Controller
             'tanggal_registrasi' => date('Y-m-d', strtotime($data->Regdate)),
         ];
         $qrcode = (new QRCode)->render(json_encode($data_qr));
+        
+        $now = new DateTime();
+        $now->setTimezone(new DateTimeZone('Asia/Jakarta'));
+        $date_now = $now->format('H:i j F Y');
 
         $parse = array(
             'data' => $data,
             'reff' => 'list',
             'qrcode' => $qrcode,
             'hak_kelas' => isset($peserta['peserta']['hakKelas']['kode']) ? $peserta['peserta']['hakKelas']['kode'] : null,
+            'tanggal' => $date_now,
         );
         // dd($parse);
         return view('registrasi-bpjs.pengajuan-sep.lembar-sep', $parse);
@@ -796,7 +801,6 @@ class RegistrasiBpjsController extends Controller
 
     public function print_sep_register(Request $request)
     {
-        
         $regno = $request->input("Regno");
         // dd($nosep);
         $register = new Register();
@@ -812,10 +816,15 @@ class RegistrasiBpjsController extends Controller
         ];
         $qrcode = (new QRCode)->render(json_encode($data_qr));
         
+        $now = new DateTime();
+        $now->setTimezone(new DateTimeZone('Asia/Jakarta'));
+        $date_now = $now->format('H:i j F Y');
+        
         $parse = array(
             'data' => $data,
             'qrcode' => $qrcode,
             'hak_kelas' => isset($peserta['peserta']['hakKelas']['kode']) ? $peserta['peserta']['hakKelas']['kode'] : null,
+            'tanggal' => $date_now,
         );
         
         return view('registrasi-bpjs.pengajuan-sep.lembar-sep', $parse);
@@ -841,11 +850,16 @@ class RegistrasiBpjsController extends Controller
             'tanggal_registrasi' => date('Y-m-d', strtotime($data->Regdate)),
         ];
         $qrcode = (new QRCode)->render(json_encode($data_qr));
+        
+        $now = new DateTime();
+        $now->setTimezone(new DateTimeZone('Asia/Jakarta'));
+        $date_now = $now->format('H:i j F Y');
 
         $parse = array(
             'data' => $data,
             'qrcode' => $qrcode,
             'hak_kelas' => isset($peserta['peserta']['hakKelas']['kode']) ? $peserta['peserta']['hakKelas']['kode'] : null,
+            'tanggal' => $date_now,
         );
         return view('registrasi-bpjs.pengajuan-sep.lembar-sep-rawat-inap', $parse);
     }

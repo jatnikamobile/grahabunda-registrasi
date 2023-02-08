@@ -217,4 +217,4 @@
 </table>
 <p style="padding-top: 20px;">* Saya Menyetujui BPJS Kesehatan Informasi Medis<br> Pasien jika diperlukan<br>
 * SEP bukan sebagai bukti jaminan peserta</p>
-<h5>CETAKAN KE : <?= $data['Nomor'] == '' ? '1' : $data['Nomor']  ?> / <?= date("H:i j F Y") ?></h5>
+<h5>CETAKAN KE : <?= $data['Nomor'] == '' ? '1' : $data['Nomor']  ?> / <?= $tanggal ?></h5>
