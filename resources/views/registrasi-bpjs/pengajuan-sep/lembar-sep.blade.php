@@ -204,7 +204,8 @@
 			<td>Petugas BPJS Kesehatan</td>
 		</tr>
 		<tr>
-			<td><img src='<?= $qrcode ?>' alt='QR Code' width='100' height='100'></td>
+			<!-- <td><img src='<?= $qrcode ?>' alt='QR Code' width='100' height='100'></td> -->
+			<td></td>
 			<td></td>
 		</tr>
 		<tr>
