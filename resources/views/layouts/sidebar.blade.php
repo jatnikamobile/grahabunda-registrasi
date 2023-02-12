@@ -201,6 +201,11 @@
                 </li>
             </ul>
         </li> --}}
+        <li class="@yield('menu_master_dokter')">
+            <a href="{{ route('mst-dok.index') }}">
+                <i class="menu-icon fa fa-users"></i><span class="menu-text"> Master Dokter </span>
+            </a> <b class="arrow"></b>
+        </li>
     </ul><!-- /.nav-list -->
 
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
