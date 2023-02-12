@@ -231,3 +231,12 @@ Route::group(['prefix'=>'tanggal-pulang'], function(){
 Route::resource('bpjs-tester', 'BPJSTesterController');
 
 Route::get('reg-bpjs-pengajuan-spri-req', ['as' => 'reg-bpjs-pengajuan-spri-req', 'uses' => 'RegistrasiBpjsController@pengajuanSPRIAjax']);
+
+Route::resource('master-dokter', 'Master\FTDokterController')->names([
+    'index' => 'mst-dok.index',
+    'create' => 'mst-dok.create',
+    'edit' => 'mst-dok.edit',
+    'store' => 'mst-dok.store',
+    'update' => 'mst-dok.update',
+    'destroy' => 'mst-dok.destroy',
+]);
